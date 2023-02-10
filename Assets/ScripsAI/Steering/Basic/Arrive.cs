@@ -28,7 +28,7 @@ public class Arrive : SteeringBehaviour
         if (distance > agent.RadioExterior)
         {
             agent.Speed = agent.MaxSpeed;
-            Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
+            //Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
         }
         else
         {
