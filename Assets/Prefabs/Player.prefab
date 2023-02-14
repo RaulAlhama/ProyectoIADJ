@@ -205,7 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4732192303234003975}
-  - component: {fileID: -858758634722933069}
+  - component: {fileID: -1418894785115732146}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -229,7 +229,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-858758634722933069
+--- !u!114 &-1418894785115732146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,10 +247,15 @@ MonoBehaviour:
   _maxAcceleration: 1
   _maxAngularAcc: 1
   _maxForce: 1
+  drawBigotes: 0
+  drawSpheres: 0
   _interiorRadius: 1
   _arrivalRadius: 3
   _interiorAngle: 3
   _exteriorAngle: 8
+  target: {fileID: 0}
+  ori: 0
+  selected: 0
 --- !u!1 &8348658344374044383
 GameObject:
   m_ObjectHideFlags: 0
