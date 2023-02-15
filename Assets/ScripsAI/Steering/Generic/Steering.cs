@@ -5,8 +5,8 @@ using System.Collections;
 [System.Serializable]
 public class Steering
 {
-    public float angular;
-    public Vector3 linear;
+    public float angular; //Rotacion
+    public Vector3 linear; //Velocidad
 
     public Steering()
     {
