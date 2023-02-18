@@ -8,9 +8,9 @@ using UnityEngine;
 public class Agent : Bodi
 {
 
-    protected virtual void Awake(){
+    /*protected virtual void Awake(){
 
-   }
+   }*/
 
    public bool drawBigotes = false;
    public bool drawSpheres = false;

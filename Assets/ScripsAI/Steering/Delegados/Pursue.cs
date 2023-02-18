@@ -4,26 +4,20 @@ using UnityEngine;
 
 public class Pursue : Seek
 {
-    private Agent explicitTarget;
-    private GameObject pursue;
+    [SerializeField] [Range(0.0f, 20.0f)] private float maxPrediction;
 
   void Start()
     {
         this.nameSteering = "Pursue";
-        pursue = new GameObject("Pursue");
-        Agent invisible = pursue.AddComponent<Agent>() as Agent;
-        explicitTarget = target;
-        this.target = invisible;
     }
 
-    [SerializeField] [Range(0.0f, 10.0f)] private float maxPrediction;
     
 
     public override Steering GetSteering(AgentNPC agent)
     {
 
         // Vamos a  crear un nuevo target en la posicion donde estaria nuestro target
-        Vector3 newDirection = explicitTarget.Position - agent.Position;
+        Vector3 newDirection = target.Position - agent.Position;
         float distance = newDirection.magnitude;
 
         // Velocidad actual
@@ -39,10 +33,8 @@ public class Pursue : Seek
 
 
         //Dirección predicha
-        Debug.Log("ANTES: " + explicitTarget.Position + explicitTarget.Velocity + predictedSpeed);
-        this.target.Position = explicitTarget.Position;
-        this.target.Position += explicitTarget.Velocity * predictedSpeed;
-        Debug.Log("DESPUES: " + explicitTarget.Position);
+        var predictedTargetPosition = this.target.Position + target.Velocity * predictedSpeed;
+        UseCustomDirectionAndRotation(predictedTargetPosition - agent.Position);
 
         return base.GetSteering(agent);
     }

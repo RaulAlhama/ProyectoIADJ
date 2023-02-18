@@ -8,7 +8,26 @@ public class SteeringBehaviour : MonoBehaviour
 {
 
     protected string nameSteering = "no steering";
-     public Agent target;
+
+    protected Vector3 customDirection;
+    protected float customRotation;
+    protected bool useCustom;
+
+    public void UseCustomDirectionAndRotation(Vector3 predictedDirection,
+        float predictedRotation = 0f)
+    {
+        useCustom = true;
+        customDirection = predictedDirection;
+        customRotation = predictedRotation;
+    }
+
+    public void UseCustomRotation(float predictedRotation)
+    {
+        useCustom = true;
+        customRotation = predictedRotation;
+    }
+
+    public Agent target;
 
     public string NameSteering
     {

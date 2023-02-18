@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LookWhereYouGoing : Align
+{
+    private GameObject look;
+    void Start()
+    {
+        this.nameSteering = "LookWhereYouGoing";
+        //look = new GameObject("look");
+        //target = look.AddComponent<Agent>() as Agent;
+    }
+
+    public override Steering GetSteering(AgentNPC agent) {
+        if (target.Velocity.magnitude == 0){
+            Debug.Log("LookWhere.cs: NO hay velocidad");
+            Steering steer = new Steering();
+            return steer;
+        }
+        //Predecimos la posición del target
+        Vector3 predictedPosition = target.Velocity - agent.Position;
+        //Con PositionToAngle obtenemos la posición del tarjet predicho
+        //Obtenemos la rotación
+        customRotation = Bodi.PositionToAngle(predictedPosition) - agent.Orientation;
+        Debug.Log("LookWhere.cs: " + "Custom Rotation: " + customRotation);
+        this.useCustom = true;
+
+        return base.GetSteering(agent);
+    }
+}

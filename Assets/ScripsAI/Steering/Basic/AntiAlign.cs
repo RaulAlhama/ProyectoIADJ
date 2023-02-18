@@ -25,17 +25,14 @@ public class AntiAlign : SteeringBehaviour
 
         
         if (rotationSize < agent.AnguloInterior){
-            Debug.Log(rotationSize + " < " + agent.AnguloInterior);
             return steer;
         }
 
         if (rotationSize > agent.AnguloExterior){
-            Debug.Log(rotationSize + " > " + agent.AnguloExterior + " ,Rotation = " + agent.MaxRotation);
             targetRotation = agent.MaxRotation;
         }
 
         else{
-            Debug.Log(agent.AnguloInterior + " < " + rotationSize + " > " + agent.AnguloExterior + " , Rotation = " + agent.MaxRotation * rotationSize/agent.AnguloExterior);
             targetRotation = agent.MaxRotation * rotationSize/agent.AnguloExterior;
         }      
 

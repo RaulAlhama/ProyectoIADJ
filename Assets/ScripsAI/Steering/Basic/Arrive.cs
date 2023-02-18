@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Arrive : SteeringBehaviour
 {
-
+    private float timeToTarget = 0.1f;
     // Declara las variables que necesites para este SteeringBehaviour
     void Start()
     {
@@ -40,7 +40,8 @@ public class Arrive : SteeringBehaviour
         agent.Velocity *= agent.Speed;
 
         steer.linear = agent.Velocity - target.Velocity;
-        steer.linear /= Time.deltaTime;
+        steer.linear /= timeToTarget;
+        //agent.transform.rotation = new Quaternion(0,90,0,1);
 
         if (steer.linear.magnitude > agent.MaxAcceleration)
             steer.linear = steer.linear.normalized * agent.MaxAcceleration;

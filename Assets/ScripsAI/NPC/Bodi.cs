@@ -6,16 +6,16 @@ public class Bodi : MonoBehaviour
     [SerializeField] protected float _mass = 1;
     [SerializeField] protected float _maxSpeed = 1;
     [SerializeField] protected float _maxRotation = 1;
-    [SerializeField] protected float _maxAcceleration = 1;
-    [SerializeField] protected float _maxAngularAcc = 1;
+    [SerializeField] protected float _maxAcceleration = 1; //Maxima accelaracion lineal
+    [SerializeField] protected float _maxAngularAcc = 1; //Máxima acceleracion angular
     [SerializeField] protected float _maxForce = 1;
 
     protected Vector3 _acceleration; // aceleración lineal
     protected float _angularAcc;  // aceleración angular
     protected Vector3 _velocity; // velocidad lineal
-    protected float _rotation;  // velocidad angular
+    [SerializeField] protected float _rotation;  // velocidad angular
     protected float _speed;  // velocidad escalar
-    protected float _orientation;  // 'posición' angular
+    [SerializeField] protected float _orientation;  // 'posición' angular
     // Se usará transform.position como 'posición' lineal
 
     /// Un ejemplo de cómo construir una propiedad en C#
@@ -134,13 +134,13 @@ public class Bodi : MonoBehaviour
     // public float PredictNearestApproachDistance3(Bodi other, float timeInit, float timeEnd)
 
     
-    public float PositionToAngle(Vector3 pos)
+    public static float PositionToAngle(Vector3 pos)
     {
         return Mathf.Atan2(pos.x, pos.z) * Mathf.Rad2Deg;
     }
 
 
-    public Vector3 AngleToPosition(float angle)
+    public static Vector3 AngleToPosition(float angle)
     {
         return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
     }

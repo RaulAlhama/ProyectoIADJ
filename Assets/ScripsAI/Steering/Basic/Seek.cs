@@ -10,15 +10,21 @@ public class Seek : SteeringBehaviour
     
     void Start()
     {
-        this.nameSteering = "Pon su nombre";
+        this.nameSteering = "Seek";
     }
 
 
     public override Steering GetSteering(AgentNPC agent)
     {
         Steering steer = new Steering();
-
-        Vector3 newDirection = target.Position - agent.Position;
+        Vector3 newDirection;
+        if(useCustom){
+            newDirection = customDirection;
+        }
+        else{
+            newDirection = target.Position - agent.Position;
+        }
+        
 
         // Calcula el steering.
         // Asignamos a steer.linear el vector obtenido normalizado

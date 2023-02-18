@@ -7,10 +7,10 @@ public class AgentNPC : Agent
     // Este será el steering final que se aplique al personaje.
     public Steering steer;
     public SteeringBehaviour[] listSteerings;
+    private Quaternion rotacionIni;
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         this.steer = new Steering();
 
         // Construye una lista con todos las componenen del tipo SteeringBehaviour.
@@ -22,6 +22,7 @@ public class AgentNPC : Agent
     // Use this for initialization
     void Start()
     {
+        Orientation = transform.eulerAngles.y;
         //Velocity = Vector3.zero;
     }
 
