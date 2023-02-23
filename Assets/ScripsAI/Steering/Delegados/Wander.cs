@@ -36,12 +36,40 @@ public class Wander : Face
              
         }
 
-        Steering steering = base.GetSteering(agent);
+        Steering steer = base.GetSteering(agent);
         //Aplicamos el movimiento lineal
         Vector3 newDirection = target.Position - agent.Position;
-        steering.linear = newDirection.normalized * agent.MaxAcceleration;
+        float distance = newDirection.magnitude;
 
-        return steering;
+        
+        if (distance < agent.RadioInterior)
+        {
+            agent.Velocity = Vector3.zero;  //Para en seco
+            return steer;
+        }
+        if (distance > agent.RadioExterior)
+        {
+            agent.Speed = agent.MaxSpeed;
+            //Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
+        }
+        else
+        {
+            agent.Speed = agent.MaxSpeed * distance/agent.RadioExterior;
+            Debug.Log(agent.RadioInterior + " < " + distance + " > " + agent.RadioExterior + " , Speed = " + agent.MaxSpeed * distance/agent.RadioInterior);
+        }
+        
+        agent.Velocity = newDirection.normalized;
+        agent.Velocity *= agent.Speed;
+
+        steer.linear = agent.Velocity - target.Velocity;
+        steer.linear /= timeToTarget;
+        //agent.transform.rotation = new Quaternion(0,90,0,1);
+
+        if (steer.linear.magnitude > agent.MaxAcceleration)
+            steer.linear = steer.linear.normalized * agent.MaxAcceleration;
+        
+
+        return steer;
         
     }
 }

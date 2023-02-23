@@ -32,6 +32,8 @@ public class Align : SteeringBehaviour
         float rotationSize = Mathf.Abs(rotation);
 
         if (rotationSize < agent.AnguloInterior){
+            steer.angular = 0;
+            agent.Rotation = 0;
             return steer;
         }
 

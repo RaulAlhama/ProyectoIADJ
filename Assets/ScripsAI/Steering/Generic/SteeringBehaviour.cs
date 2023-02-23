@@ -13,19 +13,7 @@ public class SteeringBehaviour : MonoBehaviour
     protected float customRotation;
     protected bool useCustom;
 
-    public void UseCustomDirectionAndRotation(Vector3 predictedDirection,
-        float predictedRotation = 0f)
-    {
-        useCustom = true;
-        customDirection = predictedDirection;
-        customRotation = predictedRotation;
-    }
 
-    public void UseCustomRotation(float predictedRotation)
-    {
-        useCustom = true;
-        customRotation = predictedRotation;
-    }
 
     public Agent target;
 

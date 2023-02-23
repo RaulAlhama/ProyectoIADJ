@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arrive : SteeringBehaviour
+public class Leave : SteeringBehaviour
 {
     private float timeToTarget = 0.1f;
     // Declara las variables que necesites para este SteeringBehaviour
     void Start()
     {
-        this.nameSteering = "Arrive";
+        this.nameSteering = "Leave";
     }
 
 
@@ -16,16 +16,16 @@ public class Arrive : SteeringBehaviour
     {
         Steering steer = new Steering();
 
-        Vector3 newDirection = target.Position - agent.Position;
+        Vector3 newDirection = agent.Position - target.Position; //Dirección contraria a Arrive
         float distance = newDirection.magnitude;
 
         
-        if (distance < agent.RadioInterior)
+        if (distance > 10.0f)
         {
-            agent.Velocity = Vector3.zero;  //Para en seco
-            return steer;
+            steer.linear = Vector3.zero;
+            agent.Velocity = Vector3.zero;
         }
-        if (distance > agent.RadioExterior)
+        if (distance < agent.RadioInterior)
         {
             agent.Speed = agent.MaxSpeed;
             //Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
