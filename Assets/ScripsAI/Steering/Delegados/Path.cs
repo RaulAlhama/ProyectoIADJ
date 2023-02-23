@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Path: MonoBehaviour
 {
@@ -45,8 +46,8 @@ public class Path: MonoBehaviour
     public int nextPoint(int currentIndexOnPath){
 
         if(currentIndexOnPath == nodes.Length - 1){
-            
-            return 0;
+            Array.Reverse(nodes);
+            return 1;
         }
 
         return currentIndexOnPath + 1;
