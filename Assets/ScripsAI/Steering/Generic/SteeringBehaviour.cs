@@ -16,6 +16,7 @@ public class SteeringBehaviour : MonoBehaviour
 
 
     public Agent target;
+   [SerializeField] [Range(0.0f, 1.0f)] public float weight; //peso del steering para el movimiento compuesto
 
     public string NameSteering
     {

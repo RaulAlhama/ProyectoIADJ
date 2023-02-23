@@ -14,6 +14,8 @@ public class Agent : Bodi
 
    public bool drawBigotes = false;
    public bool drawSpheres = false;
+   public int numBigotes = 1;
+   public float distanciaBigotes = 20f;
     
     [Tooltip("Radio interior de la IA")]
     [SerializeField] protected float _interiorRadius = 1f;
@@ -78,29 +80,32 @@ public class Agent : Bodi
         if (drawBigotes)
         {   
             
-            // Dibujamos el angulo interior
-            Vector3 from = transform.position; // Origen de la línea
-            Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
+           for (int i=0;i<numBigotes;i++){
 
-            from = from + elevation;
+                // Dibujamos el angulo interior
+                Vector3 from = transform.position; // Origen de la línea
+                Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
 
-            Gizmos.color = Color.red;        // Mirando en la dirección de la orientación.
-            Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+                from = from + elevation;
 
-            Vector3 vectorInterior1 = new Vector3 (Mathf.Cos(_interiorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Sin(_interiorAngle * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin(_interiorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Cos(_interiorAngle * Mathf.Deg2Rad) * direction.z); 
-            Vector3 vectorInterior2 = new Vector3 (Mathf.Cos(-_interiorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Sin(-_interiorAngle * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin(-_interiorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Cos(-_interiorAngle * Mathf.Deg2Rad) * direction.z); 
+                Gizmos.color = Color.red;        // Mirando en la dirección de la orientación.
+                Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
 
-            Gizmos.DrawRay(from, vectorInterior1);
-            Gizmos.DrawRay(from, vectorInterior2);
+                Vector3 vectorInterior1 = new Vector3 (Mathf.Cos((_interiorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((_interiorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((_interiorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((_interiorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z); 
+                Vector3 vectorInterior2 = new Vector3 (Mathf.Cos((-_interiorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((-_interiorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((-_interiorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((-_interiorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z); 
 
-            // Dibujamos el angulo exterior
+                Gizmos.DrawRay(from, vectorInterior1);
+                Gizmos.DrawRay(from, vectorInterior2);
 
-            Vector3 vectorExterior3 = new Vector3 (Mathf.Cos(_exteriorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Sin(_exteriorAngle * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin(_exteriorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Cos(_exteriorAngle * Mathf.Deg2Rad) * direction.z); 
-            Vector3 vectorExterior4 = new Vector3 (Mathf.Cos(-_exteriorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Sin(-_exteriorAngle * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin(-_exteriorAngle * Mathf.Deg2Rad) * direction.x + Mathf.Cos(-_exteriorAngle * Mathf.Deg2Rad) * direction.z); 
+                // Dibujamos el angulo exterior
+                Vector3 vectorExterior3 = new Vector3 (Mathf.Cos((_exteriorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((_exteriorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((_exteriorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((_exteriorAngle-distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z); 
+                Vector3 vectorExterior4 = new Vector3 (Mathf.Cos((-_exteriorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((-_exteriorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((-_exteriorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((-_exteriorAngle+distanciaBigotes*i) * Mathf.Deg2Rad) * direction.z); 
 
-             Gizmos.color = Color.blue; 
-            Gizmos.DrawRay(from, vectorExterior3);
-            Gizmos.DrawRay(from, vectorExterior4);
+                Gizmos.color = Color.blue; 
+                Gizmos.DrawRay(from, vectorExterior3);
+                Gizmos.DrawRay(from, vectorExterior4);
+
+            }
 
         }
 
