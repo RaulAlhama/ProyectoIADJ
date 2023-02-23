@@ -20,6 +20,7 @@ public class AgentPlayer : Agent
 
          pathFollowing = new PathFollowing(this,camino); //pathFollowing
          relativeTarget = pathFollowing.getSiguienteObjetivo(); //pathFollowing
+         Orientation = transform.eulerAngles.y;
     }
     public virtual void Update()
     {

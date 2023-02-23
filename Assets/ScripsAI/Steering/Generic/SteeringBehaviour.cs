@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(AgentNPC))]
+[System.Serializable]
 public class SteeringBehaviour : MonoBehaviour
 {
 

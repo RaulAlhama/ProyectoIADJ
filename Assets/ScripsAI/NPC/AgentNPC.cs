@@ -8,6 +8,7 @@ public class AgentNPC : Agent
     public Steering steer;
     public SteeringBehaviour[] listSteerings;
     private Quaternion rotacionIni;
+    private BlendedSteering arbitro;
 
     void Awake()
     {
@@ -16,6 +17,7 @@ public class AgentNPC : Agent
         // Construye una lista con todos las componenen del tipo SteeringBehaviour.
         // La llamaremos listSteerings
         // Usa GetComponents<>()
+        arbitro = new BlendedSteering();
         listSteerings = GetComponents<SteeringBehaviour>();
     }
 
@@ -55,8 +57,11 @@ public class AgentNPC : Agent
         this.steer = new Steering();
 
         // Recorremos cada steering
-        foreach (SteeringBehaviour behavior in listSteerings)
-            GetSteering(behavior);
+        //foreach (SteeringBehaviour behavior in listSteerings)
+        //    GetSteering(behavior);
+        
+        arbitro.AplicarArbitro(listSteerings);
+        this.steer = arbitro.GetSteering(this);
     }
 
 
