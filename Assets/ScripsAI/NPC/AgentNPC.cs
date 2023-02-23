@@ -7,7 +7,6 @@ public class AgentNPC : Agent
     // Este será el steering final que se aplique al personaje.
     public Steering steer;
     public SteeringBehaviour[] listSteerings;
-    private Quaternion rotacionIni;
     private BlendedSteering arbitro;
 
     void Awake()

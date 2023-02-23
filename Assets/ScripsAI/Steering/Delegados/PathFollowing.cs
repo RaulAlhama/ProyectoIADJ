@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFollowing : Seek
+public class PathFollowing
 {
     public Path path;
     public float predictTime;
     public int currentIndexOnPath = -1;
-    private AgentPlayer player;
+    private PlayerPathFollowing player;
 
-    public PathFollowing(AgentPlayer jugador, Path camino){
+    public PathFollowing(PlayerPathFollowing jugador, Path camino){
             
         player = jugador;
         path = camino;
