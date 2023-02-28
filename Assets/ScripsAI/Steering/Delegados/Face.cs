@@ -17,9 +17,9 @@ public class Face : Align
         Vector3 newDirection = target.Position - agent.Position;
 
         //Bodi.PositionToAngle(newDirection) -> Target.Orientation
-        customRotation = Bodi.PositionToAngle(newDirection) - agent.Orientation;
-        Debug.Log("Face.cs: " + "Custom Rotation: " + customRotation);
-        this.useCustom = true;
+        explTargetRotation = Bodi.PositionToAngle(newDirection) - agent.Orientation;
+        Debug.Log("Face.cs: " + "Custom Rotation: " + explTargetRotation);
+        this.isExplicitTarget = true;
 
         return base.GetSteering(agent);
 

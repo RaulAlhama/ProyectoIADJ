@@ -22,8 +22,8 @@ public class Align : SteeringBehaviour
         // Calcula el steering.
         float rotation;
         
-        if(useCustom){
-             rotation = this.customRotation;
+        if(isExplicitTarget){
+             rotation = this.explTargetRotation;
         }
         else{
             rotation = target.Orientation - agent.Orientation;

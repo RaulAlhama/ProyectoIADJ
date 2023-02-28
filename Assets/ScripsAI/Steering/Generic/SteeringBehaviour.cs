@@ -10,9 +10,9 @@ public class SteeringBehaviour : MonoBehaviour
 
     protected string nameSteering = "no steering";
 
-    protected Vector3 customDirection;
-    protected float customRotation;
-    protected bool useCustom;
+    protected Vector3 explTargetDirection;
+    protected float explTargetRotation;
+    protected bool isExplicitTarget;
 
 
 
