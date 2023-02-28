@@ -18,7 +18,7 @@ public class Face : Align
 
         //Bodi.PositionToAngle(newDirection) -> Target.Orientation
         explTargetRotation = Bodi.PositionToAngle(newDirection) - agent.Orientation;
-        Debug.Log("Face.cs: " + "Custom Rotation: " + explTargetRotation);
+        //Debug.Log("Face.cs: " + "Custom Rotation: " + explTargetRotation);
         this.isExplicitTarget = true;
 
         return base.GetSteering(agent);

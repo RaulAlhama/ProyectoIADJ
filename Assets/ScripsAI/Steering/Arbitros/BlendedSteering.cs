@@ -33,9 +33,9 @@ public class BlendedSteering : SteeringBehaviour
         
         Steering steer = new Steering();
 
-        foreach (BehaviorAndWeight behavior in behaviors){
-            steer.linear += behavior.weight * behavior.behavior.GetSteering(agent).linear;
-            steer.angular += behavior.weight * behavior.behavior.GetSteering(agent).angular;
+        foreach (BehaviorAndWeight behaviorAndWeight in behaviors){
+            steer.linear += behaviorAndWeight.weight * behaviorAndWeight.behavior.GetSteering(agent).linear;
+            steer.angular += behaviorAndWeight.weight * behaviorAndWeight.behavior.GetSteering(agent).angular;
          }
 
          if (steer.linear.magnitude > (steer.linear.normalized * agent.MaxAcceleration).magnitude){
