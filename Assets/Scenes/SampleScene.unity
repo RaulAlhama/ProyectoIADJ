@@ -1391,11 +1391,10 @@ MonoBehaviour:
   drawBigotes: 1
   drawSpheres: 0
   numBigotes: 1
-  distanciaBigotes: 20
   _interiorRadius: 1
   _arrivalRadius: 3
-  _interiorAngle: 3
-  _exteriorAngle: 8
+  _interiorAngle: 15
+  _exteriorAngle: 45
   steer:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
@@ -1610,7 +1609,6 @@ MonoBehaviour:
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
-  distanciaBigotes: 20
   _interiorRadius: 1
   _arrivalRadius: 3
   _interiorAngle: 3
