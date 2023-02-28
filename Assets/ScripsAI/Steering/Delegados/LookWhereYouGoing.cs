@@ -22,9 +22,9 @@ public class LookWhereYouGoing : Align
         Vector3 predictedPosition = target.Velocity - agent.Position;
         //Con PositionToAngle obtenemos la posición del tarjet predicho
         //Obtenemos la rotación
-        customRotation = Bodi.PositionToAngle(predictedPosition) - agent.Orientation;
-        Debug.Log("LookWhere.cs: " + "Custom Rotation: " + customRotation);
-        this.useCustom = true;
+        explTargetRotation = Bodi.PositionToAngle(predictedPosition) - agent.Orientation;
+        Debug.Log("LookWhere.cs: " + "Custom Rotation: " + explTargetRotation);
+        this.isExplicitTarget = true;
 
         return base.GetSteering(agent);
     }

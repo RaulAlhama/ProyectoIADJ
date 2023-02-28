@@ -18,8 +18,8 @@ public class Seek : SteeringBehaviour
     {
         Steering steer = new Steering();
         Vector3 newDirection;
-        if(useCustom){
-            newDirection = customDirection;
+        if(isExplicitTarget){
+            newDirection = explTargetDirection;
         }
         else{
             newDirection = target.Position - agent.Position;

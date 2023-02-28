@@ -15,9 +15,9 @@ public class Pursue : Seek
  public void UseCustomDirectionAndRotation(Vector3 predictedDirection,
         float predictedRotation = 0f)
     {
-        useCustom = true;
-        customDirection = predictedDirection;
-        customRotation = predictedRotation;
+        isExplicitTarget = true;
+        explTargetDirection = predictedDirection;
+        explTargetRotation = predictedRotation;
     }
     public override Steering GetSteering(AgentNPC agent)
     {
