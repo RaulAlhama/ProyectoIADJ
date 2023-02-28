@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class LookWhereYouGoing : Align
 {
-    private GameObject look;
     void Start()
     {
         this.nameSteering = "LookWhereYouGoing";
-        //look = new GameObject("look");
-        //target = look.AddComponent<Agent>() as Agent;
     }
 
     public override Steering GetSteering(AgentNPC agent) {
