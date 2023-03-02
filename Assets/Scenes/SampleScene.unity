@@ -364,7 +364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8114095396761647107, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_Name
-      value: Face
+      value: LookWhere
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
@@ -373,21 +373,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8114095396761647107, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
   m_PrefabInstance: {fileID: 521403065}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &521403067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 521403066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21811889bddaee04ab43797ff4e0a86f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1262288159}
-  weight: 0.5
---- !u!114 &521403068
+--- !u!114 &521403073
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -400,10 +386,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 1
-  _maxRotation: 64.39
-  _maxAcceleration: 56.96
-  _maxAngularAcc: 64.58
+  _maxSpeed: 30.57
+  _maxRotation: 50
+  _maxAcceleration: 1
+  _maxAngularAcc: 50
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -418,7 +404,7 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
---- !u!114 &521403070
+--- !u!114 &521403074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -427,11 +413,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 521403066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8659945d70169a94094ac19e6e194b64, type: 3}
+  m_Script: {fileID: 11500000, guid: a1f2a93ba6a5d2545b8ead4a127714f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1262288159}
-  weight: 0.5
+  weight: 1
 --- !u!1 &584391235
 GameObject:
   m_ObjectHideFlags: 0
@@ -1618,6 +1604,14 @@ PrefabInstance:
       propertyPath: camino
       value: 
       objectReference: {fileID: 584391236}
+    - target: {fileID: 6275570910541057336, guid: 7291fbda12b94e14aa829e958fe3bf5e, type: 3}
+      propertyPath: _maxSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6275570910541057336, guid: 7291fbda12b94e14aa829e958fe3bf5e, type: 3}
+      propertyPath: _maxAcceleration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6982232873491617217, guid: 7291fbda12b94e14aa829e958fe3bf5e, type: 3}
       propertyPath: m_Name
       value: PlayerPahtFollowing

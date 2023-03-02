@@ -16,7 +16,7 @@ public class Face : Align
 
         Vector3 newDirection = target.Position - agent.Position;
 
-        //Bodi.PositionToAngle(newDirection) -> Target.Orientation
+        //Bodi.PositionToAngle(newDirection) -> Target.Orientation = angulo donde se encuentra el target
         explTargetRotation = Bodi.PositionToAngle(newDirection) - agent.Orientation;
         //Debug.Log("Face.cs: " + "Custom Rotation: " + explTargetRotation);
         this.isExplicitTarget = true;

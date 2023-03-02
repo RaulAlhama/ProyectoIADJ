@@ -16,12 +16,14 @@ public class LookWhereYouGoing : Align
             return steer;
         }
         //Predecimos la posición del target
-        Vector3 predictedPosition = target.Velocity - agent.Position;
+        Vector3 predictedPosition = this.target.Position + target.Velocity; //Posición relativa del target
+        Vector3 newDirection = predictedPosition - agent.Position; //Dirección donde se encuentra el target relativo
         //Con PositionToAngle obtenemos la posición del tarjet predicho
         //Obtenemos la rotación
-        explTargetRotation = Bodi.PositionToAngle(predictedPosition) - agent.Orientation;
-        Debug.Log("LookWhere.cs: " + "Custom Rotation: " + explTargetRotation);
+        explTargetRotation = Bodi.PositionToAngle(newDirection) - agent.Orientation;
         this.isExplicitTarget = true;
+        Debug.Log("LookWhere.cs: " + "Custom Rotation: " + explTargetRotation);
+        
 
         return base.GetSteering(agent);
     }

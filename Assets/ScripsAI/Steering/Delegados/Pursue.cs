@@ -11,14 +11,7 @@ public class Pursue : Seek
         this.nameSteering = "Pursue";
     }
 
-    
- public void UseCustomDirectionAndRotation(Vector3 predictedDirection,
-        float predictedRotation = 0f)
-    {
-        isExplicitTarget = true;
-        explTargetDirection = predictedDirection;
-        explTargetRotation = predictedRotation;
-    }
+
     public override Steering GetSteering(AgentNPC agent)
     {
 
@@ -39,8 +32,9 @@ public class Pursue : Seek
 
 
         //Dirección predicha
-        var predictedTargetPosition = this.target.Position + target.Velocity * predictedSpeed;
-        UseCustomDirectionAndRotation(predictedTargetPosition - agent.Position);
+        var predictedTargetPosition = this.target.Position + target.Velocity * predictedSpeed; //obtenemos la supuesta posición donde se econtrará el target
+        isExplicitTarget = true;
+        explTargetDirection = predictedTargetPosition - agent.Position;
 
         return base.GetSteering(agent);
     }
