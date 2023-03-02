@@ -33,7 +33,7 @@ public class Arrive : SteeringBehaviour
         else
         {
             agent.Speed = agent.MaxSpeed * distance/agent.RadioExterior;
-            Debug.Log(agent.RadioInterior + " < " + distance + " > " + agent.RadioExterior + " , Speed = " + agent.MaxSpeed * distance/agent.RadioInterior);
+            //Debug.Log(agent.RadioInterior + " < " + distance + " > " + agent.RadioExterior + " , Speed = " + agent.MaxSpeed * distance/agent.RadioInterior);
         }
         
         agent.Velocity = newDirection.normalized;

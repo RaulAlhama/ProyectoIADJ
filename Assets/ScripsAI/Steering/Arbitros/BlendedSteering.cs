@@ -15,7 +15,7 @@ public struct BehaviorAndWeight
    }
 
 
-public class BlendedSteering : SteeringBehaviour
+public class BlendedSteering //: SteeringBehaviour
 {
    public List<BehaviorAndWeight> behaviors;
 
@@ -28,7 +28,7 @@ public class BlendedSteering : SteeringBehaviour
         }
    }
 
-    public override Steering GetSteering(AgentNPC agent)
+    public Steering GetSteering(AgentNPC agent)
     {
         
         Steering steer = new Steering();

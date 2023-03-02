@@ -10,10 +10,6 @@ public class Evade : Flee
   void Start()
     {
         this.nameSteering = "Evade";
-        evade = new GameObject("Evade");
-        Agent invisible = evade.AddComponent<Agent>() as Agent;
-        explicitTarget = target;
-        this.target = invisible;
     }
 
     [SerializeField] [Range(0.0f, 10.0f)] private float maxPrediction;
