@@ -22,7 +22,7 @@ public class LookWhereYouGoing : Align
         //Obtenemos la rotación
         explTargetRotation = Bodi.PositionToAngle(newDirection) - agent.Orientation;
         this.isExplicitTarget = true;
-        Debug.Log("LookWhere.cs: " + "Custom Rotation: " + explTargetRotation);
+        //Debug.Log("LookWhere.cs: " + "Custom Rotation: " + explTargetRotation);
         
 
         return base.GetSteering(agent);

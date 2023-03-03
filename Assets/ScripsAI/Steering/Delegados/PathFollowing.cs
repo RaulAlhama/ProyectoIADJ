@@ -6,7 +6,7 @@ public class PathFollowing
 {
     public Path path;
     public float predictTime;
-    public int currentIndexOnPath = -1;
+    public int currentIndexOnPath = -1; //Indice del nodo, Al principio -1 porque vamos a obtener el más cercano
     private PlayerPathFollowing player;
 
     public PathFollowing(PlayerPathFollowing jugador, Path camino){
@@ -17,20 +17,19 @@ public class PathFollowing
 
     public Vector3 getSiguienteObjetivo(){
 
-        int nearestPosition;
+        //int nearestPosition; //nodo objetivo (esta variable se puede obviar)
 
         if(currentIndexOnPath == -1){
             
-            nearestPosition = path.GetNearestLine(player.Position);
+            currentIndexOnPath = path.GetNearestLine(player.Position); // Calculamos el nodo más cercano la primera vez
         }else{
 
-            nearestPosition = path.nextPoint(currentIndexOnPath);
+            currentIndexOnPath = path.nextPoint(currentIndexOnPath); //obtenemos el siguiente nodo
         }
 
-        currentIndexOnPath = nearestPosition;
 
-        Vector3 targetPosition = path.GetMappedPositionOnPath(currentIndexOnPath);
-        Debug.Log(currentIndexOnPath);
-        return targetPosition;
+        Vector3 targetPosition = path.GetMappedPositionOnPath(currentIndexOnPath); //A través del índice del nodo, obtenemos su posición
+        Debug.Log("PathFollowing.cs: " + currentIndexOnPath);
+        return targetPosition; //La devolvemos
     }
 }

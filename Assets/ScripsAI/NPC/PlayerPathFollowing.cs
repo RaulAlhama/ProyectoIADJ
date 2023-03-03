@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerPathFollowing : Agent
 {
     // Start is called before the first frame update
-    public Agent target;
+    //public Agent target;
     public PathFollowing pathFollowing;
     private float distance;
     private Vector3 relativeTarget;
@@ -16,7 +16,7 @@ public class PlayerPathFollowing : Agent
     public virtual void Start(){
 
          pathFollowing = new PathFollowing(this,camino); //pathFollowing
-         relativeTarget = pathFollowing.getSiguienteObjetivo(); //pathFollowing
+         relativeTarget = pathFollowing.getSiguienteObjetivo(); //pathFollowing: obtenemos la posición del nodo (el más cercano si es el primero)
     }
     public virtual void Update()
     {
