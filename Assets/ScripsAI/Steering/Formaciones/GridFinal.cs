@@ -40,7 +40,7 @@ public class GridFinal
 
         return new Vector3(x,0,y) * tam;
     }
-    private void getCoordenadas(Vector3 posicionReal, out int i, out int j){
+    public void getCoordenadas(Vector3 posicionReal, out int i, out int j){
 
         i = Mathf.FloorToInt(posicionReal.x / tam);
         j = Mathf.FloorToInt(posicionReal.z / tam);
@@ -58,11 +58,12 @@ public class GridFinal
         gridArray[i,j] = value;
     }
     public void setObstaculos(GameObject[] list){
-
+        //Debug.Log(gridArray[15,10]);
         foreach(GameObject obs in list){
             //Debug.Log(obs.transform.tag);
             setValor(obs.transform.position, OBSTACULO);
         }
+        Debug.Log(gridArray[15,10]);
         
     }
     public double[,] getGrafo(){ /// Vector3 posTarget

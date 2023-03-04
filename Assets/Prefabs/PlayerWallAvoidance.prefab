@@ -150,14 +150,18 @@ MonoBehaviour:
   _maxAcceleration: 10
   _maxAngularAcc: 1
   _maxForce: 1
+  _rotation: 0
+  _orientation: 0
   drawBigotes: 0
   drawSpheres: 0
+  numBigotes: 1
   _interiorRadius: 0.1
   _arrivalRadius: 3
   _interiorAngle: 3
   _exteriorAngle: 30
   target: {fileID: 0}
-  selected: 0
+  select: 0
+  status: 0
 --- !u!65 &1380248454016054198
 BoxCollider:
   m_ObjectHideFlags: 0
