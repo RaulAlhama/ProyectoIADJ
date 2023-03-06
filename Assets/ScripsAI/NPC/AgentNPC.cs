@@ -18,6 +18,7 @@ public class AgentNPC : Agent
         // Usa GetComponents<>()
         arbitro = new BlendedSteering();
         listSteerings = GetComponents<SteeringBehaviour>();
+        
     }
 
     // Use this for initialization
@@ -31,6 +32,7 @@ public class AgentNPC : Agent
     public virtual void Update()
     {
         this.ApplySteering();
+        listSteerings = GetComponents<SteeringBehaviour>();
     }
 
 

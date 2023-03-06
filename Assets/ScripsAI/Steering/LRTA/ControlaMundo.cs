@@ -5,7 +5,7 @@ using System;
 
 public class ControlaMundo : MonoBehaviour
 {
-    private GridFinal mundo;
+    public GridFinal mundo;
     public Agent npcVirtual;
     public AgentPlayer player;
     public GameObject puntero;

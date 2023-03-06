@@ -45,6 +45,7 @@ public class GridFinal
         i = Mathf.FloorToInt(posicionReal.x / tam);
         j = Mathf.FloorToInt(posicionReal.z / tam);
     }
+    
     public void setValor(Vector3 pos, int value){
 
         int x;
