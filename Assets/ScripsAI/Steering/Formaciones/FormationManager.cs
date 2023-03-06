@@ -36,7 +36,21 @@ public class FormationManager : MonoBehaviour
     public FormationPattern pattern;
     public List<SlotAssignment> slotAssignments;
     public Agent lider;
+    public Agent[] agentes;
+    public AgentNPC movimiento;
     //public DriftOffset driftOffset;
+
+
+    void Start(){
+
+        for (int i=0;i<agentes.Length;i++){
+            SlotAssignment slotAssignment = new SlotAssignment(agentes[i], i);
+            slotAssignments.Add(slotAssignment);
+        }
+
+        updateSlots();
+    }
+
 
     public void updateSlotAssignments(){
 
@@ -76,35 +90,26 @@ public class FormationManager : MonoBehaviour
         }        
     }
 
-    /*public void updateSlots(){
+    public void updateSlots(){
+
+        Vector3 liderPos = lider.Position;
 
         for (int i=0;i<slotAssignments.Count;i++){
 
-            DriftOffset anchor =  getAnchorPoint(slotAssignments[i].character); // Esto es la posicion respecto al lider pero deberia ser respecto al centor de masas
+            DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
+            Debug.Log("(" + i + ") relativeLoc: " + relativeLoc.position + ", liderPos: " + lider.Position);
 
-            Vector3 orientationMatrix = Bodi.AngleToPosition(anchor.orientation); // La matriz pone como se calcula en la diapositiva
-            
-            DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);
+            GameObject gtarget = new GameObject("target");               // Creamos el target
+            Agent target = gtarget.AddComponent<Agent>() as Agent;
 
-            DriftOffset location = new DriftOffset();
-            location.position = relativeLoc.position * orientationMatrix + anchor.position;
-            location.oriention = anchor.oriention + relativeLoc.oriention;
+            GameObject garrive = new GameObject("target");               // Creamos el arrive
+            Arrive arrive = garrive.AddComponent<Arrive>() as Arrive;
+ 
 
-            //location.position -= driftOffset.position;
-            //location.orientation -= driftOffset.orientation;
-
-            slotAssignments[i].character.setTarget(location);
+            slotAssignments[i].character.Position = relativeLoc.position + liderPos;
 
         }
-    }*/
-
-    public DriftOffset getAnchorPoint(Agent agent){
-       
-        Vector3 position = lider.Position - agent.Position;
-        position += Bodi.AngleToPosition(lider.Orientation);
-        DriftOffset anchor = new DriftOffset(position,lider.Orientation);
-        return anchor;
-
     }
+
 
 }

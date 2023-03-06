@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FormationPattern : MonoBehaviour
+public abstract class FormationPattern : MonoBehaviour
 {
 
     public int numberOfSlots;
 
-    public virtual DriftOffset getSlotLocation(int slotNumber){
-        return new DriftOffset(Vector3.zero,0.0f);
-    }
+    public abstract DriftOffset getSlotLocation(int slotNumber);
 
-    public virtual bool supportsSlots(int slotCount){
-        return true;
-    }
+    public abstract bool supportsSlots(int slotCount);
+    
 }
