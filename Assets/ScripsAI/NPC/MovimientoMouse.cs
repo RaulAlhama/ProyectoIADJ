@@ -11,7 +11,6 @@ public class MovimientoMouse : MonoBehaviour
 
     private Agent npcVirtual = null; // target virtual a instanciar
     private GameObject puntero = null; // puntero a instanciar
-    private bool selected; //booleano que nos indica si se ha hecho clic en un lugar para ejecutar el movimiento de los agentes.
     public GameObject indicadorPrefab = null;
 
     void Update()
@@ -27,17 +26,22 @@ public class MovimientoMouse : MonoBehaviour
            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-            targetPosition = hit.point; //Nos quedamos con la posición donde hemos hecho click
-            targetPosition.y = 0;
-            npcVirtualPrefab.transform.position = targetPosition; //Asignamos esa posición al target Virtual
-            punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
+            if (Physics.Raycast(ray, out hit)){
 
-            npcVirtual = Instantiate(npcVirtualPrefab); //creamos el target virtual
-            puntero = Instantiate(punteroPrefab);// creamos el puntero
+                targetPosition = hit.point; //Nos quedamos con la posición donde hemos hecho click
+                targetPosition.y = 0;
+                npcVirtualPrefab.transform.position = targetPosition; //Asignamos esa posición al target Virtual
+                punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
+
+                npcVirtual = Instantiate(npcVirtualPrefab); //creamos el target virtual
+                puntero = Instantiate(punteroPrefab);// creamos el puntero
             
-            selected = true;
+                // Mueve los NPC's seleccionados al destino
+                foreach (GameObject npcObject in selectedNPCs)
+                {
+                    AgentPlayer player = npcObject.GetComponent<AgentPlayer>();
+                    player.target = npcVirtualPrefab; //Asignamos al target del agente, el target Virtual
+                }
 
             }
         }
@@ -87,15 +91,6 @@ public class MovimientoMouse : MonoBehaviour
         }
 
 
-        // Mueve los NPC's seleccionados al destino
-        foreach (GameObject npcObject in selectedNPCs)
-        {
-            if(selected){
-            AgentPlayer player = npcObject.GetComponent<AgentPlayer>();
-            player.target = npcVirtualPrefab; //Asignamos al target del agente, el target Virtual
-            }
-            
-
-        }
+ 
     }
 }
