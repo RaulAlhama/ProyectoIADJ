@@ -15,7 +15,6 @@ public class Arrive : SteeringBehaviour
     public override Steering GetSteering(AgentNPC agent)
     {
         Steering steer = new Steering();
-
         Vector3 newDirection = target.Position - agent.Position;
         float distance = newDirection.magnitude;
 

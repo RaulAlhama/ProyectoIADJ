@@ -23,7 +23,7 @@ public class Align : SteeringBehaviour
         float rotation;
         
         if(isExplicitTarget){
-             rotation = this.explTargetRotation;
+            rotation = this.explTargetRotation;
         }
         else{
             rotation = target.Orientation - agent.Orientation;

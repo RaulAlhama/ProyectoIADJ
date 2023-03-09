@@ -29,7 +29,7 @@ public class PathFollowing
 
 
         Vector3 targetPosition = path.GetMappedPositionOnPath(currentIndexOnPath); //A través del índice del nodo, obtenemos su posición
-        Debug.Log("PathFollowing.cs: " + currentIndexOnPath);
+        //Debug.Log("PathFollowing.cs: " + currentIndexOnPath);
         return targetPosition; //La devolvemos
     }
 }

@@ -48,6 +48,11 @@ public class FormationManager : MonoBehaviour
             slotAssignments.Add(slotAssignment);
         }
 
+        //updateSlots();
+    }
+
+    void Update(){
+
         updateSlots();
     }
 
@@ -92,28 +97,32 @@ public class FormationManager : MonoBehaviour
 
     public void updateSlots(){
 
-        Vector3 liderPos = lider.Position;
 
         for (int i=0;i<slotAssignments.Count;i++){
 
             DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
-            Debug.Log("(" + i + ") relativeLoc: " + relativeLoc.position + ", liderPos: " + lider.Position);
 
-            GameObject gtarget = new GameObject("target");               // Creamos el target
-            Agent targetf = gtarget.AddComponent<Agent>() as Agent;
+            GameObject exists = GameObject.Find("target_" + slotAssignments[i].character);
 
+            if (exists){
+                slotAssignments[i].character.GetComponent<Arrive>().target.Position = relativeLoc.position + lider.Position;
+                slotAssignments[i].character.GetComponent<Arrive>().target.Orientation = lider.Orientation;
+            }
 
-            slotAssignments[i].character.gameObject.AddComponent<Arrive>();
-            slotAssignments[i].character.gameObject.AddComponent<Align>();
-            targetf.Position = relativeLoc.position + liderPos;
+            else {
+                GameObject gtarget = new GameObject("target_" + slotAssignments[i].character);               // Creamos el target
+                Agent targetf = gtarget.AddComponent<Agent>() as Agent;
+                targetf.Position = relativeLoc.position + lider.Position;
 
-            slotAssignments[i].character.GetComponent<Arrive>().weight = 0.5f;
-            slotAssignments[i].character.GetComponent<Align>().weight = 0.5f;
-            slotAssignments[i].character.GetComponent<Arrive>().target = targetf;
-            slotAssignments[i].character.GetComponent<Align>().target = lider;
- 
+                slotAssignments[i].character.gameObject.AddComponent<Arrive>();
+                slotAssignments[i].character.gameObject.AddComponent<Align>();
 
-            //slotAssignments[i].character.Position = relativeLoc.position + liderPos;
+                slotAssignments[i].character.GetComponent<Arrive>().weight = 0.5f;
+                slotAssignments[i].character.GetComponent<Align>().weight = 0.5f;
+                slotAssignments[i].character.GetComponent<Arrive>().target = targetf;
+                slotAssignments[i].character.GetComponent<Align>().target = lider;
+            }
+
 
         }
     }
