@@ -19,7 +19,7 @@ public class Arrive : SteeringBehaviour
         float distance = newDirection.magnitude;
 
         
-        if (distance < agent.RadioInterior)
+        if (distance < 0)
         {
             agent.Velocity = Vector3.zero;  //Para en seco
             return steer;

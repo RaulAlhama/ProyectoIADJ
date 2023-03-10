@@ -17,25 +17,26 @@ public struct BehaviorAndWeight
 
 public class BlendedSteering //: SteeringBehaviour
 {
-   public List<BehaviorAndWeight> behaviors;
+   
+    public List<BehaviorAndWeight> behaviors;
 
-    public void AplicarArbitro(SteeringBehaviour[] listSteerings){
-
+    public Steering GetSteering(AgentNPC agent, SteeringBehaviour[] listSteerings)
+    {
+        //Lista que va a contener los distintos steering con sus respectivos pesos
         behaviors = new List<BehaviorAndWeight>();
         
-        foreach (SteeringBehaviour steer in listSteerings){
-            behaviors.Add(new BehaviorAndWeight(steer,steer.weight));
+        foreach (SteeringBehaviour ster in listSteerings){
+            behaviors.Add(new BehaviorAndWeight(ster,ster.weight));
         }
-   }
-
-    public Steering GetSteering(AgentNPC agent)
-    {
         
-        Steering steer = new Steering();
+        Steering steer = new Steering(); //Steering final a aplicar
+
+        Steering s;
 
         foreach (BehaviorAndWeight behaviorAndWeight in behaviors){
-            steer.linear += behaviorAndWeight.weight * behaviorAndWeight.behavior.GetSteering(agent).linear;
-            steer.angular += behaviorAndWeight.weight * behaviorAndWeight.behavior.GetSteering(agent).angular;
+            s = behaviorAndWeight.behavior.GetSteering(agent);
+            steer.linear += behaviorAndWeight.weight * s.linear;
+            steer.angular += behaviorAndWeight.weight * s.angular;
          }
 
          if (steer.linear.magnitude > (steer.linear.normalized * agent.MaxAcceleration).magnitude){

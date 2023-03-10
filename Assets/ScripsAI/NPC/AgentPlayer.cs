@@ -17,6 +17,11 @@ public class AgentPlayer : Agent
     public const int STOPPED = 3;
     public int status = NOSELECTED;
 
+    public GameObject indicadorPrefab = null;
+    private GameObject indicador = null;
+    private bool targetCambiado = false;
+
+
 
 
 
@@ -26,7 +31,6 @@ public class AgentPlayer : Agent
         switch (status){
 
             case NOSELECTED:{
-
                 break;
             }
             case SELECTED:{
@@ -35,11 +39,13 @@ public class AgentPlayer : Agent
                 break;
             }
             case MOVING:{
-
                 aplicaMovimiento();
                 break;
             }
             case STOPPED:{
+                if(indicador == null){
+                    setStatus(NOSELECTED);
+                }
                 esperaNuevaTarget();
                 break;
             }
@@ -48,24 +54,35 @@ public class AgentPlayer : Agent
         
     }
 
-    void OnMouseDown(){
-        
-        if(!select){
 
-            select = true;
-            if(status == STOPPED || status == NOSELECTED)
-                setStatus(SELECTED);
-        }else{
-
-            if(status == SELECTED || status == STOPPED)
-                setStatus(NOSELECTED);
-            select = false;
-        }
+    public void activarMarcador(){
+        indicador = Instantiate(indicadorPrefab, transform);
+        indicador.transform.localPosition = Vector3.up * 4;
+        if (status != MOVING)
+            setStatus(SELECTED);
     }
+
+    public void quitarMarcador(){
+        if (indicador != null){
+            Destroy(indicador);
+        }
+        
+    }
+
     private void setStatus(int value){
 
         status = value;
     }
+
+    public override void setTarget(Agent virtualTargetPrefab, Vector3 posicion){
+            //virtualTarget = Instantiate(virtualTargetPrefab);
+        targetCambiado = true;
+        target = virtualTargetPrefab;
+        obstacleAvoidance = new ObstacleAvoidance(target.Position, this);
+    }
+        
+        
+
     private void aplicaMovimiento(){
 
         
@@ -78,15 +95,12 @@ public class AgentPlayer : Agent
             Position += Velocity * Time.deltaTime;
             Velocity += Acceleration * Time.deltaTime;
             distance = (target.Position - Position).magnitude; //wallAvoidDance
-            
             if (distance < RadioInterior){
-                
                 Velocity = Vector3.zero; //wallAvoidDance
                 target.Position = Position;
                 setStatus(STOPPED);
 
             }else if(Velocity.magnitude > MaxSpeed){
-                
                 Velocity = Velocity.normalized;
                 Velocity *= MaxSpeed;
                 setStatus(MOVING);
@@ -97,12 +111,11 @@ public class AgentPlayer : Agent
     }
     private void esperaTarget(){
 
-        if(target != null){
-
+        if(target != null && targetCambiado == true){
+            targetCambiado = false;
             if(obstacleAvoidance== null){
 
                 distance = (target.Position - Position).magnitude;
-                obstacleAvoidance = new ObstacleAvoidance(target, this);
 
                
             }
@@ -111,8 +124,8 @@ public class AgentPlayer : Agent
     }
     private void esperaNuevaTarget(){
 
-        if(target.Position != Position){
-
+        if(target.Position != Position && targetCambiado == true){
+            targetCambiado = false;
             setStatus(MOVING);
         }
     }

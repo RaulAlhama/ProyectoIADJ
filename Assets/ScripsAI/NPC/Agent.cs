@@ -12,6 +12,8 @@ public class Agent : Bodi
 
    }*/
 
+   public virtual void setTarget(Agent target, Vector3 position){}
+
    public bool drawBigotes = false;
    public bool drawSpheres = false;
    public int numBigotes = 1;

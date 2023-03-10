@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObstacleAvoidance
 {
-    private Agent target;
+    private Vector3 target;
     private AgentPlayer player;
 
     public float avoidDistance = 11f;
@@ -14,7 +14,7 @@ public class ObstacleAvoidance
     private Vector3 targetRelativo;
     //private bool bandera = true;
     private Vector3 muroNormal;
-    public ObstacleAvoidance(Agent target, AgentPlayer player){
+    public ObstacleAvoidance(Vector3 target, AgentPlayer player){
             
         this.player = player;
         this.target = target;
@@ -56,8 +56,8 @@ public class ObstacleAvoidance
             Vector3 newTargetPosition = hitFront.point + hitFront.normal * avoidDistance;
             return new Vector3(newTargetPosition.x,0,newTargetPosition.z);
         }else{
-            
-            return target.Position;
+            Debug.Log("Target Postion: " + target);
+            return target;
         }
     }
 }

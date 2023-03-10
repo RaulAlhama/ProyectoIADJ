@@ -50,25 +50,41 @@ public class AgentNPC : Agent
         transform.Rotate(Vector3.up, Orientation);
     }
 
-
+    public override void setTarget(Agent virtualTargetPrefab, Vector3 position){
+        if(this.gameObject.GetComponent<Arrive>() == null){
+            this.gameObject.AddComponent<Arrive>();
+            Destroy(this.gameObject.GetComponent<Wander>());
+        }       
+        this.gameObject.GetComponent<Arrive>().target = virtualTargetPrefab;
+        this.gameObject.GetComponent<Arrive>().weight = 0.5f;
+       
+       
+    }
 
     public virtual void LateUpdate()
     {
         // Reseteamos el steering final.
         this.steer = new Steering();
+        //Si únicamente se aplica un movimiento no aplicamos árbitro
+        if(listSteerings.Length == 1){
+            this.steer = listSteerings[0].GetSteering(this);
+        } else{
+            this.steer = arbitro.GetSteering(this,listSteerings);
+        }
+
+       
 
         // Recorremos cada steering
         //foreach (SteeringBehaviour behavior in listSteerings)
         //    GetSteering(behavior);
         
-        arbitro.AplicarArbitro(listSteerings);
-        this.steer = arbitro.GetSteering(this);
+
     }
 
 
 
-
-    private void GetSteering(SteeringBehaviour behavior)
+    
+    /*private void GetSteering(SteeringBehaviour behavior)
     {
         // Calcula el steeringbehaviour
         Steering kinematic = behavior.GetSteering(this);
@@ -79,5 +95,5 @@ public class AgentNPC : Agent
 
         // El resultado final se guarda para ser aplicado en el siguiente frame.
         this.steer = kinematicFinal;
-    }
+    }*/
 }
