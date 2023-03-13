@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2468424658172680724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.49065, y: 0, z: -9.071671}
+  m_LocalPosition: {x: 9.200563, y: 0, z: -11.891654}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +51,7 @@ MonoBehaviour:
   _maxAngularAcc: 1
   _maxForce: 1
   _rotation: 0
-  _orientation: 90
+  _orientation: -133.28957
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -63,3 +63,4 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  indicadorPrefab: {fileID: 0}

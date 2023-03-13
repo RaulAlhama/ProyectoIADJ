@@ -61,7 +61,15 @@ public class AgentNPC : Agent
         this.gameObject.GetComponent<Arrive>().target = virtualTargetPrefab;
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
-       
+        virtualTargetPrefab.Orientation = Bodi.PositionToAngle(virtualTargetPrefab.Position - this.Position);
+        Debug.Log(virtualTargetPrefab.Orientation);
+
+        if(this.gameObject.GetComponent<Align>() == null){
+            this.gameObject.AddComponent<Align>();
+            //Destroy(this.gameObject.GetComponent<Wander>());
+        }    
+        this.gameObject.GetComponent<Align>().target = virtualTargetPrefab;
+        this.gameObject.GetComponent<Align>().weight = 0.5f;
     }
 
     public override void activarMarcador(){

@@ -6,12 +6,17 @@ public class MovimientoMouse : MonoBehaviour
 {
     public List<Agent> selectedNPCs; //Lista de los agentes
     private Vector3 targetPosition; // posición donde haremos click
-    public Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
+    private Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
+    private GameObject obj;
 
-    private Agent npcVirtual = null; // target virtual a instanciar
     private GameObject puntero = null; // puntero a instanciar
 
+    void Start()
+    {
+        obj = new GameObject("targetMouse");
+        npcVirtualPrefab = obj.AddComponent<Agent>() as Agent;
+    }
 
     void Update()
     {
@@ -28,6 +33,7 @@ public class MovimientoMouse : MonoBehaviour
                 targetPosition.y = 0;
                 npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual
                 punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
+                
 
                 //npcVirtual = Instantiate(npcVirtualPrefab); //creamos el target virtual
                 puntero = Instantiate(punteroPrefab);// creamos el puntero
@@ -35,20 +41,8 @@ public class MovimientoMouse : MonoBehaviour
                 // Mueve los NPC's seleccionados al destino
                 foreach (Agent agent in selectedNPCs)
                 {
-                    if(agent is AgentPlayer){
-                        AgentPlayer aPlayer = (AgentPlayer)agent;
-                        aPlayer.setTarget(npcVirtualPrefab);
-                    } else{
-                        Debug.Log("ES NPC");
-                        AgentNPC agentNPC = (AgentNPC)agent;
-                        agentNPC.setTarget(npcVirtualPrefab);
-                    }
-                    /*if(npcObject.GetComponent<AgentNPC>() != null){
-                        AgentNPC agentNPC = npcObject.GetComponent<AgentNPC>();
-                    agentNPC.mover(npcVirtual);
-                    }*/
-                    
-                    
+                    agent.setTarget(npcVirtualPrefab);
+                                  
                 }
 
             }
