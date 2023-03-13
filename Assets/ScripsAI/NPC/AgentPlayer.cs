@@ -11,11 +11,6 @@ public class AgentPlayer : Agent
     private ObstacleAvoidance obstacleAvoidance;
     private float distance;
     private Vector3 relativeTarget;
-    public const int NOSELECTED = 0;
-    public const int SELECTED = 1;
-    public const int MOVING = 2;
-    public const int STOPPED = 3;
-    public int status = NOSELECTED;
 
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
@@ -25,7 +20,7 @@ public class AgentPlayer : Agent
 
 
 
-    public virtual void Update()
+    public void Update()
     {
         // Mientras que no definas las propiedades en Bodi esto seguirá dando error.
         switch (status){

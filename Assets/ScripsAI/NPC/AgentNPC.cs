@@ -12,6 +12,7 @@ public class AgentNPC : Agent
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
 
+
     void Awake()
     {
         this.steer = new Steering();
@@ -62,7 +63,6 @@ public class AgentNPC : Agent
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
         virtualTargetPrefab.Orientation = Bodi.PositionToAngle(virtualTargetPrefab.Position - this.Position);
-        Debug.Log(virtualTargetPrefab.Orientation);
 
         if(this.gameObject.GetComponent<Align>() == null){
             this.gameObject.AddComponent<Align>();
@@ -86,6 +86,7 @@ public class AgentNPC : Agent
 
     public virtual void LateUpdate()
     {
+
         // Reseteamos el steering final.
         this.steer = new Steering();
         //Si únicamente se aplica un movimiento no aplicamos árbitro

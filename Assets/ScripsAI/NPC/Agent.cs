@@ -7,18 +7,20 @@ using UnityEngine;
 [AddComponentMenu("Steering/InteractiveObject/Agent")]
 public class Agent : Bodi
 {
+    
+    public const int NOSELECTED = 0;
+    public const int SELECTED = 1;
+    public const int MOVING = 2;
+    public const int STOPPED = 3;
+    public int status = NOSELECTED;
 
-    /*protected virtual void Awake(){
+    public virtual void setTarget(Agent target){}
+    public virtual void activarMarcador(){}
+    public virtual void quitarMarcador(){}
 
-   }*/
-
-   public virtual void setTarget(Agent target){}
-   public virtual void activarMarcador(){}
-   public virtual void quitarMarcador(){}
-
-   public bool drawBigotes = false;
-   public bool drawSpheres = false;
-   public int numBigotes = 1;
+    public bool drawBigotes = false;
+    public bool drawSpheres = false;
+    public int numBigotes = 1;
    
     
     [Tooltip("Radio interior de la IA")]

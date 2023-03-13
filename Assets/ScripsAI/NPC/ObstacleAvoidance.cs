@@ -56,7 +56,7 @@ public class ObstacleAvoidance
             Vector3 newTargetPosition = hitFront.point + hitFront.normal * avoidDistance;
             return new Vector3(newTargetPosition.x,0,newTargetPosition.z);
         }else{
-            Debug.Log("Target Postion: " + target);
+            Debug.Log("(ObstacleAvoidance.cs)  Target Postion: " + target);
             return target;
         }
     }
