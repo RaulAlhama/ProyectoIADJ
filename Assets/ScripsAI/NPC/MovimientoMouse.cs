@@ -47,11 +47,7 @@ public class MovimientoMouse : MonoBehaviour
                 foreach (Agent agent in selectedNPCs)
                 {
                     agent.setTarget(npcVirtualPrefab);
-<<<<<<< Updated upstream
-                                  
-=======
-                    
->>>>>>> Stashed changes
+
                 }
 
             }
