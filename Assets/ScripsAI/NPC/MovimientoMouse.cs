@@ -10,6 +10,11 @@ public class MovimientoMouse : MonoBehaviour
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
     private GameObject obj;
 
+    private GameObject objForm;
+    private FormationManager formacion;
+    private bool enFormacion = false;
+    private GameObject objRombo;
+    private RomboFormation rombo;
     private GameObject puntero = null; // puntero a instanciar
 
     void Start()
@@ -33,7 +38,7 @@ public class MovimientoMouse : MonoBehaviour
                 targetPosition.y = 0;
                 npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual
                 punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
-                
+
 
                 //npcVirtual = Instantiate(npcVirtualPrefab); //creamos el target virtual
                 puntero = Instantiate(punteroPrefab);// creamos el puntero
@@ -113,6 +118,35 @@ public class MovimientoMouse : MonoBehaviour
                     selectedNPCs.Clear();
                 }
             }
+        }
+
+        if (Input.GetKey(KeyCode.R)){
+
+            if (!enFormacion){
+                
+                enFormacion = true;
+                Agent lider = selectedNPCs[0];
+
+                objForm = new GameObject("Formacion_" + lider);
+                formacion = objForm.AddComponent<FormationManager>();
+
+                formacion.lider = (AgentNPC) lider;
+                formacion.agentes = new AgentNPC[3];
+                formacion.slotAssignments = new List<SlotAssignment>();
+
+                objRombo = new GameObject("Rombo_" + lider);
+                rombo = objRombo.AddComponent<RomboFormation>();
+                formacion.pattern = rombo;
+
+                for (int i=1;i<selectedNPCs.Count;i++)
+                {
+                    if (selectedNPCs[i] != lider){
+                        formacion.addCharacter((AgentNPC) selectedNPCs[i]);
+                    }
+                }
+
+            }
+
         }
  
     }

@@ -26,7 +26,6 @@ public class Align : SteeringBehaviour
             rotation = this.explTargetRotation;
         }
         else{
-            //Debug.Log(agent + " " + target.Orientation + " " +  agent.Orientation);
             rotation = target.Orientation - agent.Orientation;
         }
         rotation = Bodi.MapToRange(rotation);

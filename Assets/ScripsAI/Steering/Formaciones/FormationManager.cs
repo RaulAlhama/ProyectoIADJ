@@ -43,10 +43,11 @@ public class FormationManager : MonoBehaviour
 
     void Start(){
 
+        /*
         for (int i=0;i<agentes.Length;i++){
             SlotAssignment slotAssignment = new SlotAssignment(agentes[i], i);
             slotAssignments.Add(slotAssignment);
-        }
+        }*/
 
         //updateSlots();
     }
@@ -76,6 +77,7 @@ public class FormationManager : MonoBehaviour
             slotAssignments.Add(slotAssignment);
 
             updateSlotAssignments();
+            updateSlots();
 
             return true;
         }
@@ -92,7 +94,9 @@ public class FormationManager : MonoBehaviour
                 slotAssignments.Remove(slotAssignments[i]);
                 updateSlotAssignments();
             }
-        }        
+        }
+
+        updateSlots();
     }
 
     public void updateSlots(){

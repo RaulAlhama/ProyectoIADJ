@@ -234,7 +234,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 32635764}
-  - component: {fileID: 32635765}
   m_Layer: 0
   m_Name: Formacion
   m_TagString: Untagged
@@ -257,26 +256,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &32635765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32635763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6371e319eda4d2647ab33cf74f310533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pattern: {fileID: 560600689}
-  slotAssignments: []
-  lider: {fileID: 1692592181}
-  agentes:
-  - {fileID: 591373499}
-  - {fileID: 853963403}
-  - {fileID: 677558252}
-  movimiento: {fileID: 0}
 --- !u!1001 &53328498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -826,6 +805,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC2
       objectReference: {fileID: 0}
+    - target: {fileID: 8114095396761647107, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+      propertyPath: m_TagString
+      value: NPC
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
 --- !u!1 &591373498 stripped
@@ -846,9 +829,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 3
+  _maxSpeed: 40
   _maxRotation: 26.27
-  _maxAcceleration: 2
+  _maxAcceleration: 40
   _maxAngularAcc: 45.8
   _maxForce: 1
   _rotation: 0
@@ -864,7 +847,7 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
-  indicadorPrefab: {fileID: 0}
+  indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
 --- !u!1 &600443071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1045,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC4
       objectReference: {fileID: 0}
+    - target: {fileID: 8114095396761647107, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+      propertyPath: m_TagString
+      value: NPC
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
 --- !u!1 &677558251 stripped
@@ -1082,9 +1069,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 3
+  _maxSpeed: 40
   _maxRotation: 52.2
-  _maxAcceleration: 2
+  _maxAcceleration: 40
   _maxAngularAcc: 43.2
   _maxForce: 1
   _rotation: 0
@@ -1100,7 +1087,7 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
-  indicadorPrefab: {fileID: 0}
+  indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
 --- !u!1 &683831024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,6 +1466,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC3
       objectReference: {fileID: 0}
+    - target: {fileID: 8114095396761647107, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+      propertyPath: m_TagString
+      value: NPC
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
 --- !u!1 &853963402 stripped
@@ -1499,9 +1490,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 3
+  _maxSpeed: 40
   _maxRotation: 39
-  _maxAcceleration: 2
+  _maxAcceleration: 40
   _maxAngularAcc: 46.3
   _maxForce: 1
   _rotation: 0
@@ -1517,7 +1508,7 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
-  indicadorPrefab: {fileID: 0}
+  indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
 --- !u!1 &943393244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,7 +1652,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedNPCs: []
-  npcVirtualPrefab: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
   punteroPrefab: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
 --- !u!1 &1004751389
 GameObject:
@@ -2452,6 +2442,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC1
       objectReference: {fileID: 0}
+    - target: {fileID: 8114095396761647107, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+      propertyPath: m_TagString
+      value: NPC
+      objectReference: {fileID: 0}
     - target: {fileID: 8217441505347601849, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2476,9 +2470,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 1
+  _maxSpeed: 40
   _maxRotation: 1
-  _maxAcceleration: 1
+  _maxAcceleration: 40
   _maxAngularAcc: 1
   _maxForce: 1
   _rotation: 0
@@ -2494,21 +2488,7 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
-  indicadorPrefab: {fileID: 0}
---- !u!114 &1692592182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692592180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8659945d70169a94094ac19e6e194b64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 29501599}
-  weight: 1
+  indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
 --- !u!1001 &2039981259
 PrefabInstance:
   m_ObjectHideFlags: 0
