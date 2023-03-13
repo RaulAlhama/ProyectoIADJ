@@ -37,9 +37,11 @@ public class MovimientoMouse : MonoBehaviour
                 {
                     if(agent is AgentPlayer){
                         AgentPlayer aPlayer = (AgentPlayer)agent;
-                        aPlayer.setTarget(npcVirtualPrefab, npcVirtualPrefab.Position);
+                        aPlayer.setTarget(npcVirtualPrefab);
                     } else{
+                        Debug.Log("ES NPC");
                         AgentNPC agentNPC = (AgentNPC)agent;
+                        agentNPC.setTarget(npcVirtualPrefab);
                     }
                     /*if(npcObject.GetComponent<AgentNPC>() != null){
                         AgentNPC agentNPC = npcObject.GetComponent<AgentNPC>();
@@ -63,16 +65,21 @@ public class MovimientoMouse : MonoBehaviour
                 GameObject npcObject = hit.collider.gameObject;
                 if (npcObject.CompareTag("NPC"))
                 {
-                    AgentPlayer selectaAgentPlayer = npcObject.GetComponent<AgentPlayer>();
-                    if (selectedNPCs.Contains(selectaAgentPlayer))
+                    Agent selectAgent;
+                    if(npcObject.GetComponent<AgentPlayer>() != null)
+                        selectAgent = npcObject.GetComponent<AgentPlayer>();
+                    else
+                        selectAgent = npcObject.GetComponent<AgentNPC>();
+            
+                    if (selectedNPCs.Contains(selectAgent))
                     {
-                        selectaAgentPlayer.quitarMarcador();
-                        selectedNPCs.Remove(selectaAgentPlayer);
+                        selectAgent.quitarMarcador();
+                        selectedNPCs.Remove(selectAgent);
                     }
                     else
                     {
-                        selectaAgentPlayer.activarMarcador();
-                        selectedNPCs.Add(selectaAgentPlayer);
+                        selectAgent.activarMarcador();
+                        selectedNPCs.Add(selectAgent);
                     }
                 }
                 
@@ -88,20 +95,24 @@ public class MovimientoMouse : MonoBehaviour
                 GameObject npcObject = hit.collider.gameObject;
                 if (npcObject.CompareTag("NPC"))
                 {
-                    AgentPlayer selectaAgentPlayer = npcObject.GetComponent<AgentPlayer>();
+                    Agent selectAgent;
+                    if(npcObject.GetComponent<AgentPlayer>() != null)
+                        selectAgent = npcObject.GetComponent<AgentPlayer>();
+                    else
+                        selectAgent = npcObject.GetComponent<AgentNPC>();
                     if (selectedNPCs.Count > 0){ //Si hay varios personajes seleccionados, los deseleccionamos 
-                        foreach (AgentPlayer otherAgent in selectedNPCs)
+                        foreach (Agent otherAgent in selectedNPCs)
                         {
                             otherAgent.quitarMarcador();
                         }
                         selectedNPCs.Clear();
                     }
                     
-                    selectedNPCs.Add(selectaAgentPlayer);
-                    selectaAgentPlayer.activarMarcador();
+                    selectedNPCs.Add(selectAgent);
+                    selectAgent.activarMarcador();
                 } 
                 else{
-                    foreach (AgentPlayer otherAgent in selectedNPCs)
+                    foreach (Agent otherAgent in selectedNPCs)
                         {
                             otherAgent.quitarMarcador();
                         }

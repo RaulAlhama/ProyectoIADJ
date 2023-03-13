@@ -55,14 +55,14 @@ public class AgentPlayer : Agent
     }
 
 
-    public void activarMarcador(){
+    public override void activarMarcador(){
         indicador = Instantiate(indicadorPrefab, transform);
         indicador.transform.localPosition = Vector3.up * 4;
         if (status != MOVING)
             setStatus(SELECTED);
     }
 
-    public void quitarMarcador(){
+    public override void quitarMarcador(){
         if (indicador != null){
             Destroy(indicador);
         }
@@ -74,7 +74,7 @@ public class AgentPlayer : Agent
         status = value;
     }
 
-    public override void setTarget(Agent virtualTargetPrefab, Vector3 posicion){
+    public override void setTarget(Agent virtualTargetPrefab ){
             //virtualTarget = Instantiate(virtualTargetPrefab);
         targetCambiado = true;
         target = virtualTargetPrefab;

@@ -12,7 +12,9 @@ public class Agent : Bodi
 
    }*/
 
-   public virtual void setTarget(Agent target, Vector3 position){}
+   public virtual void setTarget(Agent target){}
+   public virtual void activarMarcador(){}
+   public virtual void quitarMarcador(){}
 
    public bool drawBigotes = false;
    public bool drawSpheres = false;

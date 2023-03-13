@@ -9,6 +9,9 @@ public class AgentNPC : Agent
     public SteeringBehaviour[] listSteerings;
     private BlendedSteering arbitro;
 
+    public GameObject indicadorPrefab = null;
+    private GameObject indicador = null;
+
     void Awake()
     {
         this.steer = new Steering();
@@ -50,15 +53,27 @@ public class AgentNPC : Agent
         transform.Rotate(Vector3.up, Orientation);
     }
 
-    public override void setTarget(Agent virtualTargetPrefab, Vector3 position){
+    public override void setTarget(Agent virtualTargetPrefab){
         if(this.gameObject.GetComponent<Arrive>() == null){
             this.gameObject.AddComponent<Arrive>();
-            Destroy(this.gameObject.GetComponent<Wander>());
+            //Destroy(this.gameObject.GetComponent<Wander>());
         }       
         this.gameObject.GetComponent<Arrive>().target = virtualTargetPrefab;
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
        
+    }
+
+    public override void activarMarcador(){
+        indicador = Instantiate(indicadorPrefab, transform);
+        indicador.transform.localPosition = Vector3.up * 4;
+    }
+
+    public override void quitarMarcador(){
+        if (indicador != null){
+            Destroy(indicador);
+        }
+        
     }
 
     public virtual void LateUpdate()
