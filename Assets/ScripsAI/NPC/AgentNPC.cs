@@ -11,6 +11,7 @@ public class AgentNPC : Agent
 
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
+    private Agent virtualTarget = null;
 
 
     void Awake()
@@ -37,6 +38,7 @@ public class AgentNPC : Agent
     {
         this.ApplySteering();
         listSteerings = GetComponents<SteeringBehaviour>();
+
     }
 
 
@@ -58,8 +60,13 @@ public class AgentNPC : Agent
         if(this.gameObject.GetComponent<Arrive>() == null){
             this.gameObject.AddComponent<Arrive>();
             //Destroy(this.gameObject.GetComponent<Wander>());
-        }       
-        this.gameObject.GetComponent<Arrive>().target = virtualTargetPrefab;
+        }
+        if(virtualTarget != null){
+            Destroy(virtualTarget);
+        }
+        Debug.Log("Asignado Target");
+        virtualTarget = Instantiate(virtualTargetPrefab);
+        this.gameObject.GetComponent<Arrive>().target = virtualTarget;
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
         virtualTargetPrefab.Orientation = Bodi.PositionToAngle(virtualTargetPrefab.Position - this.Position);
@@ -75,12 +82,15 @@ public class AgentNPC : Agent
     public override void activarMarcador(){
         indicador = Instantiate(indicadorPrefab, transform);
         indicador.transform.localPosition = Vector3.up * 4;
+        setStatus(SELECTED);
+        select = true;
     }
 
     public override void quitarMarcador(){
         if (indicador != null){
             Destroy(indicador);
         }
+        select = false;
         
     }
 
@@ -89,7 +99,7 @@ public class AgentNPC : Agent
 
         // Reseteamos el steering final.
         this.steer = new Steering();
-        //Si únicamente se aplica un movimiento no aplicamos árbitro
+        //Si únicamente se aplica un movimiento, no aplicamos árbitro
         if(listSteerings.Length == 1){
             this.steer = listSteerings[0].GetSteering(this);
         } else{

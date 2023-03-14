@@ -13,6 +13,13 @@ public class Agent : Bodi
     public const int MOVING = 2;
     public const int STOPPED = 3;
     public int status = NOSELECTED;
+    public bool select = false;
+    public bool inFormacion = false;
+
+    public void setStatus(int value){
+
+        status = value;
+    }
 
     public virtual void setTarget(Agent target){}
     public virtual void activarMarcador(){}

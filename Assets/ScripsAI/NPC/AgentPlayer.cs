@@ -7,7 +7,6 @@ using UnityEngine;
 public class AgentPlayer : Agent
 {
     public Agent target;
-    public bool select = false;
     private ObstacleAvoidance obstacleAvoidance;
     private float distance;
     private Vector3 relativeTarget;
@@ -38,7 +37,7 @@ public class AgentPlayer : Agent
                 break;
             }
             case STOPPED:{
-                if(indicador == null){
+                if(indicador == null){ //Si está parado y no esta seleccionado cambiamos a NOSELECTED
                     setStatus(NOSELECTED);
                 }
                 esperaNuevaTarget();
@@ -55,19 +54,17 @@ public class AgentPlayer : Agent
         indicador.transform.localPosition = Vector3.up * 4;
         if (status != MOVING)
             setStatus(SELECTED);
+        select = true;
     }
 
     public override void quitarMarcador(){
         if (indicador != null){
             Destroy(indicador);
         }
+        select = false;
         
     }
 
-    private void setStatus(int value){
-
-        status = value;
-    }
 
     public override void setTarget(Agent virtualTargetPrefab ){
             //virtualTarget = Instantiate(virtualTargetPrefab);

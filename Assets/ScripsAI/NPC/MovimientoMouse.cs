@@ -6,7 +6,7 @@ public class MovimientoMouse : MonoBehaviour
 {
     public List<Agent> selectedNPCs; //Lista de los agentes
     private Vector3 targetPosition; // posición donde haremos click
-    private Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
+    public Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
     private GameObject obj;
 
@@ -17,11 +17,6 @@ public class MovimientoMouse : MonoBehaviour
     private RomboFormation rombo;
     private GameObject puntero = null; // puntero a instanciar
 
-    void Start()
-    {
-        obj = new GameObject("targetMouse");
-        npcVirtualPrefab = obj.AddComponent<Agent>() as Agent;
-    }
 
     void Update()
     {
@@ -38,14 +33,17 @@ public class MovimientoMouse : MonoBehaviour
                 targetPosition.y = 0;
                 npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual
                 punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
-
-
-                //npcVirtual = Instantiate(npcVirtualPrefab); //creamos el target virtual
                 puntero = Instantiate(punteroPrefab);// creamos el puntero
                 Destroy(puntero, 0.5f);
                 // Mueve los NPC's seleccionados al destino
                 foreach (Agent agent in selectedNPCs)
                 {
+                    if(agent.inFormacion == true){
+                        agent.inFormacion = false;
+                        formacion.removeCharacter((AgentNPC) agent);
+
+
+                    }
                     agent.setTarget(npcVirtualPrefab);
 
                 }
@@ -55,7 +53,7 @@ public class MovimientoMouse : MonoBehaviour
 
 
         //Si pulsamos en un personaje mientras pulsamos control, se añadirá a la lista de personajes seleccionados
-        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -85,7 +83,7 @@ public class MovimientoMouse : MonoBehaviour
             }
         }
         //Si pulsamos en un personaje y no tenemos pulsado CONTROL la lista solo contendrá a este personaje
-        if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -137,13 +135,16 @@ public class MovimientoMouse : MonoBehaviour
                 objRombo = new GameObject("Rombo_" + lider);
                 rombo = objRombo.AddComponent<RomboFormation>();
                 formacion.pattern = rombo;
-
                 for (int i=1;i<selectedNPCs.Count;i++)
                 {
                     if (selectedNPCs[i] != lider){
                         formacion.addCharacter((AgentNPC) selectedNPCs[i]);
+                        selectedNPCs[i].quitarMarcador();
+                        selectedNPCs[i].inFormacion = true;
                     }
                 }
+                selectedNPCs.Clear();
+                selectedNPCs.Add(lider);
 
             }
 
