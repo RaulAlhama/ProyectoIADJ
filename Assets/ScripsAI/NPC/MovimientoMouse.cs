@@ -5,25 +5,33 @@ using UnityEngine;
 public class MovimientoMouse : MonoBehaviour
 {
     public List<Agent> selectedNPCs; //Lista de los agentes
+    public List<FormationManager> formaciones;
     private Vector3 targetPosition; // posición donde haremos click
     public Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
     private GameObject obj;
 
-    private GameObject objForm;
-    private FormationManager formacion;
+
     private bool enFormacion = false;
     private GameObject objRombo;
     private RomboFormation rombo;
     private GameObject puntero = null; // puntero a instanciar
 
+    public FormationManager getFormacion(Agent agent){
+        foreach (FormationManager formacion in formaciones){
+            foreach (SlotAssignment slot in formacion.slotAssignments){
+                if (slot.character == agent)
+                    return formacion;
+            }
+        }
+        return null;
+    }
 
     void Update()
     {
         // Comprueba si se ha hecho clic derecho en el mapa
         if (Input.GetMouseButtonDown(1) && selectedNPCs.Count > 0)
         {   
-
            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -37,10 +45,10 @@ public class MovimientoMouse : MonoBehaviour
                 Destroy(puntero, 0.5f);
                 // Mueve los NPC's seleccionados al destino
                 foreach (Agent agent in selectedNPCs)
-                {
+                {   
                     if(agent.inFormacion == true){
                         agent.inFormacion = false;
-                        formacion.removeCharacter((AgentNPC) agent);
+                        getFormacion(agent).removeCharacter(agent);
 
 
                     }
@@ -118,18 +126,23 @@ public class MovimientoMouse : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.C)){
 
-            if (!enFormacion){
-                
-                enFormacion = true;
-                Agent lider = selectedNPCs[0];
+            //if (!enFormacion){
+               
+                //enFormacion = true;
 
+            GameObject objForm;
+            FormationManager formacion;
+
+            Agent lider = selectedNPCs[0];
+            if (GameObject.Find("Formacion_" + lider) == null)
+            {
                 objForm = new GameObject("Formacion_" + lider);
                 formacion = objForm.AddComponent<FormationManager>();
 
-                formacion.lider = (AgentNPC) lider;
-                formacion.agentes = new AgentNPC[3];
+                formacion.lider = lider;
+                formacion.agentes = new Agent[3];
                 formacion.slotAssignments = new List<SlotAssignment>();
 
                 objRombo = new GameObject("Rombo_" + lider);
@@ -138,7 +151,11 @@ public class MovimientoMouse : MonoBehaviour
                 for (int i=1;i<selectedNPCs.Count;i++)
                 {
                     if (selectedNPCs[i] != lider){
-                        formacion.addCharacter((AgentNPC) selectedNPCs[i]);
+
+                        if ( getFormacion(selectedNPCs[i]) != null)
+                            getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
+
+                        formacion.addCharacter(selectedNPCs[i]);
                         selectedNPCs[i].quitarMarcador();
                         selectedNPCs[i].inFormacion = true;
                     }
@@ -146,6 +163,15 @@ public class MovimientoMouse : MonoBehaviour
                 selectedNPCs.Clear();
                 selectedNPCs.Add(lider);
 
+                //}
+
+                formaciones.Add(formacion);
+            
+            }
+
+            else {
+                Destroy(GameObject.Find("Formacion_" + lider).gameObject);
+                Destroy(GameObject.Find("Rombo_" + lider).gameObject);
             }
 
         }

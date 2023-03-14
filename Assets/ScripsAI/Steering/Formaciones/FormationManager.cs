@@ -5,10 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public struct SlotAssignment
 {
-    public AgentNPC character;
+    public Agent character;
     public int slotNumber;
 
-    public SlotAssignment(AgentNPC character, int slotNumber)
+    public SlotAssignment(Agent character, int slotNumber)
     {
         this.character = character;
         this.slotNumber = slotNumber;
@@ -35,9 +35,9 @@ public class FormationManager : MonoBehaviour
 
     public FormationPattern pattern;
     public List<SlotAssignment> slotAssignments;
-    public AgentNPC lider;
-    public AgentNPC[] agentes;
-    public AgentNPC movimiento;
+    public Agent lider;
+    public Agent[] agentes;
+    public Agent movimiento;
     //public DriftOffset driftOffset;
 
 
@@ -67,7 +67,7 @@ public class FormationManager : MonoBehaviour
         //driftOffset = pattern.getDriftOffset(slotAssignments);
     }
 
-    public bool addCharacter(AgentNPC agent){
+    public bool addCharacter(Agent agent){
 
         int occupiedSlots = slotAssignments.Count;
 

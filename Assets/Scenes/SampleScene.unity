@@ -215,6 +215,7 @@ MonoBehaviour:
   _orientation: 0
   status: 0
   select: 0
+  inFormacion: 0
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -315,6 +316,7 @@ MonoBehaviour:
   _orientation: 0
   status: 0
   select: 0
+  inFormacion: 0
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -427,7 +429,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4652689162270838336, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
       propertyPath: _interiorRadius
-      value: 0.7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4652689162270838336, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
       propertyPath: indicadorPrefab
@@ -725,6 +727,7 @@ MonoBehaviour:
   _orientation: 0
   status: 0
   select: 0
+  inFormacion: 0
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -967,6 +970,7 @@ MonoBehaviour:
   _orientation: 0
   status: 0
   select: 0
+  inFormacion: 0
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -1390,6 +1394,7 @@ MonoBehaviour:
   _orientation: 0
   status: 0
   select: 0
+  inFormacion: 0
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -1545,6 +1550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedNPCs: []
+  formaciones: []
   npcVirtualPrefab: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
   punteroPrefab: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
 --- !u!1 &1004751389
@@ -2373,6 +2379,7 @@ MonoBehaviour:
   _orientation: 0
   status: 0
   select: 0
+  inFormacion: 0
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
