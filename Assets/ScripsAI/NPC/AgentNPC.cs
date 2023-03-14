@@ -62,7 +62,7 @@ public class AgentNPC : Agent
             //Destroy(this.gameObject.GetComponent<Wander>());
         }
         if(virtualTarget != null){
-            Destroy(virtualTarget);
+            Destroy(virtualTarget.gameObject);
         }
         Debug.Log("Asignado Target");
         virtualTarget = Instantiate(virtualTargetPrefab);
