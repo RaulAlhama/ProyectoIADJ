@@ -116,6 +116,7 @@ public class AgentNPC : Agent
         if(listSteerings.Length == 1){
             this.steer = listSteerings[0].GetSteering(this);
         } else{
+            //Debug.Log("Aplicando árbitro");
             this.steer = arbitro.GetSteering(this,listSteerings);
         }
 
