@@ -25,7 +25,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2468424658172680724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< Updated upstream
   m_LocalPosition: {x: 21.470816, y: 0, z: 5.5026884}
+=======
+  m_LocalPosition: {x: 9.349075, y: 0, z: -10.39239}
+>>>>>>> Stashed changes
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +55,11 @@ MonoBehaviour:
   _maxAngularAcc: 1
   _maxForce: 1
   _rotation: 0
+<<<<<<< Updated upstream
   _orientation: -72.049225
+=======
+  _orientation: 141.96736
+>>>>>>> Stashed changes
   status: 0
   select: 0
   inFormacion: 0

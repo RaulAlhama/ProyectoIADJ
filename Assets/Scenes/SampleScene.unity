@@ -207,9 +207,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 1
-  _maxRotation: 1
+  _maxRotation: 23.27
   _maxAcceleration: 1
-  _maxAngularAcc: 1
+  _maxAngularAcc: 31.72
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
-  indicadorPrefab: {fileID: 0}
+  indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
 --- !u!1001 &53328498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -429,7 +429,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4652689162270838336, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
       propertyPath: _interiorRadius
+<<<<<<< Updated upstream
       value: 2
+=======
+      value: 0.8
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 4652689162270838336, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
       propertyPath: indicadorPrefab
@@ -895,7 +899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.255146
+      value: 3.6
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.y
@@ -903,7 +907,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.501156
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -961,10 +965,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 40
-  _maxRotation: 52.2
-  _maxAcceleration: 40
-  _maxAngularAcc: 43.2
+  _maxSpeed: 14.4
+  _maxRotation: 77.48
+  _maxAcceleration: 11.9
+  _maxAngularAcc: 39.3
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -983,6 +987,34 @@ MonoBehaviour:
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+--- !u!114 &677558256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677558251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a30a2d649b0d0a949b3857133bf4e642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 29501599}
+  weight: 1
+--- !u!114 &677558257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677558251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8659945d70169a94094ac19e6e194b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 29501599}
+  weight: 0
 --- !u!1 &683831024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +1935,7 @@ GameObject:
   - component: {fileID: 1313756354}
   - component: {fileID: 1313756353}
   - component: {fileID: 1313756352}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Muro 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2370,10 +2402,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 40
-  _maxRotation: 1
-  _maxAcceleration: 40
-  _maxAngularAcc: 40.77
+  _maxSpeed: 4.5
+  _maxRotation: 41.49
+  _maxAcceleration: 2.17
+  _maxAngularAcc: 178.7
   _maxForce: 1
   _rotation: 0
   _orientation: 0
