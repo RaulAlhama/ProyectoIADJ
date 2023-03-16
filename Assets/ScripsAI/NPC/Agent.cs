@@ -15,6 +15,7 @@ public class Agent : Bodi
     public int status = NOSELECTED;
     public bool select = false;
     public bool inFormacion = false;
+    protected bool modoDebug = false;
 
     public void setStatus(int value){
 
@@ -88,8 +89,10 @@ public class Agent : Bodi
     // https://docs.unity3d.com/ScriptReference/Gizmos.DrawWireSphere.html
     // https://docs.unity3d.com/ScriptReference/Gizmos-color.html
 
+    /*
     void OnDrawGizmos()
     {
+        
         float distanciaBigotesExteriores = _exteriorAngle/numBigotes;
         float distanciaBigotesInteriores = _interiorAngle/numBigotes;
 
@@ -138,7 +141,7 @@ public class Agent : Bodi
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(Position, _arrivalRadius);
         }
-    }
+    }*/
 
 
 }

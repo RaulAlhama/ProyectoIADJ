@@ -13,7 +13,6 @@ public class AgentNPC : Agent
     private GameObject indicador = null;
     private Agent virtualTarget = null;
 
-
     void Awake()
     {
         this.steer = new Steering();
@@ -38,20 +37,9 @@ public class AgentNPC : Agent
     {
         this.ApplySteering();
         listSteerings = GetComponents<SteeringBehaviour>();
-        
-        if (Input.GetKeyDown(KeyCode.H)){
 
-            Vector3 from = transform.position; // Origen de la línea
-            Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
-
-            from = from + elevation;
-
-            Vector3 velocity = from + Velocity;
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(from, velocity);
-              
-        }
-
+        if (Input.GetKeyDown(KeyCode.H))
+            modoDebug = !modoDebug;
     }
 
 
@@ -129,7 +117,64 @@ public class AgentNPC : Agent
 
     }
 
+    void OnDrawGizmos()
+    {
+                     
+        if (modoDebug){
 
+            Vector3 from = transform.position; // Origen de la línea
+            Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
+
+            from = from + elevation;
+
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(from, Velocity);
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(from, Acceleration);
+
+            float distanciaBigotesExteriores = this.AnguloExterior/numBigotes;
+            float distanciaBigotesInteriores = this.AnguloInterior/numBigotes; 
+            
+            for (int i=0;i<numBigotes;i++){
+
+                // Mirando en la dirección de la orientación.
+                //Gizmos.color = Color.green;  
+                Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+                //Gizmos.DrawRay(from, direction);
+
+                Gizmos.color = Color.red;  
+                Vector3 vectorInterior1 = new Vector3 (Mathf.Cos((AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z); 
+                Vector3 vectorInterior2 = new Vector3 (Mathf.Cos((-AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((-this.AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((-this.AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((-this.AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z); 
+
+                Gizmos.DrawRay(from, vectorInterior1);
+                Gizmos.DrawRay(from, vectorInterior2);
+
+                // Dibujamos el angulo exterior
+                Vector3 vectorExterior3 = new Vector3 (Mathf.Cos((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z); 
+                Vector3 vectorExterior4 = new Vector3 (Mathf.Cos((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z); 
+
+                Gizmos.color = Color.blue; 
+                Gizmos.DrawRay(from, vectorExterior3);
+                Gizmos.DrawRay(from, vectorExterior4);
+
+            }
+
+            // Dibujamos el circulo interior
+            Gizmos.color = Color.green;
+            //Gizmos.DrawSphere(Position, _interiorRadius);
+            Gizmos.DrawWireSphere(Position, RadioInterior);
+
+            // Dibujamos el circulo exterior
+            Gizmos.color = Color.yellow;
+            //Gizmos.DrawSphere(Position, _arrivalRadius);
+            Gizmos.DrawWireSphere(Position, RadioExterior);
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(Position + elevation, this.GetComponent<Collider>().bounds.size);
+        }
+
+    }
 
     
     /*private void GetSteering(SteeringBehaviour behavior)

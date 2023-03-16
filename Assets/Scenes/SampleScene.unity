@@ -427,6 +427,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1380248454016054198, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4652689162270838336, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
       propertyPath: _interiorRadius
       value: 2
@@ -2290,6 +2294,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1569819991788404230, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1569819991788404230, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -2370,9 +2382,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 5
+  _maxSpeed: 3
   _maxRotation: 1
-  _maxAcceleration: 2
+  _maxAcceleration: 1
   _maxAngularAcc: 40.77
   _maxForce: 1
   _rotation: 0
@@ -2404,8 +2416,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8659945d70169a94094ac19e6e194b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  weight: 0
+  target: {fileID: 29501599}
+  weight: 1
 --- !u!1001 &2039981259
 PrefabInstance:
   m_ObjectHideFlags: 0
