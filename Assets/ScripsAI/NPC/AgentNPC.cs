@@ -38,6 +38,19 @@ public class AgentNPC : Agent
     {
         this.ApplySteering();
         listSteerings = GetComponents<SteeringBehaviour>();
+        
+        if (Input.GetKeyDown(KeyCode.H)){
+
+            Vector3 from = transform.position; // Origen de la línea
+            Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
+
+            from = from + elevation;
+
+            Vector3 velocity = from + Velocity;
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(from, velocity);
+              
+        }
 
     }
 

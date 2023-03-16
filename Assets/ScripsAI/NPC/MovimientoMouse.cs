@@ -11,8 +11,6 @@ public class MovimientoMouse : MonoBehaviour
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
     private GameObject obj;
 
-
-    private bool enFormacion = false;
     private GameObject objRombo;
     private RomboFormation rombo;
     private GameObject puntero = null; // puntero a instanciar
@@ -126,11 +124,7 @@ public class MovimientoMouse : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C)){
-
-            //if (!enFormacion){
-               
-                //enFormacion = true;
+        if (Input.GetKeyDown(KeyCode.R)){
 
             GameObject objForm;
             FormationManager formacion;

@@ -2370,9 +2370,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 1
-  _maxSpeed: 40
+  _maxSpeed: 5
   _maxRotation: 1
-  _maxAcceleration: 40
+  _maxAcceleration: 2
   _maxAngularAcc: 40.77
   _maxForce: 1
   _rotation: 0
@@ -2392,6 +2392,20 @@ MonoBehaviour:
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+--- !u!114 &1692592182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692592180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8659945d70169a94094ac19e6e194b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  weight: 0
 --- !u!1001 &2039981259
 PrefabInstance:
   m_ObjectHideFlags: 0
