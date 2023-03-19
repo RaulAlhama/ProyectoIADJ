@@ -172,6 +172,19 @@ public class AgentNPC : Agent
 
             Gizmos.color = Color.white;
             Gizmos.DrawWireCube(Position + elevation, this.GetComponent<Collider>().bounds.size);
+
+
+
+            Collider[] allColliders = FindObjectsOfType<Collider>();
+            Debug.Log("Total Colliders in Scene: " + allColliders.Length);
+
+            foreach (Collider collider in allColliders)
+            {
+                Gizmos.DrawWireCube(collider.transform.position, collider.bounds.size);
+            }
+
+
+
         }
 
     }
