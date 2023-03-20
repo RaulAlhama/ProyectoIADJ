@@ -175,10 +175,9 @@ public class AgentNPC : Agent
 
 
 
-            Collider[] allColliders = FindObjectsOfType<Collider>();
-            Debug.Log("Total Colliders in Scene: " + allColliders.Length);
+            Collider[] colliders = FindObjectsOfType<Collider>();
 
-            foreach (Collider collider in allColliders)
+            foreach (Collider collider in colliders)
             {
                 Gizmos.DrawWireCube(collider.transform.position, collider.bounds.size);
             }
