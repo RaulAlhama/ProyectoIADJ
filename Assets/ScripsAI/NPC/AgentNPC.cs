@@ -16,13 +16,13 @@ public class AgentNPC : Agent
 
     void Awake()
     {
-        this.steer = new Steering();
+        //this.steer = new Steering();
 
         // Construye una lista con todos las componenen del tipo SteeringBehaviour.
         // La llamaremos listSteerings
         // Usa GetComponents<>()
-        arbitro = new BlendedSteering();
-        listSteerings = GetComponents<SteeringBehaviour>();
+        arbitro = new BlendedSteering(); //Inicializamos el árbitro
+        listSteerings = GetComponents<SteeringBehaviour>(); //obtenemos los steerings
         
     }
 
@@ -115,12 +115,10 @@ public class AgentNPC : Agent
         if(virtualTarget != null){
             Destroy(virtualTarget.gameObject);
         }
-        
-
+        Debug.Log("Asignado Target");
         objVirtual = new GameObject("NPCVirtual");
         virtualTarget = objVirtual.AddComponent<Agent>();
         virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;
-
         this.gameObject.GetComponent<Arrive>().target = virtualTarget;
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
@@ -155,10 +153,7 @@ public class AgentNPC : Agent
         
     }
 
-
-
-
-    public virtual void LateUpdate()
+    public virtual void LateUpdate() //Se ejecuta después de Update
     {
 
         // Reseteamos el steering final.
