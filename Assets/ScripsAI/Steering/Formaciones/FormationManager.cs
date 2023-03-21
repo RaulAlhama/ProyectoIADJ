@@ -36,8 +36,6 @@ public class FormationManager : MonoBehaviour
     public FormationPattern pattern;
     public List<SlotAssignment> slotAssignments;
     public Agent lider;
-    public Agent[] agentes;
-    public Agent movimiento;
     //public DriftOffset driftOffset;
 
 
@@ -103,28 +101,40 @@ public class FormationManager : MonoBehaviour
 
 
         for (int i=0;i<slotAssignments.Count;i++){
-
+            
             DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
 
             GameObject exists = GameObject.Find("target_" + slotAssignments[i].character);
 
-            if (exists){
-                slotAssignments[i].character.GetComponent<Arrive>().target.Position = relativeLoc.position + lider.Position;
-                slotAssignments[i].character.GetComponent<Arrive>().target.Orientation = lider.Orientation;
+            if (slotAssignments[i].character.formar){
+
+                if (exists){
+                    slotAssignments[i].character.GetComponent<Arrive>().target.Position = relativeLoc.position + lider.Position;
+                    slotAssignments[i].character.GetComponent<Align>().target.Orientation = relativeLoc.orientation + lider.Orientation;
+                }
+
+                else {
+                    GameObject gtarget = new GameObject("target_" + slotAssignments[i].character);               // Creamos el target
+                    Agent targetf = gtarget.AddComponent<Agent>() as Agent;
+                    targetf.Position = relativeLoc.position + lider.Position;
+                    targetf.Orientation = relativeLoc.orientation + lider.Orientation;
+
+                    slotAssignments[i].character.gameObject.AddComponent<Arrive>();
+                    slotAssignments[i].character.gameObject.AddComponent<Align>();
+
+                    slotAssignments[i].character.GetComponent<Arrive>().weight = 0.5f;
+                    slotAssignments[i].character.GetComponent<Align>().weight = 0.5f;
+                    slotAssignments[i].character.GetComponent<Arrive>().target = targetf;
+                    slotAssignments[i].character.GetComponent<Align>().target = targetf;
+                }
+
             }
 
             else {
-                GameObject gtarget = new GameObject("target_" + slotAssignments[i].character);               // Creamos el target
-                Agent targetf = gtarget.AddComponent<Agent>() as Agent;
-                targetf.Position = relativeLoc.position + lider.Position;
-
-                slotAssignments[i].character.gameObject.AddComponent<Arrive>();
-                slotAssignments[i].character.gameObject.AddComponent<Align>();
-
-                slotAssignments[i].character.GetComponent<Arrive>().weight = 0.5f;
-                slotAssignments[i].character.GetComponent<Align>().weight = 0.5f;
-                slotAssignments[i].character.GetComponent<Arrive>().target = targetf;
-                slotAssignments[i].character.GetComponent<Align>().target = lider;
+                
+                slotAssignments[i].character.GetComponent<Arrive>().target.Position = lider.Position;
+                slotAssignments[i].character.GetComponent<Align>().target.Orientation = lider.Orientation;
+                
             }
 
 

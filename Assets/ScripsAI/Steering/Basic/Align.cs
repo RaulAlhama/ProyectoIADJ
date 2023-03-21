@@ -17,6 +17,7 @@ public class Align : SteeringBehaviour
 
     public override Steering GetSteering(AgentNPC agent)
     {
+
         Steering steer = new Steering();
 
         // Calcula el steering.

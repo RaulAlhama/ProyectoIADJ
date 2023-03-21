@@ -16,6 +16,7 @@ public class Agent : Bodi
     public bool select = false;
     public bool inFormacion = false;
     protected bool modoDebug = false;
+    public bool formar = true;
 
     public void setStatus(int value){
 
@@ -23,6 +24,7 @@ public class Agent : Bodi
     }
 
     public virtual void setTarget(Agent target){}
+    public virtual Agent getTarget(){return null;}
     public virtual void activarMarcador(){}
     public virtual void quitarMarcador(){}
 

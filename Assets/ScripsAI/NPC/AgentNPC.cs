@@ -58,6 +58,20 @@ public class AgentNPC : Agent
         transform.Rotate(Vector3.up, Orientation);
     }
 
+
+    
+    public override Agent getTarget()
+    {
+        if (this.GetComponent<SteeringBehaviour>() != null){
+            return this.GetComponent<SteeringBehaviour>().target;
+        }
+
+        return null;
+
+    }
+
+
+
     public override void setTarget(Agent virtualTargetPrefab){
         if(this.gameObject.GetComponent<Arrive>() == null){
             this.gameObject.AddComponent<Arrive>();
@@ -83,12 +97,18 @@ public class AgentNPC : Agent
         this.gameObject.GetComponent<Align>().weight = 0.5f;
     }
 
+
+
+
     public override void activarMarcador(){
         indicador = Instantiate(indicadorPrefab, transform);
         indicador.transform.localPosition = Vector3.up * 4;
         setStatus(SELECTED);
         select = true;
     }
+
+
+
 
     public override void quitarMarcador(){
         if (indicador != null){
