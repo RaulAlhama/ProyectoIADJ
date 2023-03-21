@@ -12,49 +12,117 @@ public class MovimientoMouse : MonoBehaviour
     private GameObject obj;
 
     private GameObject objRombo;
-    private RomboFormation rombo;
+    private Formacion1 rombo;
+    private GameObject objDos;
+    private Formacion2 dos;
     private GameObject puntero = null; // puntero a instanciar
 
     public FormationManager getFormacion(Agent agent){
         foreach (FormationManager formacion in formaciones){
             foreach (SlotAssignment slot in formacion.slotAssignments){
                 if (slot.character == agent)
+                {
                     return formacion;
+                }
             }
+
+            if (formacion.lider == agent)
+                return formacion;
         }
         return null;
     }
 
+
+    public void comprobarFormacion(){
+        foreach (FormationManager formacion in formaciones){
+            foreach (SlotAssignment slot in formacion.slotAssignments){
+                
+                if (slot.character.getTarget() != null){
+                    
+                    Vector3 newDirection =  slot.character.getTarget().Position - slot.character.Position;
+                    float distance = newDirection.magnitude;
+                    if (distance < slot.character.RadioInterior)
+                    {
+                        slot.character.formar = true;
+                    }
+                } 
+                    
+            }
+
+        }
+    }
+
+
+
     void Update()
     {
+
+        // Comprobamos si los agentes tienen que volver a formar
+        comprobarFormacion();
+
         // Comprueba si se ha hecho clic derecho en el mapa
         if (Input.GetMouseButtonDown(1) && selectedNPCs.Count > 0)
         {   
-           
+            
+            bool romperFormacion = false;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
 
                 targetPosition = hit.point; //Nos quedamos con la posfción donde hemos hecho click
                 targetPosition.y = 0;
-                npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual
+                npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual 
                 punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
                 puntero = Instantiate(punteroPrefab);// creamos el puntero
                 Destroy(puntero, 0.5f);
                 // Mueve los NPC's seleccionados al destino
                 foreach (Agent agent in selectedNPCs)
                 {   
+                    /*
                     if(agent.inFormacion == true){
                         agent.inFormacion = false;
                         getFormacion(agent).removeCharacter(agent);
 
 
+                    }*/
+
+                    // Si un agente de los seleccionados no está en formación, se debe romper la formación
+                    if (agent.inFormacion == false){
+                        romperFormacion = true;
                     }
+
+                    else{
+                        agent.formar = false;
+                    }
+
                     agent.setTarget(npcVirtualPrefab);
 
                 }
 
+                // Comprobamos si hay que romper la formación
+                if (romperFormacion){
+
+                    foreach (Agent agent in selectedNPCs)
+                    {
+                        // Se cambia el estado del agente
+                        agent.inFormacion = false;
+                        // Si el personaje está en una formación, esta se destruye
+                        if (getFormacion(agent) != null){
+                            Destroy(getFormacion(agent).pattern.gameObject);
+                            Destroy(getFormacion(agent).gameObject);
+                        }
+                    }
+                    
+                    
+
+                }
+
+                romperFormacion = false;
+
             }
+
+
+
         }
 
 
@@ -136,26 +204,30 @@ public class MovimientoMouse : MonoBehaviour
                 formacion = objForm.AddComponent<FormationManager>();
 
                 formacion.lider = lider;
-                formacion.agentes = new Agent[3];
+                lider.inFormacion = true;
+                lider.formar = true;
+
                 formacion.slotAssignments = new List<SlotAssignment>();
 
                 objRombo = new GameObject("Rombo_" + lider);
-                rombo = objRombo.AddComponent<RomboFormation>();
+                rombo = objRombo.AddComponent<Formacion1>();
                 formacion.pattern = rombo;
                 for (int i=1;i<selectedNPCs.Count;i++)
                 {
                     if (selectedNPCs[i] != lider){
-
-                        if ( getFormacion(selectedNPCs[i]) != null)
+                        
+                        // Si el agente ya estaba en una formación, se elimina de dicha formación
+                        if (getFormacion(selectedNPCs[i]) != null)
                             getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
 
+                        // Se añade el agente a la formación
                         formacion.addCharacter(selectedNPCs[i]);
-                        selectedNPCs[i].quitarMarcador();
                         selectedNPCs[i].inFormacion = true;
+                        selectedNPCs[i].formar = true;
                     }
                 }
-                selectedNPCs.Clear();
-                selectedNPCs.Add(lider);
+                //selectedNPCs.Clear();
+                //selectedNPCs.Add(lider);
 
                 //}
 
@@ -163,10 +235,62 @@ public class MovimientoMouse : MonoBehaviour
             
             }
 
+            /*
             else {
                 Destroy(GameObject.Find("Formacion_" + lider).gameObject);
                 Destroy(GameObject.Find("Rombo_" + lider).gameObject);
+            }*/
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)){
+
+            GameObject objForm;
+            FormationManager formacion;
+
+            Agent lider = selectedNPCs[0];
+            if (GameObject.Find("Formacion_" + lider) == null)
+            {
+                objForm = new GameObject("Formacion_" + lider);
+                formacion = objForm.AddComponent<FormationManager>();
+
+                formacion.lider = lider;
+                lider.inFormacion = true;
+                lider.formar = true;
+
+                formacion.slotAssignments = new List<SlotAssignment>();
+
+                objDos = new GameObject("Rombo_" + lider);
+                dos = objDos.AddComponent<Formacion2>();
+                formacion.pattern = dos;
+                for (int i=1;i<selectedNPCs.Count;i++)
+                {
+                    if (selectedNPCs[i] != lider){
+                        
+                        // Si el agente ya estaba en una formación, se elimina de dicha formación
+                        if (getFormacion(selectedNPCs[i]) != null)
+                            getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
+
+                        // Se añade el agente a la formación
+                        formacion.addCharacter(selectedNPCs[i]);
+                        selectedNPCs[i].inFormacion = true;
+                        selectedNPCs[i].formar = true;
+                    }
+                }
+                //selectedNPCs.Clear();
+                //selectedNPCs.Add(lider);
+
+                //}
+
+                formaciones.Add(formacion);
+            
             }
+
+            /*
+            else {
+                Destroy(GameObject.Find("Formacion_" + lider).gameObject);
+                Destroy(GameObject.Find("Rombo_" + lider).gameObject);
+            }*/
 
         }
  

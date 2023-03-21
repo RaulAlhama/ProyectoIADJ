@@ -90,7 +90,7 @@ public class Bodi : MonoBehaviour
      public float Orientation
     {
         get {return _orientation; }
-        set {_orientation = value; }
+        set {_orientation = value%360.0f; }
     }
     public float Speed
     {

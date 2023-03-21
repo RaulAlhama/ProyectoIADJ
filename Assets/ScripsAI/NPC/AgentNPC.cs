@@ -12,6 +12,7 @@ public class AgentNPC : Agent
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
     private Agent virtualTarget = null;
+    private GameObject objVirtual;
 
     void Awake()
     {
@@ -57,6 +58,20 @@ public class AgentNPC : Agent
         transform.Rotate(Vector3.up, Orientation);
     }
 
+
+    
+    public override Agent getTarget()
+    {
+        if (this.GetComponent<SteeringBehaviour>() != null){
+            return this.GetComponent<SteeringBehaviour>().target;
+        }
+
+        return null;
+
+    }
+
+
+
     public override void setTarget(Agent virtualTargetPrefab){
         if(this.gameObject.GetComponent<Arrive>() == null){
             this.gameObject.AddComponent<Arrive>();
@@ -65,20 +80,27 @@ public class AgentNPC : Agent
         if(virtualTarget != null){
             Destroy(virtualTarget.gameObject);
         }
-        Debug.Log("Asignado Target");
-        virtualTarget = Instantiate(virtualTargetPrefab);
+        
+
+        objVirtual = new GameObject("NPCVirtual");
+        virtualTarget = objVirtual.AddComponent<Agent>();
+        virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;
+
         this.gameObject.GetComponent<Arrive>().target = virtualTarget;
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
-        virtualTargetPrefab.Orientation = Bodi.PositionToAngle(virtualTargetPrefab.Position - this.Position);
+        virtualTarget.Orientation = Bodi.PositionToAngle(virtualTarget.Position - this.Position);
 
         if(this.gameObject.GetComponent<Align>() == null){
             this.gameObject.AddComponent<Align>();
             //Destroy(this.gameObject.GetComponent<Wander>());
         }    
-        this.gameObject.GetComponent<Align>().target = virtualTargetPrefab;
+        this.gameObject.GetComponent<Align>().target = virtualTarget;
         this.gameObject.GetComponent<Align>().weight = 0.5f;
     }
+
+
+
 
     public override void activarMarcador(){
         indicador = Instantiate(indicadorPrefab, transform);
@@ -87,6 +109,9 @@ public class AgentNPC : Agent
         select = true;
     }
 
+
+
+
     public override void quitarMarcador(){
         if (indicador != null){
             Destroy(indicador);
@@ -94,6 +119,9 @@ public class AgentNPC : Agent
         select = false;
         
     }
+
+
+
 
     public virtual void LateUpdate()
     {
