@@ -8,6 +8,9 @@ TagManager:
   - Floor
   - Coin
   - Obstaculo
+  - Tierra
+  - Cesped
+  - Hielo
   layers:
   - Default
   - TransparentFX

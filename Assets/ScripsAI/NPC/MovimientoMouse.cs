@@ -78,13 +78,6 @@ public class MovimientoMouse : MonoBehaviour
                 // Mueve los NPC's seleccionados al destino
                 foreach (Agent agent in selectedNPCs)
                 {   
-                    /*
-                    if(agent.inFormacion == true){
-                        agent.inFormacion = false;
-                        getFormacion(agent).removeCharacter(agent);
-
-
-                    }*/
 
                     // Si un agente de los seleccionados no está en formación, se debe romper la formación
                     if (agent.inFormacion == false){

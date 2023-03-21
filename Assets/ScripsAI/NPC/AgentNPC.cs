@@ -37,11 +37,13 @@ public class AgentNPC : Agent
     public virtual void Update()
     {
         this.ApplySteering();
+        this.ApplyTerreno();
         listSteerings = GetComponents<SteeringBehaviour>();
 
         if (Input.GetKeyDown(KeyCode.H))
             modoDebug = !modoDebug;
     }
+    
 
 
     private void ApplySteering()
@@ -50,12 +52,45 @@ public class AgentNPC : Agent
         // La actualización de las propiedades se puede hacer en LateUpdate()
         Velocity += this.steer.linear * Time.deltaTime;
         Rotation += this.steer.angular * Time.deltaTime;
-        Position += Velocity * Time.deltaTime;
+        Position += Velocity * ApplyTerreno() * Time.deltaTime;
         Orientation += Rotation * Time.deltaTime;
 
         // Aplicar las actualizaciones a la componente Transform
         transform.rotation = new Quaternion(); //Quaternion.identity;
         transform.Rotate(Vector3.up, Orientation);
+    }
+
+
+    private float ApplyTerreno()
+    {
+
+        // Tracemos un rayo hacia abajo desde la posición del objeto
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position+Vector3.up, Vector3.down, out hit, 2f))
+        {
+            // Si el rayo colisiona con un objeto en la capa "groundLayerMask", podemos determinar el tipo de suelo
+            Debug.Log(this + " está pisando " + hit.collider.gameObject.tag);
+        
+            switch(hit.collider.gameObject.tag) 
+            {
+                case "Cesped":
+                    return 1f;
+                    break;
+                case "Hielo":
+                    return 2f;
+                    break;
+                case "Tierra":
+                    return 0.5f;
+                    break;
+                default:
+                    return 1f;
+                    break;
+            }
+
+        }
+
+        return 1f;
+
     }
 
 
@@ -211,6 +246,9 @@ public class AgentNPC : Agent
             }
 
 
+            // Colision terreno
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(transform.position,  Vector3.down);
 
         }
 
