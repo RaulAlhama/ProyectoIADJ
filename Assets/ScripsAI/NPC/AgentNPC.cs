@@ -12,16 +12,17 @@ public class AgentNPC : Agent
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
     private Agent virtualTarget = null;
+    private GameObject objVirtual;
 
     void Awake()
     {
-        this.steer = new Steering();
+        //this.steer = new Steering();
 
         // Construye una lista con todos las componenen del tipo SteeringBehaviour.
         // La llamaremos listSteerings
         // Usa GetComponents<>()
-        arbitro = new BlendedSteering();
-        listSteerings = GetComponents<SteeringBehaviour>();
+        arbitro = new BlendedSteering(); //Inicializamos el árbitro
+        listSteerings = GetComponents<SteeringBehaviour>(); //obtenemos los steerings
         
     }
 
@@ -66,17 +67,19 @@ public class AgentNPC : Agent
             Destroy(virtualTarget.gameObject);
         }
         Debug.Log("Asignado Target");
-        virtualTarget = Instantiate(virtualTargetPrefab);
+        objVirtual = new GameObject("NPCVirtual");
+        virtualTarget = objVirtual.AddComponent<Agent>();
+        virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;
         this.gameObject.GetComponent<Arrive>().target = virtualTarget;
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
-        virtualTargetPrefab.Orientation = Bodi.PositionToAngle(virtualTargetPrefab.Position - this.Position);
+        virtualTarget.Orientation = Bodi.PositionToAngle(virtualTarget.Position - this.Position);
 
         if(this.gameObject.GetComponent<Align>() == null){
             this.gameObject.AddComponent<Align>();
             //Destroy(this.gameObject.GetComponent<Wander>());
         }    
-        this.gameObject.GetComponent<Align>().target = virtualTargetPrefab;
+        this.gameObject.GetComponent<Align>().target = virtualTarget;
         this.gameObject.GetComponent<Align>().weight = 0.5f;
     }
 
@@ -95,7 +98,7 @@ public class AgentNPC : Agent
         
     }
 
-    public virtual void LateUpdate()
+    public virtual void LateUpdate() //Se ejecuta después de Update
     {
 
         // Reseteamos el steering final.

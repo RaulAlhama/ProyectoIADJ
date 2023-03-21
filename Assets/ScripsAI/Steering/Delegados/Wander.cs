@@ -28,7 +28,7 @@ public class Wander : Face
         if (((this.target.Position - agent.Position).magnitude < agent.RadioInterior)){
 
             Random rnd = new Random();
-            wanderOrientation += ((float) rnd.NextDouble()) * wanderRate;
+            wanderOrientation += (float)rnd.NextDouble() * wanderRate;
        
             this.target.Orientation =  wanderOrientation + agent.Orientation;
             this.target.Position = agent.Position + wanderOffset * Bodi.AngleToPosition(agent.Orientation);
