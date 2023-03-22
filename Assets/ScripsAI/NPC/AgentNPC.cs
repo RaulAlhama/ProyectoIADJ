@@ -69,7 +69,6 @@ public class AgentNPC : Agent
         if (Physics.Raycast(transform.position+Vector3.up, Vector3.down, out hit, 2f))
         {
             // Si el rayo colisiona con un objeto en la capa "groundLayerMask", podemos determinar el tipo de suelo
-            Debug.Log(this + " está pisando " + hit.collider.gameObject.tag);
         
             switch(hit.collider.gameObject.tag) 
             {

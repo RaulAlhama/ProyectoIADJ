@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MovimientoMouse : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class MovimientoMouse : MonoBehaviour
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
     private GameObject obj;
 
-    private GameObject objRombo;
-    private Formacion1 rombo;
+    private GameObject objUno;
+    private Formacion1 uno;
     private GameObject objDos;
     private Formacion2 dos;
     private GameObject puntero = null; // puntero a instanciar
@@ -34,9 +35,17 @@ public class MovimientoMouse : MonoBehaviour
 
 
     public void comprobarFormacion(){
-        foreach (FormationManager formacion in formaciones){
+
+        foreach (FormationManager formacion in formaciones.ToList()){
+
+            if (formacion.slotAssignments.Count == 0){
+                formaciones.Remove(formacion);
+                Destroy(formacion.pattern.gameObject);   
+                Destroy(formacion.gameObject);
+            }
+
             foreach (SlotAssignment slot in formacion.slotAssignments){
-                
+
                 if (slot.character.getTarget() != null){
                     
                     Vector3 newDirection =  slot.character.getTarget().Position - slot.character.Position;
@@ -185,105 +194,95 @@ public class MovimientoMouse : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.Alpha1)){
 
             GameObject objForm;
             FormationManager formacion;
 
             Agent lider = selectedNPCs[0];
-            if (GameObject.Find("Formacion_" + lider) == null)
+            if (getFormacion(lider) != null)
+                getFormacion(lider).removeCharacter(lider);
+
+            string nombre = "";
+            for (int i=1;i<selectedNPCs.Count;i++)
+                nombre = nombre + "_" + selectedNPCs[i]; 
+
+            objForm = new GameObject("Formacion1_" + lider + nombre);
+            formacion = objForm.AddComponent<FormationManager>();
+            formacion.lider = lider;
+            lider.inFormacion = true;
+            lider.formar = true;
+
+            formacion.slotAssignments = new List<SlotAssignment>();
+
+            objUno = new GameObject("Uno_" + lider + nombre);
+            uno = objUno.AddComponent<Formacion1>();
+            formacion.pattern = uno;
+
+            for (int i=1;i<selectedNPCs.Count;i++)
             {
-                objForm = new GameObject("Formacion_" + lider);
-                formacion = objForm.AddComponent<FormationManager>();
-
-                formacion.lider = lider;
-                lider.inFormacion = true;
-                lider.formar = true;
-
-                formacion.slotAssignments = new List<SlotAssignment>();
-
-                objRombo = new GameObject("Rombo_" + lider);
-                rombo = objRombo.AddComponent<Formacion1>();
-                formacion.pattern = rombo;
-                for (int i=1;i<selectedNPCs.Count;i++)
-                {
-                    if (selectedNPCs[i] != lider){
-                        
-                        // Si el agente ya estaba en una formación, se elimina de dicha formación
-                        if (getFormacion(selectedNPCs[i]) != null)
-                            getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
-
-                        // Se añade el agente a la formación
-                        formacion.addCharacter(selectedNPCs[i]);
-                        selectedNPCs[i].inFormacion = true;
-                        selectedNPCs[i].formar = true;
+                if (selectedNPCs[i] != lider){
+                    // Si el agente ya estaba en una formación, se elimina de dicha formación
+                    if (getFormacion(selectedNPCs[i]) != null)
+                    {   
+                        getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
                     }
+
+                    // Se añade el agente a la formación
+                    formacion.addCharacter(selectedNPCs[i]);
+                    selectedNPCs[i].inFormacion = true;
+                    selectedNPCs[i].formar = true;
+                    
                 }
-                //selectedNPCs.Clear();
-                //selectedNPCs.Add(lider);
-
-                //}
-
-                formaciones.Add(formacion);
-            
             }
 
-            /*
-            else {
-                Destroy(GameObject.Find("Formacion_" + lider).gameObject);
-                Destroy(GameObject.Find("Rombo_" + lider).gameObject);
-            }*/
+            formaciones.Add(formacion);
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)){
+        if (Input.GetKeyDown(KeyCode.Alpha2)){
 
             GameObject objForm;
             FormationManager formacion;
 
             Agent lider = selectedNPCs[0];
-            if (GameObject.Find("Formacion_" + lider) == null)
+            if (getFormacion(lider) != null)
+                getFormacion(lider).removeCharacter(lider);
+
+            string nombre = "";
+            for (int i=1;i<selectedNPCs.Count;i++)
+                nombre = nombre + "_" + selectedNPCs[i]; 
+
+            objForm = new GameObject("Formacion2_" + lider + nombre);
+            formacion = objForm.AddComponent<FormationManager>();
+            formacion.lider = lider;
+            lider.inFormacion = true;
+            lider.formar = true;
+
+            formacion.slotAssignments = new List<SlotAssignment>();
+
+            objDos = new GameObject("Dos_" + lider + nombre);
+            dos = objDos.AddComponent<Formacion2>();
+            formacion.pattern = dos;
+
+            for (int i=1;i<selectedNPCs.Count;i++)
             {
-                objForm = new GameObject("Formacion_" + lider);
-                formacion = objForm.AddComponent<FormationManager>();
-
-                formacion.lider = lider;
-                lider.inFormacion = true;
-                lider.formar = true;
-
-                formacion.slotAssignments = new List<SlotAssignment>();
-
-                objDos = new GameObject("Rombo_" + lider);
-                dos = objDos.AddComponent<Formacion2>();
-                formacion.pattern = dos;
-                for (int i=1;i<selectedNPCs.Count;i++)
-                {
-                    if (selectedNPCs[i] != lider){
-                        
-                        // Si el agente ya estaba en una formación, se elimina de dicha formación
-                        if (getFormacion(selectedNPCs[i]) != null)
-                            getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
-
-                        // Se añade el agente a la formación
-                        formacion.addCharacter(selectedNPCs[i]);
-                        selectedNPCs[i].inFormacion = true;
-                        selectedNPCs[i].formar = true;
+                if (selectedNPCs[i] != lider){
+                    // Si el agente ya estaba en una formación, se elimina de dicha formación
+                    if (getFormacion(selectedNPCs[i]) != null)
+                    {   
+                        getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
                     }
+
+                    // Se añade el agente a la formación
+                    formacion.addCharacter(selectedNPCs[i]);
+                    selectedNPCs[i].inFormacion = true;
+                    selectedNPCs[i].formar = true;
+                    
                 }
-                //selectedNPCs.Clear();
-                //selectedNPCs.Add(lider);
-
-                //}
-
-                formaciones.Add(formacion);
-            
             }
 
-            /*
-            else {
-                Destroy(GameObject.Find("Formacion_" + lider).gameObject);
-                Destroy(GameObject.Find("Rombo_" + lider).gameObject);
-            }*/
+            formaciones.Add(formacion);
 
         }
  

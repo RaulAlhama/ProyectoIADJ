@@ -32,39 +32,26 @@ public struct DriftOffset
 
 public class FormationManager : MonoBehaviour
 {
-
     public FormationPattern pattern;
     public List<SlotAssignment> slotAssignments;
     public Agent lider;
-    //public DriftOffset driftOffset;
 
-
-    void Start(){
-
-        /*
-        for (int i=0;i<agentes.Length;i++){
-            SlotAssignment slotAssignment = new SlotAssignment(agentes[i], i);
-            slotAssignments.Add(slotAssignment);
-        }*/
-
-        //updateSlots();
-    }
 
     void Update(){
 
         updateSlots();
     }
 
-
+    // Método para inicializar la lista de SlotAssignments
     public void updateSlotAssignments(){
 
         for (int i=0;i<slotAssignments.Count;i++){
             slotAssignments[i] = new SlotAssignment(slotAssignments[i].character, i);
         }
 
-        //driftOffset = pattern.getDriftOffset(slotAssignments);
     }
 
+    // Método para añadir un nuevo agente a la formación
     public bool addCharacter(Agent agent){
 
         int occupiedSlots = slotAssignments.Count;
@@ -75,14 +62,13 @@ public class FormationManager : MonoBehaviour
             slotAssignments.Add(slotAssignment);
 
             updateSlotAssignments();
-            updateSlots();
-
             return true;
         }
 
         return false;
     }
 
+    // Método para eliminar un agente de la formación
     public void removeCharacter(Agent agent){
 
         for (int i=0;i<slotAssignments.Count;i++){
@@ -94,19 +80,18 @@ public class FormationManager : MonoBehaviour
             }
         }
 
-        updateSlots();
     }
 
+    // Método para actualizar la posición y orientación de los agentes de la formación
     public void updateSlots(){
-
 
         for (int i=0;i<slotAssignments.Count;i++){
             
-            DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
-
             GameObject exists = GameObject.Find("target_" + slotAssignments[i].character);
 
             if (slotAssignments[i].character.formar){
+
+                DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
 
                 if (exists){
                     slotAssignments[i].character.GetComponent<Arrive>().target.Position = relativeLoc.position + lider.Position;
