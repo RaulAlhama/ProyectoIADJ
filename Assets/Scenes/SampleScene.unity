@@ -232,7 +232,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!114 &29501600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +354,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1 &89677391
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +932,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1 &600443071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1180,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1 &683831024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,21 +1609,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
---- !u!114 &853963406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 853963402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a91b8ab3512215446a0e4f0e326066c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1692592181}
-  weight: 0
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1 &922497876 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6127267329932895357, guid: f6964e4c4d239a146b49e1985760897c, type: 3}
@@ -2697,7 +2703,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1001 &1740086734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2799,21 +2809,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
---- !u!114 &1740086739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740086735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c854dbe20dd7c4ea056f7fd8a47920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1692592181}
-  weight: 0
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1001 &2059096030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2915,7 +2915,11 @@ MonoBehaviour:
     angular: 0
     linear: {x: 0, y: 0, z: 0}
   listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1 &2092360351 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6127267329932895357, guid: f6964e4c4d239a146b49e1985760897c, type: 3}

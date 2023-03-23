@@ -7,12 +7,15 @@ public class AgentNPC : Agent
     // Este será el steering final que se aplique al personaje.
     public Steering steer;
     public SteeringBehaviour[] listSteerings;
+    public SteeringBehaviour[] steeringsIniciales;
+    public SteeringBehaviour[] steeringsTargets;
     private BlendedSteering arbitro;
 
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
     public Agent virtualTarget = null;
     private GameObject objVirtual;
+    private bool firstTime;
 
     public enum TIPO_NPC
     {
@@ -34,6 +37,7 @@ public class AgentNPC : Agent
         // Usa GetComponents<>()
         arbitro = new BlendedSteering(); //Inicializamos el árbitro
         listSteerings = GetComponents<SteeringBehaviour>(); //obtenemos los steerings
+        steeringsIniciales = GetComponents<SteeringBehaviour>();
         
     }
 
@@ -41,15 +45,22 @@ public class AgentNPC : Agent
     void Start()
     {
         Orientation = transform.eulerAngles.y;
+        setStatus(NPC);
+        firstTime = true;
         //Velocity = Vector3.zero;
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.001f){
+            //Debug.Log("Asignando movimientos iniciales");
+            listSteerings = steeringsIniciales;
+            setStatus(NPC);
+        }
         this.ApplySteering();
         this.ApplyTerreno();
-        listSteerings = GetComponents<SteeringBehaviour>();
+        //listSteerings = GetComponents<SteeringBehaviour>();
 
         if (Input.GetKeyDown(KeyCode.H))
             modoDebug = !modoDebug;
@@ -85,16 +96,12 @@ public class AgentNPC : Agent
             {
                 case "Cesped":
                     return 1f;
-                    break;
                 case "Hielo":
                     return 2f;
-                    break;
                 case "Tierra":
                     return 0.5f;
-                    break;
                 default:
                     return 1f;
-                    break;
             }
 
         }
@@ -118,23 +125,15 @@ public class AgentNPC : Agent
 
 
     public override void setTarget(Agent virtualTargetPrefab){
-        if(this.gameObject.GetComponent<Arrive>() == null){
-            this.gameObject.AddComponent<Arrive>();
-            //Destroy(this.gameObject.GetComponent<Wander>());
-        }
         if(virtualTarget != null){
             Destroy(virtualTarget.gameObject);
         }
+        setStatus(MOVING);
         Debug.Log("Asignado Target");
         objVirtual = new GameObject("NPCVirtual");
         virtualTarget = objVirtual.AddComponent<Agent>();
-        virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;
-        this.gameObject.GetComponent<Arrive>().target = virtualTarget;
-        this.gameObject.GetComponent<Arrive>().weight = 0.5f;
-       
+        virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;      
         virtualTarget.Orientation = Bodi.PositionToAngle(virtualTarget.Position - this.Position);
-<<<<<<< Updated upstream
-=======
         if(firstTime){
             foreach (SteeringBehaviour behavior in listSteerings) //Eliminamos Steering del NPC
                 DestroyImmediate(gameObject.GetComponent<SteeringBehaviour>());
@@ -146,15 +145,18 @@ public class AgentNPC : Agent
             this.gameObject.AddComponent<Arrive>();
             this.gameObject.GetComponent<Arrive>().target = virtualTarget;
             this.gameObject.GetComponent<Arrive>().weight = 0.5f;
-        
->>>>>>> Stashed changes
 
-        if(this.gameObject.GetComponent<Align>() == null){
             this.gameObject.AddComponent<Align>();
-            //Destroy(this.gameObject.GetComponent<Wander>());
-        }    
-        this.gameObject.GetComponent<Align>().target = virtualTarget;
-        this.gameObject.GetComponent<Align>().weight = 0.5f;
+            this.gameObject.GetComponent<Align>().target = virtualTarget;
+            this.gameObject.GetComponent<Align>().weight = 0.5f;
+            firstTime = false;
+        } else{
+            Debug.Log("Asignando nuevo target");
+            this.gameObject.GetComponent<Arrive>().target = virtualTarget;
+            this.gameObject.GetComponent<Align>().target = virtualTarget;
+        }
+        steeringsTargets = GetComponents<SteeringBehaviour>();
+        listSteerings = steeringsTargets;
     }
 
 
