@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.24
+      value: -27.89
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -220,7 +220,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -235,7 +236,24 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
+--- !u!114 &29501602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29501598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0ee160fdb7a664e858e0a90c01a9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  weight: 0
+  wanderRadius: 15
+  wanderRate: 20
 --- !u!1001 &53328498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -325,7 +343,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -340,6 +359,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &89677391
 GameObject:
@@ -902,7 +922,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -917,6 +938,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &600443071
 GameObject:
@@ -1149,7 +1171,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -1164,6 +1187,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &683831024
 GameObject:
@@ -1577,7 +1601,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -1592,6 +1617,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &922497876 stripped
 GameObject:
@@ -2670,7 +2696,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -2685,6 +2712,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1001 &1740086734
 PrefabInstance:
@@ -2775,7 +2803,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -2790,6 +2819,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1001 &2059096030
 PrefabInstance:
@@ -2880,7 +2910,8 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
+  isLider: 0
+  tiempo: 10
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -2895,6 +2926,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &2092360351 stripped
 GameObject:

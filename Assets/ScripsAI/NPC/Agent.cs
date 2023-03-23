@@ -18,6 +18,8 @@ public class Agent : Bodi
     public bool select = false;
     public bool inFormacion = false;
     protected bool modoDebug = false;
+    public bool isLider = false;
+    public float tiempo = 10f;
 
     public void setStatus(int value){
 

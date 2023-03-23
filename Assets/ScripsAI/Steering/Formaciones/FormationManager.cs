@@ -39,6 +39,7 @@ public class FormationManager : MonoBehaviour
 
     void Start(){
         firstTime = true;
+        lider.isLider = true;
     }
 
     void Update(){

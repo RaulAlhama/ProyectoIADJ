@@ -210,8 +210,8 @@ public class MovimientoMouse : MonoBehaviour
                     }
 
                     // Se añade el agente a la formación
-                    formacion.addCharacter(selectedNPCs[i]);
-                    selectedNPCs[i].inFormacion = true;
+                    if (formacion.addCharacter(selectedNPCs[i]))
+                        selectedNPCs[i].inFormacion = true;
                     
                 }
             }
@@ -254,8 +254,8 @@ public class MovimientoMouse : MonoBehaviour
                     }
 
                     // Se añade el agente a la formación
-                    formacion.addCharacter(selectedNPCs[i]);
-                    selectedNPCs[i].inFormacion = true;
+                    if (formacion.addCharacter(selectedNPCs[i]))
+                        selectedNPCs[i].inFormacion = true;
                     
                 }
             }

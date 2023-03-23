@@ -25,6 +25,7 @@ public class AgentNPC : Agent
         MAJITO
     }
 
+
     [SerializeField]
     protected internal TIPO_NPC tipo = TIPO_NPC.INFANTERIA;
 
@@ -59,8 +60,21 @@ public class AgentNPC : Agent
             setStatus(NPC);
         }
 
-        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f &&  status == MOVING)
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f && inFormacion && isLider){
+            tiempo -= Time.deltaTime;
+        }
+
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f && inFormacion)
             setStatus(ENFORMACION);
+
+        // Solo entra si es lider
+        if (tiempo <= 0f)
+        {
+            tiempo = 10f;
+            listSteerings = steeringsIniciales;
+            setStatus(MOVING);
+        }
+
 
         this.ApplySteering();
         this.ApplyTerreno();
