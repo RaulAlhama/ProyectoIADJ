@@ -215,9 +215,6 @@ public class AgentNPC : Agent
             Gizmos.color = Color.magenta;
             Gizmos.DrawRay(from, Velocity);
 
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawRay(from, Acceleration);
-
             float distanciaBigotesExteriores = this.AnguloExterior/numBigotes;
             float distanciaBigotesInteriores = this.AnguloInterior/numBigotes; 
             
@@ -251,7 +248,7 @@ public class AgentNPC : Agent
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(Position, RadioExterior);
 
-
+            Gizmos.color = Color.black;
             Collider[] colliders = FindObjectsOfType<Collider>();
 
             foreach (Collider collider in colliders)
