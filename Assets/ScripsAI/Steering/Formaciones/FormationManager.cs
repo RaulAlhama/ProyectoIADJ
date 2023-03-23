@@ -35,7 +35,11 @@ public class FormationManager : MonoBehaviour
     public FormationPattern pattern;
     public List<SlotAssignment> slotAssignments;
     public Agent lider;
+    private bool firstTime;
 
+    void Start(){
+        firstTime = true;
+    }
 
     void Update(){
 
@@ -87,13 +91,13 @@ public class FormationManager : MonoBehaviour
 
         for (int i=0;i<slotAssignments.Count;i++){
             
-            GameObject exists = GameObject.Find("target_" + slotAssignments[i].character);
 
             if (lider.getStatus() != Agent.MOVING){
 
                 DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
 
-                if (exists){
+                if (!firstTime){
+                    Destroy(GameObject.Find("target_" + slotAssignments[i].character));
                     slotAssignments[i].character.GetComponent<Arrive>().target.Position = relativeLoc.position + lider.Position;
                     slotAssignments[i].character.GetComponent<Align>().target.Orientation = relativeLoc.orientation + lider.Orientation;
                 }
@@ -117,6 +121,7 @@ public class FormationManager : MonoBehaviour
 
 
         }
+        firstTime = false;
     }
 
 
