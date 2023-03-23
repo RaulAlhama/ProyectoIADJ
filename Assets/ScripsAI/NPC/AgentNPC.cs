@@ -14,6 +14,17 @@ public class AgentNPC : Agent
     public Agent virtualTarget = null;
     private GameObject objVirtual;
 
+    public enum TIPO_NPC
+    {
+        INFANTERIA,
+        ARQUERO,
+        PESADA,
+        MAJITO
+    }
+
+    [SerializeField]
+    protected internal TIPO_NPC tipo = TIPO_NPC.INFANTERIA;
+
     void Awake()
     {
         //this.steer = new Steering();
@@ -122,6 +133,21 @@ public class AgentNPC : Agent
         this.gameObject.GetComponent<Arrive>().weight = 0.5f;
        
         virtualTarget.Orientation = Bodi.PositionToAngle(virtualTarget.Position - this.Position);
+<<<<<<< Updated upstream
+=======
+        if(firstTime){
+            foreach (SteeringBehaviour behavior in listSteerings) //Eliminamos Steering del NPC
+                DestroyImmediate(gameObject.GetComponent<SteeringBehaviour>());
+        
+            //DestroyImmediate(gameObject.GetComponent<Wander>());
+            Debug.Log("Tamaño listSteering: " + listSteerings.Length);
+            
+
+            this.gameObject.AddComponent<Arrive>();
+            this.gameObject.GetComponent<Arrive>().target = virtualTarget;
+            this.gameObject.GetComponent<Arrive>().weight = 0.5f;
+        
+>>>>>>> Stashed changes
 
         if(this.gameObject.GetComponent<Align>() == null){
             this.gameObject.AddComponent<Align>();

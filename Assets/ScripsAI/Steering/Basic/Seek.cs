@@ -32,12 +32,12 @@ public class Seek : SteeringBehaviour
         // Asignamos a steer.angular el escalar cero.
         steer.angular = 0;
 
-        float distancia =  newDirection.magnitude;
+        /*float distancia =  newDirection.magnitude;
 
          if( distancia < target.RadioInterior){
             steer.linear = Vector3.zero;
             agent.Velocity = Vector3.zero;
-        }
+        }*/
         // Retornamos el resultado final.
         return steer;
 
