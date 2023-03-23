@@ -11,7 +11,7 @@ public class AgentNPC : Agent
 
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
-    private Agent virtualTarget = null;
+    public Agent virtualTarget = null;
     private GameObject objVirtual;
 
     void Awake()
@@ -196,9 +196,7 @@ public class AgentNPC : Agent
             for (int i=0;i<numBigotes;i++){
 
                 // Mirando en la dirección de la orientación.
-                //Gizmos.color = Color.green;  
                 Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
-                //Gizmos.DrawRay(from, direction);
 
                 Gizmos.color = Color.red;  
                 Vector3 vectorInterior1 = new Vector3 (Mathf.Cos((AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z); 
@@ -219,17 +217,11 @@ public class AgentNPC : Agent
 
             // Dibujamos el circulo interior
             Gizmos.color = Color.green;
-            //Gizmos.DrawSphere(Position, _interiorRadius);
             Gizmos.DrawWireSphere(Position, RadioInterior);
 
             // Dibujamos el circulo exterior
             Gizmos.color = Color.yellow;
-            //Gizmos.DrawSphere(Position, _arrivalRadius);
             Gizmos.DrawWireSphere(Position, RadioExterior);
-
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireCube(Position + elevation, this.GetComponent<Collider>().bounds.size);
-
 
 
             Collider[] colliders = FindObjectsOfType<Collider>();
@@ -239,10 +231,6 @@ public class AgentNPC : Agent
                 Gizmos.DrawWireCube(collider.transform.position, collider.bounds.size);
             }
 
-
-            // Colision terreno
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(transform.position,  Vector3.down);
 
         }
 

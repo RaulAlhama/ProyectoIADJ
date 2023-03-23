@@ -104,21 +104,14 @@ public class FormationManager : MonoBehaviour
                     targetf.Position = relativeLoc.position + lider.Position;
                     targetf.Orientation = relativeLoc.orientation + lider.Orientation;
 
-                    slotAssignments[i].character.gameObject.AddComponent<Arrive>();
-                    slotAssignments[i].character.gameObject.AddComponent<Align>();
-
-                    slotAssignments[i].character.GetComponent<Arrive>().weight = 0.5f;
-                    slotAssignments[i].character.GetComponent<Align>().weight = 0.5f;
-                    slotAssignments[i].character.GetComponent<Arrive>().target = targetf;
-                    slotAssignments[i].character.GetComponent<Align>().target = targetf;
+                    slotAssignments[i].character.setTarget(targetf);
                 }
 
             }
 
             else {
                 
-                slotAssignments[i].character.GetComponent<Arrive>().target.Position = lider.Position;
-                slotAssignments[i].character.GetComponent<Align>().target.Orientation = lider.Orientation;
+                slotAssignments[i].character.setTarget(lider);
                 
             }
 
