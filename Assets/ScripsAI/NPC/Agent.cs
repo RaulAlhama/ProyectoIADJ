@@ -17,11 +17,15 @@ public class Agent : Bodi
     public bool select = false;
     public bool inFormacion = false;
     protected bool modoDebug = false;
-    public bool formar = true;
 
     public void setStatus(int value){
 
         status = value;
+    }
+
+    public int getStatus(){
+
+        return status;
     }
 
     public virtual void setTarget(Agent target){}

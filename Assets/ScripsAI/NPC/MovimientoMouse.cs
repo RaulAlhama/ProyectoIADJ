@@ -44,20 +44,6 @@ public class MovimientoMouse : MonoBehaviour
                 Destroy(formacion.gameObject);
             }
 
-            foreach (SlotAssignment slot in formacion.slotAssignments){
-
-                if (slot.character.getTarget() != null){
-                    
-                    Vector3 newDirection =  slot.character.getTarget().Position - slot.character.Position;
-                    float distance = newDirection.magnitude;
-                    if (distance < slot.character.RadioInterior)
-                    {
-                        slot.character.formar = true;
-                    }
-                } 
-                    
-            }
-
         }
     }
 
@@ -91,10 +77,6 @@ public class MovimientoMouse : MonoBehaviour
                     // Si un agente de los seleccionados no está en formación, se debe romper la formación
                     if (agent.inFormacion == false){
                         romperFormacion = true;
-                    }
-
-                    else{
-                        agent.formar = false;
                     }
 
                     agent.setTarget(npcVirtualPrefab);
@@ -211,7 +193,6 @@ public class MovimientoMouse : MonoBehaviour
             formacion = objForm.AddComponent<FormationManager>();
             formacion.lider = lider;
             lider.inFormacion = true;
-            lider.formar = true;
 
             formacion.slotAssignments = new List<SlotAssignment>();
 
@@ -231,7 +212,6 @@ public class MovimientoMouse : MonoBehaviour
                     // Se añade el agente a la formación
                     formacion.addCharacter(selectedNPCs[i]);
                     selectedNPCs[i].inFormacion = true;
-                    selectedNPCs[i].formar = true;
                     
                 }
             }
@@ -257,7 +237,6 @@ public class MovimientoMouse : MonoBehaviour
             formacion = objForm.AddComponent<FormationManager>();
             formacion.lider = lider;
             lider.inFormacion = true;
-            lider.formar = true;
 
             formacion.slotAssignments = new List<SlotAssignment>();
 
@@ -277,7 +256,6 @@ public class MovimientoMouse : MonoBehaviour
                     // Se añade el agente a la formación
                     formacion.addCharacter(selectedNPCs[i]);
                     selectedNPCs[i].inFormacion = true;
-                    selectedNPCs[i].formar = true;
                     
                 }
             }

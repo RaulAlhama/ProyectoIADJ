@@ -18,6 +18,7 @@ public class Align : SteeringBehaviour
     public override Steering GetSteering(AgentNPC agent)
     {
 
+        Debug.Log(agent + " -> " + agent.Orientation + "," + target.Orientation);
         Steering steer = new Steering();
 
         // Calcula el steering.

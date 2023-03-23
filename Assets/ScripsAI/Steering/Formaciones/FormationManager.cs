@@ -92,7 +92,7 @@ public class FormationManager : MonoBehaviour
         for (int i=0;i<slotAssignments.Count;i++){
             
 
-            if (slotAssignments[i].character.formar){
+            if (lider.getStatus() != Agent.MOVING){
 
                 DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
 
