@@ -220,7 +220,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -236,6 +235,22 @@ MonoBehaviour:
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
   tipo: 0
+--- !u!114 &29501602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29501598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0ee160fdb7a664e858e0a90c01a9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  weight: 0
+  wanderRadius: 15
+  wanderRate: 20
 --- !u!1001 &53328498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -325,7 +340,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -826,7 +840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.01342
+      value: -9.68
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.y
@@ -834,7 +848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.460744
+      value: -8.51
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -902,7 +916,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -918,6 +931,20 @@ MonoBehaviour:
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
   tipo: 0
+--- !u!114 &591373502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591373498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a5b6736943ee04e85a5de085ad82f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 853963403}
+  weight: 0
 --- !u!1 &600443071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,7 +1176,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -1501,7 +1527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.61
+      value: -16.02
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1509,7 +1535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.1
+      value: -14.44
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1577,7 +1603,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -2670,7 +2695,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -2775,7 +2799,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1
@@ -2880,7 +2903,6 @@ MonoBehaviour:
   status: 0
   select: 0
   inFormacion: 0
-  formar: 1
   drawBigotes: 0
   drawSpheres: 0
   numBigotes: 1

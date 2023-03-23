@@ -19,14 +19,14 @@ public class AgentNPC : Agent
 
     public enum TIPO_NPC
     {
-        INFANTERIA,
+        LANCERO,
         ARQUERO,
-        PESADA,
-        MAJITO
+        MAGO,
+        JINETE
     }
 
     [SerializeField]
-    protected internal TIPO_NPC tipo = TIPO_NPC.INFANTERIA;
+    protected internal TIPO_NPC tipo;
 
     void Awake()
     {
