@@ -91,14 +91,13 @@ public class FormationManager : MonoBehaviour
 
         for (int i=0;i<slotAssignments.Count;i++){
             
-
             if (lider.getStatus() != Agent.MOVING){
 
                 DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
 
                 if (!firstTime){
                     Destroy(GameObject.Find("target_" + slotAssignments[i].character));
-                    slotAssignments[i].character.GetComponent<Arrive>().target.Position = relativeLoc.position + lider.Position;
+                    slotAssignments[i].character.GetComponent<Arrive>().target.Position = Bodi.VectorRotate(relativeLoc.position,lider.Orientation) + lider.Position;
                     slotAssignments[i].character.GetComponent<Align>().target.Orientation = relativeLoc.orientation + lider.Orientation;
                 }
 

@@ -103,7 +103,7 @@ public class Bodi : MonoBehaviour
 
     // public float Heading()
     //      Retorna el ángulo heading en (-180, 180) en grado o radianes. Lo que consideres
-     public Vector3 directionToTarget(Vector3 pos)
+     public Vector3 vectorToTarget(Vector3 pos)
     {
         Vector3 vecDir;
         vecDir = pos - this.transform.position;
@@ -113,7 +113,7 @@ public class Bodi : MonoBehaviour
 
     public float Heading(Vector3 pos)
     {
-        return PositionToAngle(directionToTarget(pos));
+        return PositionToAngle(vectorToTarget(pos));
     }
     // public static float MapToRange(float rotation, Range r)
     //      Retorna un ángulo de (-180, 180) a (0, 360) expresado en grado or radianes
@@ -160,6 +160,10 @@ public class Bodi : MonoBehaviour
 
         return new Vector3(Mathf.Cos(orient), 0 , Mathf.Sin(orient));
 
+    }
+
+    public static Vector3 VectorRotate(Vector3 vector, float angulo){
+        return new Vector3 (Mathf.Cos(angulo * Mathf.Deg2Rad) * vector.x + Mathf.Sin(angulo * Mathf.Deg2Rad) * vector.z,vector.y,-Mathf.Sin(angulo* Mathf.Deg2Rad) * vector.x + Mathf.Cos(angulo* Mathf.Deg2Rad) * vector.z); 
     }
 
 }

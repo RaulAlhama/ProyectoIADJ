@@ -53,11 +53,14 @@ public class AgentNPC : Agent
     // Update is called once per frame
     public virtual void Update()
     {
-        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f){
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f && !inFormacion){
             Debug.Log("Asignando movimientos iniciales");
             listSteerings = steeringsIniciales;
             setStatus(NPC);
         }
+
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f &&  status == MOVING)
+            setStatus(ENFORMACION);
 
         this.ApplySteering();
         this.ApplyTerreno();
@@ -74,7 +77,7 @@ public class AgentNPC : Agent
         // Actualizar las propiedades para Time.deltaTime según NewtonEuler
         // La actualización de las propiedades se puede hacer en LateUpdate()
         Velocity += this.steer.linear * Time.deltaTime;
-        Debug.Log("Movimiento angular: " + steer.angular);
+        //Debug.Log("Movimiento angular: " + steer.angular);
         Rotation += this.steer.angular * Time.deltaTime;
         Position += Velocity * ApplyTerreno() * Time.deltaTime;
         Orientation += Rotation * Time.deltaTime;
@@ -225,17 +228,17 @@ public class AgentNPC : Agent
                 // Mirando en la dirección de la orientación.
                 Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
 
-                Gizmos.color = Color.red;  
-                Vector3 vectorInterior1 = new Vector3 (Mathf.Cos((AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((this.AnguloInterior-distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z); 
-                Vector3 vectorInterior2 = new Vector3 (Mathf.Cos((-AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((-this.AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((-this.AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((-this.AnguloInterior+distanciaBigotesInteriores*i) * Mathf.Deg2Rad) * direction.z); 
-
+                Gizmos.color = Color.red;
+                Vector3 vectorInterior1 = Bodi.VectorRotate(direction, AnguloInterior-distanciaBigotesInteriores*i);
+                Vector3 vectorInterior2 = Bodi.VectorRotate(direction, -AnguloInterior+distanciaBigotesInteriores*i);  
+                
                 Gizmos.DrawRay(from, vectorInterior1);
                 Gizmos.DrawRay(from, vectorInterior2);
 
                 // Dibujamos el angulo exterior
-                Vector3 vectorExterior3 = new Vector3 (Mathf.Cos((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((this.AnguloExterior-distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z); 
-                Vector3 vectorExterior4 = new Vector3 (Mathf.Cos((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Sin((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z,direction.y,-Mathf.Sin((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.x + Mathf.Cos((-this.AnguloExterior+distanciaBigotesExteriores*i) * Mathf.Deg2Rad) * direction.z); 
-
+                Vector3 vectorExterior3 = Bodi.VectorRotate(direction, AnguloExterior-distanciaBigotesExteriores*i);
+                Vector3 vectorExterior4 = Bodi.VectorRotate(direction, -AnguloExterior+distanciaBigotesExteriores*i); 
+                
                 Gizmos.color = Color.blue; 
                 Gizmos.DrawRay(from, vectorExterior3);
                 Gizmos.DrawRay(from, vectorExterior4);
