@@ -13,7 +13,7 @@ public class AgentNPC : Agent
 
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
-    public Agent virtualTarget = null;
+    private Agent virtualTarget = null;
     private GameObject objVirtual;
     private bool firstTime;
 
@@ -53,7 +53,7 @@ public class AgentNPC : Agent
     // Update is called once per frame
     public virtual void Update()
     {
-        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f){
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f && (virtualTarget.Orientation - this.Orientation) < this.AnguloInterior){
             Debug.Log("Asignando movimientos iniciales");
             listSteerings = steeringsIniciales;
             setStatus(NPC);
@@ -74,7 +74,7 @@ public class AgentNPC : Agent
         // Actualizar las propiedades para Time.deltaTime según NewtonEuler
         // La actualización de las propiedades se puede hacer en LateUpdate()
         Velocity += this.steer.linear * Time.deltaTime;
-        Debug.Log("Movimiento angular: " + steer.angular);
+        //Debug.Log("Movimiento angular: " + steer.angular);
         Rotation += this.steer.angular * Time.deltaTime;
         Position += Velocity * ApplyTerreno() * Time.deltaTime;
         Orientation += Rotation * Time.deltaTime;
@@ -189,6 +189,7 @@ public class AgentNPC : Agent
         this.steer = new Steering();
         //Si únicamente se aplica un movimiento, no aplicamos árbitro
         if(listSteerings.Length == 1){
+            //Debug.Log("Aplicando un úncimo movimiento");
             this.steer = listSteerings[0].GetSteering(this);
         } else{
             //Debug.Log("Aplicando árbitro");

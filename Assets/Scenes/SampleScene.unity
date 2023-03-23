@@ -235,24 +235,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
---- !u!114 &29501600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 29501598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0ee160fdb7a664e858e0a90c01a9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  weight: 0
-  wanderRadius: 15
-  wanderRate: 20
 --- !u!1001 &53328498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -333,9 +316,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 49.2
+  _maxRotation: 30
   _maxAcceleration: 1
-  _maxAngularAcc: 41.3
+  _maxAngularAcc: 30
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -357,7 +340,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &89677391
 GameObject:
@@ -911,9 +893,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 26.27
+  _maxRotation: 30
   _maxAcceleration: 40
-  _maxAngularAcc: 1
+  _maxAngularAcc: 30
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -935,7 +917,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &600443071
 GameObject:
@@ -1159,7 +1140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 52.2
+  _maxRotation: 30
   _maxAcceleration: 1
   _maxAngularAcc: 30
   _maxForce: 1
@@ -1183,7 +1164,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &683831024
 GameObject:
@@ -1588,9 +1568,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 39
+  _maxRotation: 30
   _maxAcceleration: 1
-  _maxAngularAcc: 46.3
+  _maxAngularAcc: 30
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -1612,7 +1592,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &922497876 stripped
 GameObject:
@@ -2682,9 +2661,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 5
-  _maxRotation: 40.92
+  _maxRotation: 30
   _maxAcceleration: 1
-  _maxAngularAcc: 42.69
+  _maxAngularAcc: 30
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -2706,7 +2685,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1001 &1740086734
 PrefabInstance:
@@ -2788,9 +2766,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 33.95
+  _maxRotation: 7.91
   _maxAcceleration: 1
-  _maxAngularAcc: 18.84
+  _maxAngularAcc: 20
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -2812,7 +2790,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1001 &2059096030
 PrefabInstance:
@@ -2918,7 +2895,6 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
-  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &2092360351 stripped
 GameObject:
