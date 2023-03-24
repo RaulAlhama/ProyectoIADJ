@@ -156,9 +156,9 @@ public class Bodi : MonoBehaviour
         return rotation;
     }
 
-    public Vector3 OrientationToVector(float orient){ //Pasar de angulo a Vector
+    public static Vector3 OrientationToVector(float orient){ //Pasar de angulo a Vector
 
-        return new Vector3(Mathf.Cos(orient), 0 , Mathf.Sin(orient));
+        return new Vector3(Mathf.Sin(orient), 0 , Mathf.Cos(orient));
 
     }
 

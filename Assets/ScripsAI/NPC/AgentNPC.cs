@@ -16,6 +16,7 @@ public class AgentNPC : Agent
     public Agent virtualTarget = null;
     private GameObject objVirtual;
     private bool firstTime;
+    private bool objetivo=false;
 
     public enum TIPO_NPC
     {
@@ -25,6 +26,14 @@ public class AgentNPC : Agent
         JINETE
     }
 
+    public bool getLLegada(){
+
+        return objetivo;
+    }
+    public void setLLegada(bool valor){
+
+        objetivo = valor;
+    }
 
     [SerializeField]
     protected internal TIPO_NPC tipo;
@@ -55,7 +64,6 @@ public class AgentNPC : Agent
     public virtual void Update()
     {
         if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f && !inFormacion){
-            Debug.Log("Asignando movimientos iniciales");
             listSteerings = steeringsIniciales;
             setStatus(NPC);
         }
@@ -79,9 +87,7 @@ public class AgentNPC : Agent
         this.ApplySteering();
         this.ApplyTerreno();
         //listSteerings = GetComponents<SteeringBehaviour>();
-
-        if (Input.GetKeyDown(KeyCode.H))
-            modoDebug = !modoDebug;
+        
     }
     
 
@@ -148,7 +154,6 @@ public class AgentNPC : Agent
             Destroy(virtualTarget.gameObject);
         }
         setStatus(MOVING);
-        Debug.Log("Asignado Target");
         objVirtual = new GameObject("NPCVirtual");
         virtualTarget = objVirtual.AddComponent<Agent>();
         virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;      
@@ -158,7 +163,6 @@ public class AgentNPC : Agent
                 DestroyImmediate(gameObject.GetComponent<SteeringBehaviour>());
         
             //DestroyImmediate(gameObject.GetComponent<Wander>());
-            Debug.Log("Tamaño listSteering: " + listSteerings.Length);
             
 
             this.gameObject.AddComponent<Arrive>();
@@ -170,7 +174,6 @@ public class AgentNPC : Agent
             this.gameObject.GetComponent<Align>().weight = 0.5f;
             firstTime = false;
         } else{
-            Debug.Log("Asignando nuevo target");
             this.gameObject.GetComponent<Arrive>().target = virtualTarget;
             this.gameObject.GetComponent<Align>().target = virtualTarget;
         }
@@ -221,66 +224,25 @@ public class AgentNPC : Agent
 
     }
 
-    void OnDrawGizmos()
-    {
-                     
-        if (modoDebug){
-
-            Vector3 from = transform.position; // Origen de la línea
-            Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
-
-            from = from + elevation;
-
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(from, Velocity);
-
-            float distanciaBigotesExteriores = this.AnguloExterior/numBigotes;
-            float distanciaBigotesInteriores = this.AnguloInterior/numBigotes; 
-            
-            for (int i=0;i<numBigotes;i++){
-
-                // Mirando en la dirección de la orientación.
-                Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
-
-                Gizmos.color = Color.red;
-                Vector3 vectorInterior1 = Bodi.VectorRotate(direction, AnguloInterior-distanciaBigotesInteriores*i);
-                Vector3 vectorInterior2 = Bodi.VectorRotate(direction, -AnguloInterior+distanciaBigotesInteriores*i);  
-                
-                Gizmos.DrawRay(from, vectorInterior1);
-                Gizmos.DrawRay(from, vectorInterior2);
-
-                // Dibujamos el angulo exterior
-                Vector3 vectorExterior3 = Bodi.VectorRotate(direction, AnguloExterior-distanciaBigotesExteriores*i);
-                Vector3 vectorExterior4 = Bodi.VectorRotate(direction, -AnguloExterior+distanciaBigotesExteriores*i); 
-                
-                Gizmos.color = Color.blue; 
-                Gizmos.DrawRay(from, vectorExterior3);
-                Gizmos.DrawRay(from, vectorExterior4);
-
-            }
-
-            // Dibujamos el circulo interior
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(Position, RadioInterior);
-
-            // Dibujamos el circulo exterior
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(Position, RadioExterior);
-
-            Gizmos.color = Color.black;
-            Collider[] colliders = FindObjectsOfType<Collider>();
-
-            foreach (Collider collider in colliders)
-            {
-                Gizmos.DrawWireCube(collider.transform.position, collider.bounds.size);
-            }
-
-
-        }
-
-    }
+    
 
     
+    void OnMouseDown(){
+        
+        if(!select){
+
+            select = true;
+            indicadorPrefab.SetActive(true);
+            if(status == STOPPED || status == NOSELECTED)
+                setStatus(SELECTED);
+        }else{
+            if(status == SELECTED || status == STOPPED)
+                setStatus(NOSELECTED);
+            select = false;
+            indicadorPrefab.SetActive(false);
+        }
+    }
+
     /*private void GetSteering(SteeringBehaviour behavior)
     {
         // Calcula el steeringbehaviour

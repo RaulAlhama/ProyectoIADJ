@@ -7,7 +7,7 @@ public class PathFindingLRTA : MonoBehaviour
 {
     // Start is called before the first frame update
     private GridFinal mundo;
-    private AgentPlayer player;
+    private AgentNPC player;
     private Agent npcVirtual;
     private double[,] grafoMovimiento;
     private const double infinito = Double.PositiveInfinity;
@@ -22,7 +22,7 @@ public class PathFindingLRTA : MonoBehaviour
         public Coordenadas corde;
         public double valor;
     }
-    public PathFindingLRTA(GridFinal wld, AgentPlayer pl){
+    public PathFindingLRTA(GridFinal wld, AgentNPC pl){
 
         mundo = wld;
         player = pl;

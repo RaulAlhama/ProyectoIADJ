@@ -25,21 +25,29 @@ public class Arrive : SteeringBehaviour
         float distance = newDirection.magnitude;
 
         // Si la distancia es menor al radio interior del personaje, lo paramos.
-        if (distance <= 0)
+        if (distance <=  agent.RadioExterior)
         {
-            agent.Velocity = Vector3.zero;  //Para en seco
+            if(/*agent.getLLegada() && */ distance < agent.RadioInterior){
+                    agent.Velocity = Vector3.zero; //wallAvoidDance
+            }
+
+            agent.setStatus(Agent.STOPPED);  //Para en seco
             return steer;
         }
 
         // Si la distancia es menor al radio exterior del personaje, establecemos la velocidad del agente a su máximo.
         if (distance > agent.RadioExterior)
         {
+            Debug.Log(agent + " arrive if 2");
+            agent.setStatus(Agent.MOVING); 
             agent.Speed = agent.MaxSpeed;
         }
 
         // Si la distancia está entre radio exterior del personaje y el radio interior, reducimos la velocidad.
         else
         {
+            Debug.Log(agent + " arrive if else");
+            agent.setStatus(Agent.MOVING); 
             agent.Speed = agent.MaxSpeed * distance/agent.RadioExterior;
         }
         

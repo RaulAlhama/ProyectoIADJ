@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2340,7 +2340,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1803796118}
-  - component: {fileID: 1803796117}
+  - component: {fileID: 1803796119}
+  - component: {fileID: 1803796120}
   m_Layer: 0
   m_Name: controladorMundo
   m_TagString: Untagged
@@ -2348,24 +2349,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1803796117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803796116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39bf9a4262fa9f74b90b3e77be70b1aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcVirtual: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
-  player: {fileID: 4652689162270838336, guid: 69969919e3315574c95ba0ea00e523b9, type: 3}
-  puntero: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
-  aNodo: {fileID: 5473435925852737089, guid: 2a597b3b41d2be044861b3af2abe6748, type: 3}
-  formaciones: []
-  selectedNPCs: []
 --- !u!4 &1803796118
 Transform:
   m_ObjectHideFlags: 0
@@ -2381,6 +2364,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1803796119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803796116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93397a9495f241f4ab7935464cfc17f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedNPCs: []
+  formaciones: []
+  npcVirtualPrefab: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
+  punteroPrefab: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
+  leaderFollowing: 1
+  aNodo: {fileID: 5473435925852737089, guid: 2a597b3b41d2be044861b3af2abe6748, type: 3}
+  npcVirtual: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
+  player: {fileID: 7860291542884268978, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
+--- !u!114 &1803796120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803796116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae2c72a9270ea7a45a36242700e21db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1809583451
 PrefabInstance:
   m_ObjectHideFlags: 0

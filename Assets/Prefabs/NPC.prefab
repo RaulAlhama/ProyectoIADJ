@@ -206,9 +206,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4732192303234003975}
   - component: {fileID: -1569819991788404230}
+  - component: {fileID: 7860291542884268978}
   m_Layer: 0
   m_Name: NPC
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -242,6 +243,47 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &7860291542884268978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8114095396761647107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8308a06016bdb0948a3568ee3e61498f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mass: 1
+  _maxSpeed: 4
+  _maxRotation: 90
+  _maxAcceleration: 10
+  _maxAngularAcc: 30
+  _maxForce: 1
+  _rotation: 0
+  _orientation: 0
+  status: 0
+  select: 0
+  inFormacion: 0
+  isLider: 0
+  tiempo: 10
+  drawBigotes: 0
+  drawSpheres: 0
+  numBigotes: 1
+  _interiorRadius: 0.5
+  _arrivalRadius: 2
+  _interiorAngle: 3
+  _exteriorAngle: 8
+  steer:
+    angular: 0
+    linear: {x: 0, y: 0, z: 0}
+  listSteerings: []
+  steeringsIniciales: []
+  steeringsTargets: []
+  indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
+  tipo: 0
 --- !u!1 &8348658344374044383
 GameObject:
   m_ObjectHideFlags: 0

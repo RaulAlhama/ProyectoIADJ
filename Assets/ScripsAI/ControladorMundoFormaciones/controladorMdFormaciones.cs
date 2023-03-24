@@ -9,7 +9,7 @@ public class controladorMdFormaciones : MonoBehaviour
     // Start is called before the first frame update
     public GridFinal mundo;
     public Agent npcVirtual;
-    public AgentPlayer player;
+    public AgentNPC player;
     public GameObject puntero;
     private Vector3 targetPosition; // posición donde haremos click
     public Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
@@ -26,7 +26,7 @@ public class controladorMdFormaciones : MonoBehaviour
     private List<BuscaCaminos> buscadores;
 
     public List<FormationManager> formaciones;
-    public List<AgentPlayer> selectedNPCs;
+    public List<Agent> selectedNPCs;
     private GameObject obj;
 
     private GameObject objUno;
@@ -48,7 +48,7 @@ public class controladorMdFormaciones : MonoBehaviour
     }
     struct BuscaCaminos{
 
-        public AgentPlayer pl;
+        public AgentNPC pl;
         public PathFindingLRTA buscador;
         public Agent npcVirtual;
     }
@@ -75,14 +75,14 @@ public class controladorMdFormaciones : MonoBehaviour
         mundo = new GridFinal(21,21,tam);
 
         buscadores = new List<BuscaCaminos>();
-        selectedNPCs = new List<AgentPlayer>();
+        selectedNPCs = new List<Agent>();
 
         player = Instantiate(player);
-        AgentPlayer player2 = Instantiate(player);
-        AgentPlayer player3 = Instantiate(player);
-        AgentPlayer player4 = Instantiate(player);
-        AgentPlayer player5 = Instantiate(player);
-        AgentPlayer player6 = Instantiate(player);
+        AgentNPC player2 = Instantiate(player);
+        AgentNPC player3 = Instantiate(player);
+        AgentNPC player4 = Instantiate(player);
+        AgentNPC player5 = Instantiate(player);
+        AgentNPC player6 = Instantiate(player);
         
 
         player.Position = new Vector3(21,0,35);
@@ -102,7 +102,7 @@ public class controladorMdFormaciones : MonoBehaviour
         agregaPlayers(player6);
         
     }
-    private void agregaPlayers(AgentPlayer pl){
+    private void agregaPlayers(AgentNPC pl){
 
         mundo.setValor(pl.Position,GridFinal.PLAYER);
         PathFindingLRTA buscador = new PathFindingLRTA(mundo,pl);
@@ -124,7 +124,7 @@ public class controladorMdFormaciones : MonoBehaviour
         }
         return null;
     }
-    private Vector3 restauraFormacion(AgentPlayer agent){
+    private Vector3 restauraFormacion(AgentNPC agent){
 
         foreach (FormationManager formacion in formaciones){
             //ActualizaFormacion(formacion);
@@ -149,20 +149,23 @@ public class controladorMdFormaciones : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && selectedNPCs.Count > 0)
         {   
-           
+            
+            bool romperFormacion = false;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
 
+                targetPosition = hit.point; //Nos quedamos con la posfción donde hemos hecho click
+                targetPosition.y = 0;
+                npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual 
+                punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
+                puntero = Instantiate(punteroPrefab);// creamos el puntero
+                Destroy(puntero, 0.5f);
+                // Mueve los NPC's seleccionados al destino
+                
                 if (!liderFollowing){
 
-                    if(copiaPuntero != null){
-
-                        Destroy(copiaPuntero);
-                    }
-                    Vector3 targetPosition = hit.point; //Nos quedamos con la posfción donde hemos hecho click
-                    targetPosition.y = 0;
-                    foreach (AgentPlayer agent in selectedNPCs)
+                    foreach (AgentNPC agent in selectedNPCs)
                     {   
                         foreach(BuscaCaminos bC in buscadores){
 
@@ -201,17 +204,8 @@ public class controladorMdFormaciones : MonoBehaviour
                     }
                 }
 
-                else{
+                else {
 
-                    bool romperFormacion = false;
-                    targetPosition = hit.point; //Nos quedamos con la posfción donde hemos hecho click
-                    targetPosition.y = 0;
-                    npcVirtualPrefab.Position = targetPosition; //Asignamos esa posición al target Virtual 
-                    punteroPrefab.transform.position = targetPosition; //Se la asignamos también al puntero
-                    puntero = Instantiate(punteroPrefab);// creamos el puntero
-                    Destroy(puntero, 0.5f);
-
-                    // Mueve los NPC's seleccionados al destino
                     foreach (Agent agent in selectedNPCs)
                     {   
 
@@ -238,35 +232,35 @@ public class controladorMdFormaciones : MonoBehaviour
                             }
                         }
                         
-                        
-
+                    
                     }
 
                     romperFormacion = false;
                 }
-            }
-        }else {
-            
-            if (!liderFollowing){
-                foreach (AgentPlayer agent in selectedNPCs){
-
-                    foreach(BuscaCaminos bC in buscadores){
-
-                            if(bC.pl.Equals(agent) && (bC.pl.status == Agent.STOPPED)){
-                                
-                                
-                                bC.buscador.LRTAestrella();
-                            }
-                    }
-                }
-            }
-
-            else {
 
             }
+
 
 
         }
+        else {
+
+            foreach (AgentNPC agent in selectedNPCs){
+
+                foreach(BuscaCaminos bC in buscadores){
+
+                        if(bC.pl.Equals(agent) && (bC.pl.status == Agent.STOPPED)){
+                            
+                            
+                            bC.buscador.LRTAestrella();
+                        }
+                }
+            }
+
+        }
+
+        
+
         //Si pulsamos en un personaje mientras pulsamos control, se añadirá a la lista de personajes seleccionados
         if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift))
         {
@@ -275,27 +269,46 @@ public class controladorMdFormaciones : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 GameObject npcObject = hit.collider.gameObject;
-                Agent selectAgent;
-                if(npcObject.GetComponent<AgentPlayer>() != null)
-                    selectAgent = npcObject.GetComponent<AgentPlayer>();
-                else
-                    selectAgent = npcObject.GetComponent<AgentNPC>();
-                
-                foreach (BuscaCaminos bC in buscadores){
+                if (npcObject.CompareTag("NPC"))
+                {
+                    Agent selectAgent;
+                    if(npcObject.GetComponent<AgentPlayer>() != null)
+                        selectAgent = npcObject.GetComponent<AgentPlayer>();
+                    else
+                        selectAgent = npcObject.GetComponent<AgentNPC>();
+                    
 
-                    if(bC.pl.status != Agent.NOSELECTED && bC.pl.Equals(selectAgent)){
-                        
-                        if(!selectedNPCs.Contains(bC.pl))
-                            selectedNPCs.Add(bC.pl);
-                        else
-                            selectedNPCs.Remove(bC.pl);
-                    }else if(bC.pl.Equals(selectAgent)){
-                        
-                        if(selectedNPCs.Contains(bC.pl))
-                            selectedNPCs.Remove(bC.pl);
+                    if (!liderFollowing){
+                        foreach (BuscaCaminos bC in buscadores){
+
+                            if(bC.pl.status != Agent.NOSELECTED && bC.pl.Equals(selectAgent)){
+                                
+                                if(!selectedNPCs.Contains(bC.pl))
+                                    selectedNPCs.Add(bC.pl);
+                                else
+                                    selectedNPCs.Remove(bC.pl);
+                            }else if(bC.pl.Equals(selectAgent)){
+                                
+                                if(selectedNPCs.Contains(bC.pl))
+                                    selectedNPCs.Remove(bC.pl);
+                            }
+                        }
                     }
-                }
+
+                    else{
+                        if (selectedNPCs.Contains(selectAgent))
+                        {
+                            selectAgent.quitarMarcador();
+                            selectedNPCs.Remove(selectAgent);
+                        }
+                        else
+                        {
+                            selectAgent.activarMarcador();
+                            selectedNPCs.Add(selectAgent);
+                        }
+                    }
                 
+                }
             }
         }
 
@@ -307,49 +320,63 @@ public class controladorMdFormaciones : MonoBehaviour
             {
                 GameObject npcObject = hit.collider.gameObject;
                 Agent selectAgent;
-                if(npcObject.GetComponent<AgentPlayer>() != null)
-                    selectAgent = npcObject.GetComponent<AgentPlayer>();
-                else
-                    selectAgent = npcObject.GetComponent<AgentNPC>();
-                    
-                if (selectedNPCs.Count > 0){ //Si hay varios personajes seleccionados, los deseleccionamos 
-                    
-                    foreach (AgentPlayer otherAgent in selectedNPCs)
-                    {
+
+                if (npcObject.CompareTag("NPC"))
+                {
+                    if(npcObject.GetComponent<AgentNPC>() != null)
+                        selectAgent = npcObject.GetComponent<AgentNPC>();
+                    else
+                        selectAgent = npcObject.GetComponent<AgentNPC>();
+                    if (selectedNPCs.Count > 0){ //Si hay varios personajes seleccionados, los deseleccionamos 
+                        foreach (Agent otherAgent in selectedNPCs)
+                        {
+                            otherAgent.quitarMarcador();
+                            foreach(BuscaCaminos bC in buscadores){
+
+                                if(bC.pl.Equals(otherAgent)){
+
+                                    bC.pl.setStatus(Agent.NOSELECTED);
+
+                                }
+                        
+                            }
+
+                        }
+                        selectedNPCs.Clear();
+
                         foreach(BuscaCaminos bC in buscadores){
 
-                            if(bC.pl.Equals(otherAgent)){
+                            if(bC.pl.Equals(selectAgent)){
 
-                                bC.pl.setStatus(Agent.NOSELECTED);
-
+                                bC.pl.setStatus(Agent.SELECTED);
+                                selectedNPCs.Add(bC.pl);
                             }
-                        
                         }
                     }
+
+                    foreach(BuscaCaminos bC in buscadores){
+
+                        if(bC.pl.Equals(selectAgent)){
+
+                            selectedNPCs.Add(bC.pl);
+                        }
+                    }
+                    
+                    selectedNPCs.Add(selectAgent);
+                    selectAgent.activarMarcador();
+                } 
+                else{
+                    foreach (Agent otherAgent in selectedNPCs)
+                        {
+                            otherAgent.quitarMarcador();
+                        }
                     selectedNPCs.Clear();
-
-                    foreach(BuscaCaminos bC in buscadores){
-
-                        if(bC.pl.Equals(selectAgent)){
-
-                            bC.pl.setStatus(Agent.SELECTED);
-                            selectedNPCs.Add(bC.pl);
-                        }
-                    }
-                }else{
-
-                    foreach(BuscaCaminos bC in buscadores){
-
-                        if(bC.pl.Equals(selectAgent)){
-
-                            selectedNPCs.Add(bC.pl);
-                        }
-                    }
                 }
+
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.Alpha1)){
 
             Formar();
 

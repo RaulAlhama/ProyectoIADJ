@@ -17,7 +17,6 @@ public class Agent : Bodi
     public int status = NOSELECTED;
     public bool select = false;
     public bool inFormacion = false;
-    protected bool modoDebug = false;
     public bool isLider = false;
     public float tiempo = 10f;
 
@@ -39,6 +38,10 @@ public class Agent : Bodi
     public bool drawBigotes = false;
     public bool drawSpheres = false;
     public int numBigotes = 1;
+
+    public int getNumBigotes(){
+        return numBigotes;
+    }
    
     
     [Tooltip("Radio interior de la IA")]
