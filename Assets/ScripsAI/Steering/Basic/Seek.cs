@@ -16,29 +16,25 @@ public class Seek : SteeringBehaviour
 
     public override Steering GetSteering(AgentNPC agent)
     {
+
+        // Creamos el steering.
         Steering steer = new Steering();
+
         Vector3 newDirection;
         if(isExplicitTarget){
             newDirection = explTargetDirection;
         }
+
+        // En caso contrario, calculamos la dirección deseada restando la posición del target a la del agente.
         else{
             newDirection = target.Position - agent.Position;
         }
         
-
-        // Calcula el steering.
-        // Asignamos a steer.linear el vector obtenido normalizado
+        // Obtenemos el vector velocidad mediante la dirección y aceleración máxima del agente.
         steer.linear = newDirection.normalized * agent.MaxAcceleration;
-        // Asignamos a steer.angular el escalar cero.
+
+        // Establecemos el steering angular a cero y devolvemos el steering.
         steer.angular = 0;
-
-        /*float distancia =  newDirection.magnitude;
-
-         if( distancia < target.RadioInterior){
-            steer.linear = Vector3.zero;
-            agent.Velocity = Vector3.zero;
-        }*/
-        // Retornamos el resultado final.
         return steer;
 
         

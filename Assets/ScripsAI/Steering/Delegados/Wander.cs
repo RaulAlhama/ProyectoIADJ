@@ -58,12 +58,10 @@ public class Wander : Face
             if (distance > agent.RadioExterior)
             {
                 agent.Speed = agent.MaxSpeed;
-                //Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
             }
             else
             {
                 agent.Speed = agent.MaxSpeed * distance/agent.RadioExterior;
-                //Debug.Log(agent.RadioInterior + " < " + distance + " > " + agent.RadioExterior + " , Speed = " + agent.MaxSpeed * distance/agent.RadioInterior);
             }
             
             agent.Velocity = newDirection.normalized;
@@ -71,7 +69,6 @@ public class Wander : Face
 
             steer.linear = agent.Velocity - target.Velocity;
             steer.linear /= timeToTarget;
-            //agent.transform.rotation = new Quaternion(0,90,0,1);
 
             if (steer.linear.magnitude > agent.MaxAcceleration)
                 steer.linear = steer.linear.normalized * agent.MaxAcceleration;
