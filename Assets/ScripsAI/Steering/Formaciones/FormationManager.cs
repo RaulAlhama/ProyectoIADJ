@@ -7,11 +7,19 @@ public struct SlotAssignment
 {
     public Agent character;
     public int slotNumber;
+    public Vector3 target;
 
     public SlotAssignment(Agent character, int slotNumber)
     {
         this.character = character;
         this.slotNumber = slotNumber;
+        this.target = Vector3.zero;
+    }
+    public SlotAssignment(Agent character, int slotNumber, Vector3 trg)
+    {
+        this.character = character;
+        this.slotNumber = slotNumber;
+        this.target = trg;
     }
 }
 

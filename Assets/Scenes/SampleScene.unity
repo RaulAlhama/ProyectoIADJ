@@ -1162,9 +1162,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 30
+  _maxRotation: 53.2
   _maxAcceleration: 1
-  _maxAngularAcc: 30
+  _maxAngularAcc: 55.9
   _maxForce: 1
   _rotation: 0
   _orientation: 0
@@ -2794,9 +2794,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 1
   _maxSpeed: 3
-  _maxRotation: 7.91
+  _maxRotation: 30.21
   _maxAcceleration: 1
-  _maxAngularAcc: 20
+  _maxAngularAcc: 62.32
   _maxForce: 1
   _rotation: 0
   _orientation: 0

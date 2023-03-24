@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ControlaMundo : MonoBehaviour
+public class PathFindingLRTA : MonoBehaviour
 {
-    public GridFinal mundo;
-    public Agent npcVirtual;
-    public AgentPlayer player;
-    public GameObject puntero;
-    //private Object copiaAgent;
-    private GameObject copiaPuntero;
-    private int i;
-    private int j;
+    // Start is called before the first frame update
+    private GridFinal mundo;
+    private AgentPlayer player;
+    private Agent npcVirtual;
     private double[,] grafoMovimiento;
-    private GameObject[] obstaculos;
     private const double infinito = Double.PositiveInfinity;
-    public Node aNodo;
-    //private bool siguiente = true;
-
+    private int iObjetivo;
+    private int jObjetivo;
     struct Coordenadas{
         public int x;
         public int y;
@@ -28,58 +22,24 @@ public class ControlaMundo : MonoBehaviour
         public Coordenadas corde;
         public double valor;
     }
+    public PathFindingLRTA(GridFinal wld, AgentPlayer pl){
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        obstaculos = GameObject.FindGameObjectsWithTag("Obstaculo");
-        grafoMovimiento = new double[21,21];
-        mundo = new GridFinal(21,21,2);
-        player = Instantiate(player);
-        player.Position = new Vector3(11,0,39);
-        mundo.setValor(player.Position,GridFinal.PLAYER);
-        mundo.setObstaculos(obstaculos);
-        grafoMovimiento = mundo.getGrafo();
+        mundo = wld;
+        player = pl;
 
     }
-    void Update()
-    {
+    public void setPosicionNpcVirtual(Vector3 pos){
 
-        if(Input.GetMouseButtonDown(1)){
+        npcVirtual.transform.position = pos;
+    }
+    public void setGrafoMovimiento(double[,] grm){
 
-            LRTAestrella();
-            //player.setPath();
-            /*RaycastHit hit;
-            
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100)) {
-                    
-                    if(copiaPuntero != null){
-
-                        Destroy(copiaPuntero);
-                    }
-                    Vector3 aux = hit.point;
-                    aux.y = 0;
-                    npcVirtual.transform.position = aux;
-                    puntero.transform.position = aux;
-
-                    copiaPuntero = (GameObject) Instantiate(puntero);
-
-                    player.target = npcVirtual;
-                    
-            }*/
-        }else if(player.status == AgentPlayer.STOPPED){
-
-            LRTAestrella();
-        }
+        grafoMovimiento = grm;
     }
     public void LRTAestrella(){
 
-        //int iObjetivo = 7;
-        //int jObjetivo = 19;
         int i;
         int j;
-        //int tamLista;
-        //int k = 0;
 
         mundo.getCoordenadas(player.Position,out i,out j);
         List<Coordenadas> puntos = new List<Coordenadas>();
@@ -92,7 +52,10 @@ public class ControlaMundo : MonoBehaviour
         puntoActual = actualizaPesos(puntos, puntoActual);
         Vector3 aux = mundo.getPosicionReal(puntoActual.x,puntoActual.y) + new Vector3(1,0,1);
         npcVirtual.transform.position = aux;
-        player.target = npcVirtual;
+        player.setTarget(npcVirtual);
+        if(puntoActual.x == iObjetivo && puntoActual.y == jObjetivo)
+            player.setLLegada(true);
+
     }
     private List<Coordenadas> generaEspacioLocal(Coordenadas puntoActual){
 
@@ -329,5 +292,11 @@ public class ControlaMundo : MonoBehaviour
         }
         return puntoActual;
 
+    }
+    public void setObjetivos(int i,int j,Agent npcVr){
+
+        iObjetivo = i;
+        jObjetivo = j;
+        npcVirtual = npcVr;
     }
 }

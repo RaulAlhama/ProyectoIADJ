@@ -217,7 +217,7 @@ public class MovimientoMouse : MonoBehaviour
             }
 
             formaciones.Add(formacion);
-
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2)){

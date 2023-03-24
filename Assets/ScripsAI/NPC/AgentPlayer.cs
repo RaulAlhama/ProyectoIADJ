@@ -11,11 +11,11 @@ public class AgentPlayer : Agent
     private float distance;
     private Vector3 relativeTarget;
 
-    public GameObject indicadorPrefab = null;
-    private GameObject indicador = null;
+    public GameObject indicadorPrefab;
     private bool targetCambiado = false;
 
-
+    private float tiempo = 0;
+    private bool objetivo = false;
 
 
 
@@ -25,21 +25,29 @@ public class AgentPlayer : Agent
         switch (status){
 
             case NOSELECTED:{
+                if(select){
+                    select= false;
+                }
+                indicadorPrefab.SetActive(false);
                 break;
             }
             case SELECTED:{
 
+                if(!select){
+                    select = true;
+                }
+                indicadorPrefab.SetActive(true);
                 esperaTarget();
                 break;
             }
             case MOVING:{
+                tiempo = 0;
                 aplicaMovimiento();
                 break;
             }
             case STOPPED:{
-                if(indicador == null){ //Si está parado y no esta seleccionado cambiamos a NOSELECTED
-                    setStatus(NOSELECTED);
-                }
+                
+                tiempo += Time.deltaTime;
                 esperaNuevaTarget();
                 break;
             }
@@ -47,25 +55,21 @@ public class AgentPlayer : Agent
         }
         
     }
-
-
-    public override void activarMarcador(){
-        indicador = Instantiate(indicadorPrefab, transform);
-        indicador.transform.localPosition = Vector3.up * 4;
-        if (status != MOVING)
-            setStatus(SELECTED);
-        select = true;
-    }
-
-    public override void quitarMarcador(){
-        if (indicador != null){
-            Destroy(indicador);
-        }
-        select = false;
+    void OnMouseDown(){
         
+        if(!select){
+
+            select = true;
+            indicadorPrefab.SetActive(true);
+            if(status == STOPPED || status == NOSELECTED)
+                setStatus(SELECTED);
+        }else{
+            if(status == SELECTED || status == STOPPED)
+                setStatus(NOSELECTED);
+            select = false;
+            indicadorPrefab.SetActive(false);
+        }
     }
-
-
     public override void setTarget(Agent virtualTargetPrefab ){
             //virtualTarget = Instantiate(virtualTargetPrefab);
         targetCambiado = true;
@@ -80,15 +84,17 @@ public class AgentPlayer : Agent
         
             //Vector3 Velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             relativeTarget = obstacleAvoidance.getNuevoObjetivo(); //wallAvoidDance
-            Acceleration = relativeTarget - Position;
+            /*Acceleration = relativeTarget - Position;
             Acceleration = Acceleration.normalized;
-            Acceleration *= MaxAcceleration;
+            Acceleration *= MaxAcceleration;*/
             
+            Velocity += relativeTarget - Position;
             Position += Velocity * Time.deltaTime;
-            Velocity += Acceleration * Time.deltaTime;
+            //Velocity += Acceleration * Time.deltaTime;
             distance = (target.Position - Position).magnitude; //wallAvoidDance
-            if (distance < RadioInterior){
-                Velocity = Vector3.zero; //wallAvoidDance
+            if (distance < RadioExterior){
+                if(objetivo && distance < RadioInterior)
+                    Velocity = Vector3.zero; //wallAvoidDance
                 target.Position = Position;
                 setStatus(STOPPED);
 
@@ -120,6 +126,14 @@ public class AgentPlayer : Agent
             targetCambiado = false;
             setStatus(MOVING);
         }
+    }
+    public void setLLegada(bool valor){
+
+        objetivo = valor;
+    }
+    public bool getLLegada(){
+
+        return objetivo;
     }
 
 }
