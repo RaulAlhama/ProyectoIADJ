@@ -13,8 +13,6 @@ public class AgentPlayer : Agent
 
     public GameObject indicadorPrefab;
     private bool targetCambiado = false;
-
-    private float tiempo = 0;
     private bool objetivo = false;
 
 
@@ -41,13 +39,11 @@ public class AgentPlayer : Agent
                 break;
             }
             case MOVING:{
-                tiempo = 0;
                 aplicaMovimiento();
                 break;
             }
             case STOPPED:{
-                
-                tiempo += Time.deltaTime;
+            
                 esperaNuevaTarget();
                 break;
             }
