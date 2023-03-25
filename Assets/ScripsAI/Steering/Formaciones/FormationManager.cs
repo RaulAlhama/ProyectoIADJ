@@ -7,15 +7,16 @@ public struct SlotAssignment
 {
     public Agent character;
     public int slotNumber;
-    public Vector3 target;
+    public Agent target;
+    
 
     public SlotAssignment(Agent character, int slotNumber)
     {
         this.character = character;
         this.slotNumber = slotNumber;
-        this.target = Vector3.zero;
+        this.target = new Agent();
     }
-    public SlotAssignment(Agent character, int slotNumber, Vector3 trg)
+    public SlotAssignment(Agent character, int slotNumber, Agent trg)
     {
         this.character = character;
         this.slotNumber = slotNumber;
@@ -44,6 +45,7 @@ public class FormationManager : MonoBehaviour
     public List<SlotAssignment> slotAssignments;
     public Agent lider;
     private bool firstTime;
+    private bool liderFollowing = true;
 
     void Start(){
         firstTime = true;
@@ -52,7 +54,12 @@ public class FormationManager : MonoBehaviour
 
     void Update(){
 
+        
         updateSlots();
+    }
+    public void setComportamiento(bool value){
+
+        liderFollowing = value;
     }
 
     // Método para inicializar la lista de SlotAssignments
@@ -97,33 +104,49 @@ public class FormationManager : MonoBehaviour
 
     // Método para actualizar la posición y orientación de los agentes de la formación
     public void updateSlots(){
-
+       
         for (int i=0;i<slotAssignments.Count;i++){
             
             if (lider.getStatus() != Agent.MOVING){
 
+                
                 DriftOffset relativeLoc = pattern.getSlotLocation(slotAssignments[i].slotNumber);       // Obtiene la posicion relativa en el patron dependiendo de su identificador
 
                 if (!firstTime){
+            
                     Destroy(GameObject.Find("target_" + slotAssignments[i].character));
-                    slotAssignments[i].character.GetComponent<Arrive>().target.Position = Bodi.VectorRotate(relativeLoc.position,lider.Orientation) + lider.Position;
-                    slotAssignments[i].character.GetComponent<Align>().target.Orientation = relativeLoc.orientation + lider.Orientation;
+
+                    GameObject gtarget = new GameObject("target_" + slotAssignments[i].character);  
+                    Agent targetf = gtarget.AddComponent<Agent>() as Agent;
+                    targetf.Position = Bodi.VectorRotate(relativeLoc.position,lider.Orientation) + lider.Position;
+                    targetf.Orientation = relativeLoc.orientation + lider.Orientation;
+                    slotAssignments[i] = new SlotAssignment(slotAssignments[i].character, i, targetf);
+                    if(liderFollowing){
+
+                        slotAssignments[i].character.GetComponent<Arrive>().target.Position = Bodi.VectorRotate(relativeLoc.position,lider.Orientation) + lider.Position;
+                        slotAssignments[i].character.GetComponent<Align>().target.Orientation = relativeLoc.orientation + lider.Orientation;
+                    }
+                    
                 }
 
                 else {
+                    
                     GameObject gtarget = new GameObject("target_" + slotAssignments[i].character);               // Creamos el target
                     Agent targetf = gtarget.AddComponent<Agent>() as Agent;
                     targetf.Position = relativeLoc.position + lider.Position;
                     targetf.Orientation = relativeLoc.orientation + lider.Orientation;
 
-                    slotAssignments[i].character.setTarget(targetf);
+                    slotAssignments[i] = new SlotAssignment(slotAssignments[i].character, i, targetf);
+                    if(liderFollowing)
+                        slotAssignments[i].character.setTarget(targetf);
                 }
 
             }
 
             else {
                 
-                slotAssignments[i].character.setTarget(lider);
+                if(liderFollowing)
+                    slotAssignments[i].character.setTarget(lider);
                 
             }
 

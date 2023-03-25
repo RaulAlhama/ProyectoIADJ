@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2380,7 +2380,7 @@ MonoBehaviour:
   formaciones: []
   npcVirtualPrefab: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
   punteroPrefab: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
-  leaderFollowing: 1
+  leaderFollowing: 0
   aNodo: {fileID: 5473435925852737089, guid: 2a597b3b41d2be044861b3af2abe6748, type: 3}
   npcVirtual: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
   player: {fileID: 7860291542884268978, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}

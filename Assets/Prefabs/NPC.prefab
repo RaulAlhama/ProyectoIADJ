@@ -272,7 +272,7 @@ MonoBehaviour:
   drawSpheres: 0
   numBigotes: 1
   _interiorRadius: 0.5
-  _arrivalRadius: 2
+  _arrivalRadius: 1
   _interiorAngle: 3
   _exteriorAngle: 8
   steer:

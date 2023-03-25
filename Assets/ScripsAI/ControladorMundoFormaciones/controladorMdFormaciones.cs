@@ -7,7 +7,7 @@ using System.Linq;
 public class controladorMdFormaciones : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GridFinal mundo;
+   /* public GridFinal mundo;
     public Agent npcVirtual;
     public AgentNPC player;
     public GameObject puntero;
@@ -456,5 +456,5 @@ public class controladorMdFormaciones : MonoBehaviour
                 }
             }
     }
-    
+    */
 }
