@@ -342,7 +342,7 @@ public class MovimientoMouse : MonoBehaviour
 
                 foreach(BuscaCaminos bC in buscadores){
 
-                        if(bC.pl.Equals(agent) && (bC.pl.status == Agent.STOPPED) && !bC.pl.getLLegada()){
+                        if(bC.pl.Equals(agent) && (bC.pl.getStatus() == Agent.STOPPED) && !bC.pl.getLLegada()){
                             
                             
                             bC.buscador.LRTAestrella();
@@ -382,7 +382,7 @@ public class MovimientoMouse : MonoBehaviour
                         foreach (BuscaCaminos bC in buscadores)
                         {
 
-                            if(bC.pl.status != Agent.NOSELECTED && bC.pl.Equals(selectAgent))
+                            if(bC.pl.getStatus() != Agent.NOSELECTED && bC.pl.Equals(selectAgent))
                             {
                                 
                                 if(!selectedNPCs.Contains(bC.pl)){
