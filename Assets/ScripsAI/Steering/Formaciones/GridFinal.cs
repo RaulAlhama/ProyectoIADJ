@@ -38,7 +38,7 @@ public class GridFinal
     }
     public Vector3 getPosicionReal(int x, int y){
 
-        return new Vector3(x,0,y) * tam;
+        return new Vector3(x,0,y) * tam; //+ new Vector3(tam/2,0,tam/2);
     }
     public void getCoordenadas(Vector3 posicionReal, out int i, out int j){
 
@@ -64,13 +64,11 @@ public class GridFinal
             //Debug.Log(obs.transform.tag);
             setValor(obs.transform.position, OBSTACULO);
         }
-        Debug.Log(gridArray[15,10]);
+
         
     }
-    public double[,] getGrafo(){ /// Vector3 posTarget
+    public double[,] getGrafo(int iObjetivo, int jObjetivo){ /// Vector3 posTarget
 
-        int iObjetivo = 15; //getCoordenadas
-        int jObjetivo = 10;
         double[,] grafoMovimiento = new double[ancho,largo];
 
         for(int i = 0; i < grafoMovimiento.GetLength(0); i++){
@@ -87,7 +85,15 @@ public class GridFinal
         }
         return grafoMovimiento;
     }
+    public bool Posible(int i, int j){
+
+        if(gridArray[i,j] != GridFinal.OBSTACULO){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     
 
 }
-

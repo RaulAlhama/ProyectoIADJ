@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.24
+      value: -27.89
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -232,6 +232,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!114 &29501607
 MonoBehaviour:
@@ -362,6 +363,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &89677391
 GameObject:
@@ -848,7 +850,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.68
+      value: -16.01342
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.y
@@ -856,7 +858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.51
+      value: -5.460744
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -936,6 +938,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &600443071
 GameObject:
@@ -1180,6 +1183,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &683831024
 GameObject:
@@ -1517,7 +1521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.02
+      value: -9.61
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1525,7 +1529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.44
+      value: -14.1
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1605,6 +1609,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &922497876 stripped
 GameObject:
@@ -2695,6 +2700,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!114 &1692592182
 MonoBehaviour:
@@ -2814,6 +2820,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1001 &2059096030
 PrefabInstance:
@@ -2916,6 +2923,7 @@ MonoBehaviour:
   steeringsIniciales: []
   steeringsTargets: []
   indicadorPrefab: {fileID: 7801295836071465527, guid: 0e2720e78c624184c96610ec2a6c44b3, type: 3}
+  virtualTarget: {fileID: 0}
   tipo: 0
 --- !u!1 &2092360351 stripped
 GameObject:

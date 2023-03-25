@@ -7,11 +7,20 @@ public struct SlotAssignment
 {
     public Agent character;
     public int slotNumber;
+    public Agent target;
+    
 
     public SlotAssignment(Agent character, int slotNumber)
     {
         this.character = character;
         this.slotNumber = slotNumber;
+        this.target = new Agent();
+    }
+    public SlotAssignment(Agent character, int slotNumber, Agent trg)
+    {
+        this.character = character;
+        this.slotNumber = slotNumber;
+        this.target = trg;
     }
 }
 
@@ -36,14 +45,21 @@ public class FormationManager : MonoBehaviour
     public List<SlotAssignment> slotAssignments;
     public Agent lider;
     private bool firstTime;
+    private bool liderFollowing = true;
 
     void Start(){
         firstTime = true;
+        lider.isLider = true;
     }
 
     void Update(){
 
+        
         updateSlots();
+    }
+    public void setComportamiento(bool value){
+
+        liderFollowing = value;
     }
 
     // Método para inicializar la lista de SlotAssignments
@@ -88,7 +104,7 @@ public class FormationManager : MonoBehaviour
 
     // Método para actualizar la posición y orientación de los agentes de la formación
     public void updateSlots(){
-
+       
         for (int i=0;i<slotAssignments.Count;i++){
             
             if (lider.getStatus() != Agent.MOVING){
@@ -119,7 +135,8 @@ public class FormationManager : MonoBehaviour
 
             else {
                 
-                slotAssignments[i].character.setTarget(lider);
+                if(liderFollowing)
+                    slotAssignments[i].character.setTarget(lider);
                 
             }
 

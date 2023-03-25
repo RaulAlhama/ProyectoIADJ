@@ -11,19 +11,19 @@ public class Formacion2 : FormationPattern
         switch(slotNumber) 
         {
         case 0:
-            v = new Vector3(6,0,5);
+            v = new Vector3(2,0,-2);
             return new DriftOffset(v,0.0f);
          case 1:
-            v = new Vector3(-6,0,5);
+            v = new Vector3(-2,0,-2);
             return new DriftOffset(v,0.0f);
          case 2:
-            v = new Vector3(0,0,-4);
+            v = new Vector3(2,0,2);
             return new DriftOffset(v,180.0f);
         case 3:
-            v = new Vector3(3,0,-9);
+            v = new Vector3(-2,0,2);
             return new DriftOffset(v,45.0f);
          case 4:
-            v = new Vector3(-3,0,-9);
+            v = new Vector3(-1,0,-3);
             return new DriftOffset(v,-45.0f);
          default:
             v = Vector3.zero;

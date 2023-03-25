@@ -20,6 +20,8 @@ public class Agent : Bodi
     protected bool modoDebug = false;
     public bool isLider = false;
     protected bool quitarMovimiento = false;
+    public bool isLider = false;
+    public float tiempo = 10f;
 
     public void setStatus(int value){
 
@@ -43,6 +45,10 @@ public class Agent : Bodi
     public bool drawBigotes = false;
     public bool drawSpheres = false;
     public int numBigotes = 1;
+
+    public int getNumBigotes(){
+        return numBigotes;
+    }
    
     
     [Tooltip("Radio interior de la IA")]

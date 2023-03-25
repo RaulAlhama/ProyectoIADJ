@@ -80,7 +80,6 @@ public class Wander : Face
             targetVelocity = newDirection * targetSpeed;
             steer.linear = targetVelocity - agent.Velocity;
             steer.linear /= timeToTarget;
-            //agent.transform.rotation = new Quaternion(0,90,0,1);
 
             if (steer.linear.magnitude > agent.MaxAcceleration)
                 steer.linear = steer.linear.normalized * agent.MaxAcceleration;
