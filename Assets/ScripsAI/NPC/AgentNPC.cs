@@ -16,6 +16,7 @@ public class AgentNPC : Agent
     public Agent virtualTarget = null;
     private GameObject objVirtual;
     private bool firstTime;
+    private float tiempo; //Tiempo a esperar para activar el wander en en lider
 
     public enum TIPO_NPC
     {
@@ -30,7 +31,7 @@ public class AgentNPC : Agent
 
     void Awake()
     {
-        //this.steer = new Steering();
+        this.steer = new Steering();
 
         // Construye una lista con todos las componenen del tipo SteeringBehaviour.
         // La llamaremos listSteerings
@@ -47,20 +48,44 @@ public class AgentNPC : Agent
         Orientation = transform.eulerAngles.y;
         setStatus(NPC);
         firstTime = true;
+        tiempo = 150.0f;
         //Velocity = Vector3.zero;
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f && !inFormacion){
+        //Cuando decimos a una unidad que vaya a un lugar. Cuando pasa un tiempo recupera su movimiento inicial
+        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.0001f && !inFormacion){
             Debug.Log("Asignando movimientos iniciales");
             listSteerings = steeringsIniciales;
             setStatus(NPC);
         }
 
-        if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.01f &&  status == MOVING)
+        
+        //Llega al target seleccionado espera, si pasa X tiempo se añadirá wander
+        if(isLider && virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < this.RadioInterior && !(tiempo <= 0)){
+            tiempo -= Time.deltaTime;
             setStatus(ENFORMACION);
+        }
+
+        //Nada mas realizada la formación, esperamos un tiempo. Si al acabar este contador no se ha seleccionado ningún lugar
+        if(quitarMovimiento && inFormacion && !(tiempo <= 0)){
+            tiempo -= Time.deltaTime;
+            setStatus(ENFORMACION);
+        }
+
+        //Le asignamos el wander ya que ha pasado X tiempo
+        if(tiempo <= 0 && inFormacion){
+            quitarMovimiento = false;
+            if(this.gameObject.GetComponent<Wander>() == null){
+                this.gameObject.AddComponent<Wander>();
+            }
+            //setStatus(MOVING);
+            listSteerings = GetComponents<SteeringBehaviour>();
+            //tiempo = 10.0f;
+        }
+
 
         this.ApplySteering();
         this.ApplyTerreno();
@@ -117,50 +142,39 @@ public class AgentNPC : Agent
 
 
     
-    public override Agent getTarget()
-    {
-        if (this.GetComponent<SteeringBehaviour>() != null){
-            return this.GetComponent<SteeringBehaviour>().target;
-        }
-
-        return null;
-
-    }
-
-
-
     public override void setTarget(Agent virtualTargetPrefab){
-        if(virtualTarget != null){
-            Destroy(virtualTarget.gameObject);
+        if(virtualTarget == null){
+            objVirtual = new GameObject("NPCVirtual");
+            virtualTarget = objVirtual.AddComponent<Agent>();
         }
         setStatus(MOVING);
-        Debug.Log("Asignado Target");
-        objVirtual = new GameObject("NPCVirtual");
-        virtualTarget = objVirtual.AddComponent<Agent>();
+        quitarMovimiento = false;
+        tiempo = 10.0f;
+        Velocity = Vector3.zero;
+        //Rotation = 0;     
         virtualTarget.Position = virtualTargetPrefab.GetComponent<Agent>().Position;      
         virtualTarget.Orientation = Bodi.PositionToAngle(virtualTarget.Position - this.Position);
         if(firstTime){
             foreach (SteeringBehaviour behavior in listSteerings) //Eliminamos Steering del NPC
                 DestroyImmediate(gameObject.GetComponent<SteeringBehaviour>());
-        
+
             //DestroyImmediate(gameObject.GetComponent<Wander>());
-            Debug.Log("Tamaño listSteering: " + listSteerings.Length);
             
+            this.gameObject.AddComponent<Align>();
+            this.gameObject.GetComponent<Align>().target = virtualTarget;
+            this.gameObject.GetComponent<Align>().weight = 0.5f;
 
             this.gameObject.AddComponent<Arrive>();
             this.gameObject.GetComponent<Arrive>().target = virtualTarget;
             this.gameObject.GetComponent<Arrive>().weight = 0.5f;
-
-            this.gameObject.AddComponent<Align>();
-            this.gameObject.GetComponent<Align>().target = virtualTarget;
-            this.gameObject.GetComponent<Align>().weight = 0.5f;
             firstTime = false;
+            steeringsTargets = GetComponents<SteeringBehaviour>();
+            foreach (SteeringBehaviour behavior in steeringsTargets) //Eliminamos Steering del NPC
+                DestroyImmediate(gameObject.GetComponent<SteeringBehaviour>());
         } else{
-            Debug.Log("Asignando nuevo target");
-            this.gameObject.GetComponent<Arrive>().target = virtualTarget;
-            this.gameObject.GetComponent<Align>().target = virtualTarget;
+            steeringsTargets[0].target = virtualTarget;
+            steeringsTargets[1].target = virtualTarget;
         }
-        steeringsTargets = GetComponents<SteeringBehaviour>();
         listSteerings = steeringsTargets;
     }
 
@@ -187,18 +201,29 @@ public class AgentNPC : Agent
 
     public virtual void LateUpdate() //Se ejecuta después de Update
     {
-
-        // Reseteamos el steering final.
-        this.steer = new Steering();
-        //Si únicamente se aplica un movimiento, no aplicamos árbitro
-        if(listSteerings.Length == 1){
-            this.steer = listSteerings[0].GetSteering(this);
-        } else{
-            //Debug.Log("Aplicando árbitro");
+        if(!quitarMovimiento){
+            this.steer = new Steering();
             this.steer = arbitro.GetSteering(this,listSteerings);
-        }
+            //Debug.Log("Aplicando árbitro: " + "Movimiento Lineal: " + this.steer.linear + "Movimiento angular: " + this.steer.angular);
+            // Reseteamos el steering final.
+            /*this.steer = new Steering();
+        //Si únicamente se aplica un movimiento, no aplicamos árbitro
+            if(listSteerings.Length < 2){
+                this.steer = listSteerings[0].GetSteering(this);
+                Debug.Log("Usando un único steering");
+            } else if (listSteerings.Length > 1) {
+            //Debug.Log("Aplicando árbitro");
+                this.steer = arbitro.GetSteering(this,listSteerings);
+                Debug.Log("Aplicando árbitro: " + "Movimiento Lineal: " + this.steer.linear + "Movimiento angular: " + this.steer.angular);
+            } else{
 
-       
+            } */
+        } else{
+            Velocity = Vector3.zero;
+            Rotation = 0;
+        }
+        
+            
 
         // Recorremos cada steering
         //foreach (SteeringBehaviour behavior in listSteerings)

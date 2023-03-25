@@ -13,27 +13,21 @@ public class Formacion2 : FormationPattern
         case 0:
             v = new Vector3(6,0,5);
             return new DriftOffset(v,0.0f);
-            break;
          case 1:
             v = new Vector3(-6,0,5);
             return new DriftOffset(v,0.0f);
-            break;
          case 2:
             v = new Vector3(0,0,-4);
             return new DriftOffset(v,180.0f);
-            break;
         case 3:
             v = new Vector3(3,0,-9);
             return new DriftOffset(v,45.0f);
-            break;
          case 4:
             v = new Vector3(-3,0,-9);
             return new DriftOffset(v,-45.0f);
-            break;
          default:
             v = Vector3.zero;
             return new DriftOffset(v,0.0f);
-            break;
         }
 
         

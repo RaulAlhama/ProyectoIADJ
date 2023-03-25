@@ -34,9 +34,16 @@ public class BlendedSteering //: SteeringBehaviour
         Steering s;
 
         foreach (BehaviorAndWeight behaviorAndWeight in behaviors){
-            s = behaviorAndWeight.behavior.GetSteering(agent);
-            steer.linear += behaviorAndWeight.weight * s.linear;
-            steer.angular += behaviorAndWeight.weight * s.angular;
+            if(behaviorAndWeight.behavior is Arrive){
+                if(agent.Rotation == 0){ //Ejecutamos después del movimiento angular
+                    s = behaviorAndWeight.behavior.GetSteering(agent);
+                    steer.linear += behaviorAndWeight.weight * s.linear;
+                }
+            } else{
+                s = behaviorAndWeight.behavior.GetSteering(agent);
+                steer.linear += behaviorAndWeight.weight * s.linear;
+                steer.angular += behaviorAndWeight.weight * s.angular;
+            }
             //Debug.Log("BlendedSteering.cs: " + "Movimiento: " + behaviorAndWeight.behavior + " Vector: " + behaviorAndWeight.weight * s.linear + " Peso: " + behaviorAndWeight.weight);
          }
 

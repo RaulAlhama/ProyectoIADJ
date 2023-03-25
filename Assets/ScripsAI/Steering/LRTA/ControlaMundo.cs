@@ -67,7 +67,7 @@ public class ControlaMundo : MonoBehaviour
                     player.target = npcVirtual;
                     
             }*/
-        }else if(player.status == AgentPlayer.STOPPED){
+        }else if(player.getStatus() == AgentPlayer.STOPPED){
 
             LRTAestrella();
         }

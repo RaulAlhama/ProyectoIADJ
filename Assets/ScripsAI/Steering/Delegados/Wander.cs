@@ -12,7 +12,9 @@ public class Wander : Face
     private float wanderOrientation=0f;
     private GameObject wander;
     private bool firstTime;
-    private float time;
+    public float tiempo;
+    private float targetSpeed;
+    private Vector3 targetVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +23,7 @@ public class Wander : Face
         wander = new GameObject("Wander");
         target = wander.AddComponent<Agent>() as Agent;
         firstTime = true;
-        time = 0.1f;
+        tiempo = 0.0f;
 
     }
 
@@ -32,53 +34,60 @@ public class Wander : Face
         if ((this.target.Position - agent.Position).magnitude < agent.RadioInterior || firstTime){
             Random rnd = new Random();
             wanderOrientation += (float)rnd.NextDouble() * wanderRate;
-       
             this.target.Orientation =  wanderOrientation + agent.Orientation;
             this.target.Position = agent.Position + wanderOffset * Bodi.AngleToPosition(agent.Orientation);
             this.target.Position += wanderRadius * Bodi.AngleToPosition(this.target.Orientation);
-            agent.Velocity = new Steering().linear;
-             
+            agent.Velocity = Vector3.zero; //Detenemos al agente cuando llega al target
+            //[Formaciones] restablecemos el tiempo para que espere 20 unidades.
+            if(tiempo < 0)
+                tiempo = 20.0f;
         }
-
-        Steering steer = base.GetSteering(agent);
+        Steering steer;
         firstTime = false;
-        time -= Time.deltaTime;
-            
-        if (agent.Rotation == 0 && time <= 0){
-            time = 0.1f;
+        //[Formaciones] Esperamos un tiempo antes de aplicar el movimiento
+        if(agent.getStatus() == Agent.ENFORMACION && !(tiempo < 0)){
+            tiempo -= Time.deltaTime;
+            steer = new Steering(); // Devolvemos steering vacio
+        } else{
+            steer = base.GetSteering(agent); //Una vez pasado el tiempo aplicamos movimiento angular
+        }
+        //[Formaciones] Si el agente está parado, cambiamos al estado de formación
+        if(steer.linear.magnitude == 0 && agent.inFormacion){
+            agent.setStatus(Agent.ENFORMACION);
+        }
+        //Comprobamos que haya terminado de rotar para aplicar el movimiento lineal
+        if ((steer.angular == 0 && !agent.inFormacion) || (steer.angular == 0 && tiempo < 0)){
+            agent.setStatus(Agent.MOVING);
             //Aplicamos el movimiento lineal
             Vector3 newDirection = target.Position - agent.Position;
             float distance = newDirection.magnitude;
  
             if (distance < agent.RadioInterior)
-            {
-                agent.Velocity = Vector3.zero;  //Para en seco
+            {   
                 return steer;
             }
             if (distance > agent.RadioExterior)
             {
-                agent.Speed = agent.MaxSpeed;
+                targetSpeed = agent.MaxSpeed;
                 //Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
             }
             else
             {
-                agent.Speed = agent.MaxSpeed * distance/agent.RadioExterior;
+                targetSpeed = agent.MaxSpeed * distance/agent.RadioExterior;
                 //Debug.Log(agent.RadioInterior + " < " + distance + " > " + agent.RadioExterior + " , Speed = " + agent.MaxSpeed * distance/agent.RadioInterior);
             }
             
-            agent.Velocity = newDirection.normalized;
-            agent.Velocity *= agent.Speed;
-
-            steer.linear = agent.Velocity - target.Velocity;
+            targetVelocity = newDirection * targetSpeed;
+            steer.linear = targetVelocity - agent.Velocity;
             steer.linear /= timeToTarget;
             //agent.transform.rotation = new Quaternion(0,90,0,1);
 
             if (steer.linear.magnitude > agent.MaxAcceleration)
                 steer.linear = steer.linear.normalized * agent.MaxAcceleration;
+            
             }
        
         
-
         return steer;
         
     }

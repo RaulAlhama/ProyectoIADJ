@@ -11,42 +11,61 @@ public class Arrive : SteeringBehaviour
         this.nameSteering = "Arrive";
     }
 
+    private float targetSpeed;
+    private Vector3 targetVelocity;
 
     public override Steering GetSteering(AgentNPC agent)
     {
+        // Creamos el steering.
         Steering steer = new Steering();
+
+        // Calculamos la dirección deseada restando la posición del target a la del agente.
         Vector3 newDirection = target.Position - agent.Position;
+
+        // Obtenemos la distancia que debe recorrer calculando el módulo de la dirección.
         float distance = newDirection.magnitude;
 
-        
-        if (distance <= 0)
+        // Si la distancia es menor al radio interior del personaje, lo paramos.
+        if (distance < agent.RadioInterior)
         {
             agent.Velocity = Vector3.zero;  //Para en seco
             return steer;
         }
-        if (distance > agent.RadioExterior)
+
+        // Si la distancia es menor al radio exterior del personaje, establecemos la velocidad del agente a su máximo.
+        if (distance > target.RadioExterior)
         {
-            agent.Speed = agent.MaxSpeed;
-            //Debug.Log(distance + " > " + agent.RadioExterior + " ,Speed = " + agent.MaxSpeed);
+            targetSpeed = agent.MaxSpeed;
         }
+
+        // Si la distancia está entre radio exterior del personaje y el radio interior, reducimos la velocidad.
         else
         {
-            agent.Speed = agent.MaxSpeed * distance/agent.RadioExterior;
-            //Debug.Log(agent.RadioInterior + " < " + distance + " > " + agent.RadioExterior + " , Speed = " + agent.MaxSpeed * distance/agent.RadioInterior);
+            targetSpeed = agent.MaxSpeed * distance/agent.RadioExterior;
         }
         
-        agent.Velocity = newDirection.normalized;
-        agent.Velocity *= agent.Speed;
+        // Obtenemos el vector velocidad mediante la dirección y la velocidad obtenida.
+        if(agent.inFormacion){
+            agent.Velocity = newDirection.normalized;
+            agent.Velocity *= targetSpeed;
+            steer.linear = agent.Velocity - target.Velocity;
+            steer.linear /= timeToTarget;
+        } else{
+            targetVelocity = newDirection * targetSpeed;
+            steer.linear = targetVelocity - agent.Velocity;
+            steer.linear /= timeToTarget;
+        }
+       
 
-        steer.linear = agent.Velocity - target.Velocity;
-        steer.linear /= timeToTarget;
-        //agent.transform.rotation = new Quaternion(0,90,0,1);
+            
+        
 
+        // Si la aceleración obtenida a partir de la velocidad calculada es mayor que la aceleración máxima, la establecemos al máximo.
         if (steer.linear.magnitude > agent.MaxAcceleration)
             steer.linear = steer.linear.normalized * agent.MaxAcceleration;
         
         
-        // Retornamos el resultado final.
+        // Establecemos el steering angular a cero y devolvemos el steering.
         steer.angular = 0;
         return steer;
     }

@@ -14,10 +14,12 @@ public class Agent : Bodi
     public const int STOPPED = 3;
     public const int NPC = 4;
     public const int ENFORMACION = 5;
-    public int status = NOSELECTED;
+    protected int status = NOSELECTED;
     public bool select = false;
     public bool inFormacion = false;
     protected bool modoDebug = false;
+    public bool isLider = false;
+    protected bool quitarMovimiento = false;
 
     public void setStatus(int value){
 
@@ -27,6 +29,10 @@ public class Agent : Bodi
     public int getStatus(){
 
         return status;
+    }
+
+    public void setQuitarMov(bool value){
+        quitarMovimiento = value;
     }
 
     public virtual void setTarget(Agent target){}

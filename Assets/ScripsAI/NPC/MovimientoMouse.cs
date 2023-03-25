@@ -182,6 +182,7 @@ public class MovimientoMouse : MonoBehaviour
             FormationManager formacion;
 
             Agent lider = selectedNPCs[0];
+            selectedNPCs[0].isLider = true;
             if (getFormacion(lider) != null)
                 getFormacion(lider).removeCharacter(lider);
 
@@ -193,6 +194,7 @@ public class MovimientoMouse : MonoBehaviour
             formacion = objForm.AddComponent<FormationManager>();
             formacion.lider = lider;
             lider.inFormacion = true;
+            lider.setQuitarMov(true);
 
             formacion.slotAssignments = new List<SlotAssignment>();
 
