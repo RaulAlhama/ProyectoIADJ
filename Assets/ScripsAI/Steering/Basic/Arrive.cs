@@ -50,7 +50,7 @@ public class Arrive : SteeringBehaviour
         }
         
         // Obtenemos el vector velocidad mediante la dirección y la velocidad obtenida.
-        if(agent.inFormacion){
+        if(agent.inFormacion && agent.liderFollowing){
             agent.Velocity = newDirection.normalized;
             agent.Velocity *= targetSpeed;
             steer.linear = agent.Velocity - target.Velocity;

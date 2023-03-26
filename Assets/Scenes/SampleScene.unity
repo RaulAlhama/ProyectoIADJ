@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -196,7 +196,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4732192303234003975, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
       propertyPath: m_LocalPosition.x
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 171638852}
   - component: {fileID: 171638851}
   - component: {fileID: 171638850}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Muro 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -731,7 +731,7 @@ GameObject:
   - component: {fileID: 671929974}
   - component: {fileID: 671929973}
   - component: {fileID: 671929972}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Muro 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -943,7 +943,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &816259930
 GameObject:
@@ -1054,7 +1054,7 @@ GameObject:
   - component: {fileID: 833968669}
   - component: {fileID: 833968668}
   - component: {fileID: 833968667}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Muro 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1653,7 +1653,7 @@ GameObject:
   - component: {fileID: 1313756354}
   - component: {fileID: 1313756353}
   - component: {fileID: 1313756352}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Muro 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1876,7 +1876,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6127267329932895353, guid: f6964e4c4d239a146b49e1985760897c, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6127267329932895353, guid: f6964e4c4d239a146b49e1985760897c, type: 3}
       propertyPath: m_LocalScale.y
@@ -2063,7 +2063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6982232873491617220, guid: 7291fbda12b94e14aa829e958fe3bf5e, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6982232873491617220, guid: 7291fbda12b94e14aa829e958fe3bf5e, type: 3}
       propertyPath: m_LocalPosition.x

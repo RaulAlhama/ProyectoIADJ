@@ -139,6 +139,7 @@ public class MovimientoMouse : MonoBehaviour
                         int jObjetivo;
                         
                         bC.npcVirtual.Position = slt.target.Position;
+                        
                         mundo.getCoordenadas(slt.target.Position,out iObjetivo,out jObjetivo);
 
                         bC.buscador.setObjetivos(iObjetivo,jObjetivo, bC.npcVirtual);
@@ -187,6 +188,13 @@ public class MovimientoMouse : MonoBehaviour
         player4.name = "NPC4";
         player5.name = "NPC5";
         player6.name = "NPC6";
+
+        player.liderFollowing = leaderFollowing;
+        player2.liderFollowing = leaderFollowing;
+        player3.liderFollowing = leaderFollowing;
+        player4.liderFollowing = leaderFollowing;
+        player5.liderFollowing = leaderFollowing;
+        player6.liderFollowing = leaderFollowing;
         
         mundo.setObstaculos(obstaculos);
         
@@ -343,7 +351,6 @@ public class MovimientoMouse : MonoBehaviour
                 foreach(BuscaCaminos bC in buscadores){
 
                         if(bC.pl.Equals(agent) && (bC.pl.status == Agent.STOPPED) && !bC.pl.getLLegada()){
-                            
                             
                             bC.buscador.LRTAestrella();
                         }
@@ -553,11 +560,13 @@ public class MovimientoMouse : MonoBehaviour
                     
                 }
             }
+            
             formacion.updateSlots();
             formaciones.Add(formacion);
 
             if (!leaderFollowing)
             {
+                
                 ActualizaFormacion(formacion);
             }
             

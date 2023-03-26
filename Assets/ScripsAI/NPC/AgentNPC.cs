@@ -10,7 +10,7 @@ public class AgentNPC : Agent
     public SteeringBehaviour[] steeringsIniciales;
     public SteeringBehaviour[] steeringsTargets;
     private BlendedSteering arbitro;
-
+    public bool liderFollowing = true;
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
     public Agent virtualTarget = null;
