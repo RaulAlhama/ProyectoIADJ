@@ -18,7 +18,7 @@ public class MovimientoMouse : MonoBehaviour
     private GameObject objDos;
     private Formacion2 dos;
     private GameObject puntero = null; // puntero a instanciar
-
+    public int dis = 1;
     public bool leaderFollowing=true;
 
 
@@ -162,7 +162,7 @@ public class MovimientoMouse : MonoBehaviour
         obstaculos = GameObject.FindGameObjectsWithTag("Obstaculo");
         grafoMovimiento = new double[21,21];
         mundo = new GridFinal(21,21,tam);
-
+        mundo.setDistancia(dis);
         buscadores = new List<BuscaCaminos>();
         selectedNPCs = new List<Agent>();
 

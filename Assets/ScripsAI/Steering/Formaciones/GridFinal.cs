@@ -13,6 +13,7 @@ public class GridFinal
     public const int NPC = 2;
     public const int LIBRE = 0;
     public const int OBSTACULO = 1;
+    private bool Man,Chev,Euc;
 
     public GridFinal(int ancho, int largo, float tamCasilla){
 
@@ -35,6 +36,26 @@ public class GridFinal
         Debug.DrawLine(getPosicionReal(ancho,0), getPosicionReal(ancho,largo), Color.blue, 100f);
 
         
+    }
+    public void setDistancia(int val){
+
+        if(val == 1){
+
+            Man = true;
+            Chev = false;
+            Euc = false;
+        }else if(val == 2){
+
+            Man = false;
+            Chev = true;
+            Euc = false;
+
+        }else if(val == 3){
+
+            Man = false;
+            Chev = false;
+            Euc = true;
+        }
     }
     public Vector3 getPosicionReal(int x, int y){
 
@@ -76,9 +97,25 @@ public class GridFinal
                 
                 if(gridArray[i,j] == OBSTACULO)
                     grafoMovimiento[i,j] = Double.PositiveInfinity;
-                else
-                    grafoMovimiento[i,j] = Mathf.Abs(i-iObjetivo)+Mathf.Abs(j-jObjetivo);
-                
+                else{
+
+                    if(Man){
+
+                        grafoMovimiento[i,j] = Mathf.Abs(i-iObjetivo)+Mathf.Abs(j-jObjetivo);
+
+                    }else if(Chev){
+
+                        grafoMovimiento[i,j] = Mathf.Max(Mathf.Abs(i-iObjetivo),Mathf.Abs(j-jObjetivo));
+
+                    }else if(Euc){
+
+                        grafoMovimiento[i,j] = Math.Sqrt(Math.Pow(iObjetivo-i,2)+Mathf.Pow(jObjetivo-j,2));
+                    }
+                    // //Manhattan 2:10:25
+                    // //Chebyshev 2:49:28
+                     //Euclidea 0:57:65
+                }
+                    
                 //if(grafoMovimiento[i,j] != Double.PositiveInfinity)
                     //Debug.Log("(" + i + "," + j + ") : " +grafoMovimiento[i,j]);
             }
