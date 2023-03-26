@@ -17,24 +17,23 @@ public class AgentNPC : Agent
     private GameObject objVirtual;
     private bool firstTime;
     private float tiempo; //Tiempo a esperar para activar el wander en en lider
-     private bool objetivo=false;
+    private bool objetivo=false;
 
-    public bool getLLegada(){
-
-        return objetivo;
-    }
-
-    public void setLLegada(bool valor){
-
-        objetivo = valor;
-    }
-    
     public enum TIPO_NPC
     {
         LANCERO,
         ARQUERO,
         MAGO,
         JINETE
+    }
+
+    public bool getLLegada(){
+
+        return objetivo;
+    }
+    public void setLLegada(bool valor){
+
+        objetivo = valor;
     }
 
     [SerializeField]
@@ -98,12 +97,19 @@ public class AgentNPC : Agent
         }
 
 
+        // Solo entra si es lider
+        if (tiempo <= 0f)
+        {
+            tiempo = 10f;
+            listSteerings = steeringsIniciales;
+            setStatus(MOVING);
+        }
+
+
         this.ApplySteering();
         this.ApplyTerreno();
         //listSteerings = GetComponents<SteeringBehaviour>();
-
-        if (Input.GetKeyDown(KeyCode.H))
-            modoDebug = !modoDebug;
+        
     }
     
 
@@ -243,66 +249,25 @@ public class AgentNPC : Agent
 
     }
 
-    void OnDrawGizmos()
-    {
-                     
-        if (modoDebug){
-
-            Vector3 from = transform.position; // Origen de la línea
-            Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
-
-            from = from + elevation;
-
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(from, Velocity);
-
-            float distanciaBigotesExteriores = this.AnguloExterior/numBigotes;
-            float distanciaBigotesInteriores = this.AnguloInterior/numBigotes; 
-            
-            for (int i=0;i<numBigotes;i++){
-
-                // Mirando en la dirección de la orientación.
-                Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
-
-                Gizmos.color = Color.red;
-                Vector3 vectorInterior1 = Bodi.VectorRotate(direction, AnguloInterior-distanciaBigotesInteriores*i);
-                Vector3 vectorInterior2 = Bodi.VectorRotate(direction, -AnguloInterior+distanciaBigotesInteriores*i);  
-                
-                Gizmos.DrawRay(from, vectorInterior1);
-                Gizmos.DrawRay(from, vectorInterior2);
-
-                // Dibujamos el angulo exterior
-                Vector3 vectorExterior3 = Bodi.VectorRotate(direction, AnguloExterior-distanciaBigotesExteriores*i);
-                Vector3 vectorExterior4 = Bodi.VectorRotate(direction, -AnguloExterior+distanciaBigotesExteriores*i); 
-                
-                Gizmos.color = Color.blue; 
-                Gizmos.DrawRay(from, vectorExterior3);
-                Gizmos.DrawRay(from, vectorExterior4);
-
-            }
-
-            // Dibujamos el circulo interior
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(Position, RadioInterior);
-
-            // Dibujamos el circulo exterior
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(Position, RadioExterior);
-
-            Gizmos.color = Color.black;
-            Collider[] colliders = FindObjectsOfType<Collider>();
-
-            foreach (Collider collider in colliders)
-            {
-                Gizmos.DrawWireCube(collider.transform.position, collider.bounds.size);
-            }
-
-
-        }
-
-    }
+    
 
     
+    void OnMouseDown(){
+        
+        if(!select){
+
+            select = true;
+            indicadorPrefab.SetActive(true);
+            if(status == STOPPED || status == NOSELECTED)
+                setStatus(SELECTED);
+        }else{
+            if(status == SELECTED || status == STOPPED)
+                setStatus(NOSELECTED);
+            select = false;
+            indicadorPrefab.SetActive(false);
+        }
+    }
+
     /*private void GetSteering(SteeringBehaviour behavior)
     {
         // Calcula el steeringbehaviour

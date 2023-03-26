@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Mouse : MonoBehaviour
+public class MouseAntiguo : MonoBehaviour
 {
     public List<Agent> selectedNPCs; //Lista de los agentes
     public List<FormationManager> formaciones;

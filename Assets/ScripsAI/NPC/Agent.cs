@@ -14,7 +14,7 @@ public class Agent : Bodi
     public const int STOPPED = 3;
     public const int NPC = 4;
     public const int ENFORMACION = 5;
-    protected int status = NOSELECTED;
+    public int status = NOSELECTED;
     public bool select = false;
     public bool inFormacion = false;
     protected bool modoDebug = false;
