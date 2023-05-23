@@ -5,6 +5,10 @@ using UnityEngine;
 public class AgentNPC : Agent
 {
     // Este será el steering final que se aplique al personaje.
+    public const int ARQUERO = 0;
+    public const int PESADA = 1;
+    public const int EXPLORADOR = 2;
+    public const int PATRULLA = 3;
     public Steering steer;
     public SteeringBehaviour[] listSteerings;
     public SteeringBehaviour[] steeringsIniciales;
@@ -18,14 +22,7 @@ public class AgentNPC : Agent
     private bool firstTime;
     private float tiempo; //Tiempo a esperar para activar el wander en en lider
     private bool objetivo=false;
-
-    public enum TIPO_NPC
-    {
-        LANCERO,
-        ARQUERO,
-        MAGO,
-        JINETE
-    }
+    private int tipo;
 
     public bool getLLegada(){
 
@@ -36,8 +33,14 @@ public class AgentNPC : Agent
         objetivo = valor;
     }
 
-    [SerializeField]
-    protected internal TIPO_NPC tipo;
+    public void setTipo(int t){
+
+        tipo = t;
+    }
+    public int getTipo(){
+
+        return tipo;
+    }
 
     void Awake()
     {
@@ -56,7 +59,7 @@ public class AgentNPC : Agent
     void Start()
     {
         Orientation = transform.eulerAngles.y;
-        setStatus(NPC);
+        //setStatus(NPC);
         firstTime = true;
         tiempo = 150.0f;
         //Velocity = Vector3.zero;
@@ -199,8 +202,8 @@ public class AgentNPC : Agent
 
 
     public override void activarMarcador(){
-        indicador = Instantiate(indicadorPrefab, transform);
-        indicador.transform.localPosition = Vector3.up * 4;
+        
+        indicadorPrefab.SetActive(true);
         setStatus(SELECTED);
         select = true;
     }
@@ -209,9 +212,9 @@ public class AgentNPC : Agent
 
 
     public override void quitarMarcador(){
-        if (indicador != null){
-            Destroy(indicador);
-        }
+        
+        indicadorPrefab.SetActive(false);
+        setStatus(NOSELECTED);
         select = false;
         
     }
@@ -252,7 +255,7 @@ public class AgentNPC : Agent
     
 
     
-    void OnMouseDown(){
+    /*void OnMouseDown(){
         
         if(!select){
 

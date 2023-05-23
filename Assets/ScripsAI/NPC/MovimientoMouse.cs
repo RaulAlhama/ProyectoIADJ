@@ -6,12 +6,15 @@ using System;
 
 public class MovimientoMouse : MonoBehaviour
 {
-    public List<Agent> selectedNPCs; //Lista de los agentes
+    public int selectedNPCs = 0; //Lista de los agentes
     public List<FormationManager> formaciones;
     private Vector3 targetPosition; // posición donde haremos click
     public Agent npcVirtualPrefab; // NPC virtual pasado por parámetro
     public GameObject punteroPrefab; // Puntero (en nuestro caso una esfera) pasado por parámetro
     private GameObject obj;
+    private List<int> indexSelected;
+    private bool primero = false;
+    private int indiceLider;
 
     private GameObject objUno;
     private Formacion1 uno;
@@ -104,14 +107,14 @@ public class MovimientoMouse : MonoBehaviour
     }
 
 
-    private Agent restauraFormacion(AgentNPC agent, Vector3 tr){
+    private Agent restauraFormacion(BuscaCaminos agent, Vector3 tr){
 
         
-        Agent aux = npcVirtual;
+        Agent aux = agent.npcVirtual;
         foreach (FormationManager formacion in formaciones){
             //ActualizaFormacion(formacion);
             foreach (SlotAssignment slot in formacion.slotAssignments){
-                if (slot.character == agent){
+                if (slot.character == agent.pl){
                     
                     aux.Position = Bodi.VectorRotate(formacion.pattern.getSlotLocation(slot.slotNumber).position,((AgentNPC)formacion.lider).virtualTarget.Orientation) + tr;
                     aux.Orientation = formacion.pattern.getSlotLocation(slot.slotNumber).orientation + ((AgentNPC)formacion.lider).virtualTarget.Orientation;
@@ -164,7 +167,8 @@ public class MovimientoMouse : MonoBehaviour
         mundo = new GridFinal(21,21,tam);
         mundo.setDistancia(dis);
         buscadores = new List<BuscaCaminos>();
-        selectedNPCs = new List<Agent>();
+        //selectedNPCs = new List<Agent>();
+        indexSelected = new List<int>();
 
         player = Instantiate(player);
         AgentNPC player2 = Instantiate(player);
@@ -215,11 +219,11 @@ public class MovimientoMouse : MonoBehaviour
         if (leaderFollowing)
         {
 
-            comprobarFormacion();
+           //comprobarFormacion();
         }
 
         // Comprueba si se ha hecho clic derecho en el mapa
-        if (Input.GetMouseButtonDown(1) && selectedNPCs.Count > 0)
+        if (Input.GetMouseButtonDown(1) && selectedNPCs > 0)
         {   
             
             bool romperFormacion = false;
@@ -242,7 +246,7 @@ public class MovimientoMouse : MonoBehaviour
                 // Mueve los NPC's seleccionados al destino
 
                 if (leaderFollowing)
-                {
+                {/*
 
                     foreach (Agent agent in selectedNPCs)
                     {   
@@ -273,87 +277,69 @@ public class MovimientoMouse : MonoBehaviour
 
                     }
 
-                    romperFormacion = false;
+                    romperFormacion = false;*/
                 }
-
                 else {
-                    
-                    foreach (AgentNPC agent in selectedNPCs)
-                    {   
-                        foreach(BuscaCaminos bC in buscadores)
-                        {
+                     
+                    foreach(BuscaCaminos bC in buscadores)
+                    {
 
-                            if(bC.pl.Equals(agent)){
+                        if(bC.pl.status != Agent.NOSELECTED){
 
-                                int iObjetivo;
-                                int jObjetivo;
+                            int iObjetivo;
+                            int jObjetivo;
 
-                                mundo.getCoordenadas(targetPosition,out iObjetivo,out jObjetivo);
+                            mundo.getCoordenadas(targetPosition,out iObjetivo,out jObjetivo);
                                 
-                                if(mundo.Posible(iObjetivo,jObjetivo))
-                                {
-                                    bC.pl.setLLegada(false);
+                            if(mundo.Posible(iObjetivo,jObjetivo))
+                            {
+                                bC.pl.setLLegada(false);
                                     //Debug.Log(mundo.getPosicionReal(iObjetivo,jObjetivo));
 
-                                    if(bC.pl.inFormacion){
+                                if(bC.pl.inFormacion){
 
                                         //bC.npcVirtual.transform.position = Bodi.VectorRotate(restauraFormacion(bC.pl),bC.npcVirtual.Orientation) + targetPosition;
                                         //bC.npcVirtual.Position = (mundo.getPosicionReal(iObjetivo,jObjetivo) + new Vector3(tam/2,0,tam/2)) + restauraFormacion(bC.pl);
-                                        Agent aux = restauraFormacion(bC.pl, targetPosition);
-                                        bC.npcVirtual.Position = aux.Position;
-                                        bC.npcVirtual.Orientation = aux.Orientation;
-                                        mundo.getCoordenadas(bC.npcVirtual.transform.position,out iObjetivo,out jObjetivo);
+                                    Agent aux = restauraFormacion(bC, targetPosition);
+                                    bC.npcVirtual.Position = aux.Position;
+                                    bC.npcVirtual.Orientation = aux.Orientation;
+                                    mundo.getCoordenadas(bC.npcVirtual.transform.position,out iObjetivo,out jObjetivo);
                                         
-                                        if(!mundo.Posible(iObjetivo,jObjetivo))
-                                        {
-                                            bC.pl.inFormacion = false;
-                                            bC.pl.setStatus(Agent.NOSELECTED);
-                                            break;
-                                        }
-
-                                    }
-                                    
-                                    else
+                                    if(!mundo.Posible(iObjetivo,jObjetivo))
                                     {
-
-                                        bC.npcVirtual.transform.position = targetPosition;
+                                        bC.pl.inFormacion = false;
+                                        bC.pl.quitarMarcador();
                                     }
-                                    
-                                    
-                                    bC.buscador.setObjetivos(iObjetivo,jObjetivo, bC.npcVirtual);
-                                    bC.buscador.setPosicionNpcVirtual(mundo.getPosicionReal(iObjetivo,jObjetivo));
-                                    bC.buscador.setOrientacionNpcVirtual(bC.npcVirtual.Orientation);
 
-                                    puntero.transform.position = mundo.getPosicionReal(iObjetivo,jObjetivo);
+                                }else{
 
-                                    bC.buscador.setGrafoMovimiento(mundo.getGrafo(iObjetivo,jObjetivo));
-                                    copiaPuntero = (GameObject) Instantiate(puntero);
-                            
-                                    bC.buscador.LRTAestrella();
+                                    bC.npcVirtual.transform.position = targetPosition;
                                 }
+                                    
+                                    
+                                bC.buscador.setObjetivos(iObjetivo,jObjetivo, bC.npcVirtual);
+                                bC.buscador.setPosicionNpcVirtual(mundo.getPosicionReal(iObjetivo,jObjetivo));
+                                bC.buscador.setOrientacionNpcVirtual(bC.npcVirtual.Orientation);
+
+                                puntero.transform.position = mundo.getPosicionReal(iObjetivo,jObjetivo);
+
+                                bC.buscador.setGrafoMovimiento(mundo.getGrafo(iObjetivo,jObjetivo));
+                                copiaPuntero = (GameObject) Instantiate(puntero);
+                            
+                                bC.buscador.LRTAestrella();
                             }
                         }
-
                     }
-
-
                 }
             }
-
-
         }
-
         else if (!leaderFollowing)
         {
+            foreach(BuscaCaminos bC in buscadores){
 
-            foreach (AgentNPC agent in selectedNPCs){
-
-                foreach(BuscaCaminos bC in buscadores){
-
-                        if(bC.pl.Equals(agent) && (bC.pl.status == Agent.STOPPED) && !bC.pl.getLLegada()){
+                if((bC.pl.status == Agent.STOPPED) && !bC.pl.getLLegada()){
                             
-                            bC.buscador.LRTAestrella();
-                        }
+                    bC.buscador.LRTAestrella();
                 }
             }
         }
@@ -372,7 +358,7 @@ public class MovimientoMouse : MonoBehaviour
 
                     if (leaderFollowing)
                     {
-                        if (selectedNPCs.Contains(selectAgent))
+                        /*if (selectedNPCs.Contains(selectAgent))
                         {
                             selectAgent.quitarMarcador();
                             selectedNPCs.Remove(selectAgent);
@@ -381,7 +367,7 @@ public class MovimientoMouse : MonoBehaviour
                         {
                             selectAgent.activarMarcador();
                             selectedNPCs.Add(selectAgent);
-                        }
+                        }*/
                     }
 
                     else
@@ -389,39 +375,33 @@ public class MovimientoMouse : MonoBehaviour
                         foreach (BuscaCaminos bC in buscadores)
                         {
 
-                            if(bC.pl.status != Agent.NOSELECTED && bC.pl.Equals(selectAgent))
+                            if(bC.pl.Equals(selectAgent))
                             {
                                 
-                                if(!selectedNPCs.Contains(bC.pl)){
-
-                                    selectedNPCs.Add(bC.pl);
-                                    selectAgent.activarMarcador();
-                                }
+                                if(bC.pl.status == Agent.NOSELECTED){
                                     
+                                    selectedNPCs++;
+                                    bC.pl.activarMarcador();
+                                    if(!primero){
+
+                                        indiceLider = buscadores.IndexOf(bC);
+                                        primero = true;
+                                    }       
+                                }  
                                 else{
+                                    if(selectedNPCs > 0){
 
-                                    selectAgent.quitarMarcador();
-                                    selectedNPCs.Remove(bC.pl);
-                                }
-                                    
-                            }
-                            else if(bC.pl.Equals(selectAgent))
-                            {
-                                
-                                if(selectedNPCs.Contains(bC.pl)){
+                                        selectedNPCs--;
+                                    }else{
 
+                                        primero = false;
+                                    }
                                     bC.pl.quitarMarcador();
-                                    selectedNPCs.Remove(bC.pl);
-                                }
-                                    
+                                }  
                             }
                         }
-
                     }
-
-
-                }
-                
+                } 
             }
         }
 
@@ -429,6 +409,7 @@ public class MovimientoMouse : MonoBehaviour
         //Si pulsamos en un personaje y no tenemos pulsado CONTROL la lista solo contendrá a este personaje
         if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
         {
+            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
@@ -438,80 +419,45 @@ public class MovimientoMouse : MonoBehaviour
                 {
                     Agent selectAgent = npcObject.GetComponent<AgentNPC>();
                     
-                    if (selectedNPCs.Count > 0)
-                    { //Si hay varios personajes seleccionados, los deseleccionamos 
-                        
-                        foreach (AgentNPC otherAgent in selectedNPCs)
+                    //Si hay varios personajes seleccionados, los deseleccionamos   
+                    selectedNPCs = 0;
+
+                    if (!leaderFollowing){
+
+                        foreach(BuscaCaminos bC in buscadores)
                         {
-                            otherAgent.quitarMarcador();
 
-                            // añadido
-                            if (!leaderFollowing){
-                                foreach(BuscaCaminos bC in buscadores)
-                                {
+                            if(!bC.pl.Equals(selectAgent))
+                            {
+                                bC.pl.quitarMarcador();
 
-                                    if(bC.pl.Equals(otherAgent))
-                                    {
+                            }else{
 
-                                        bC.pl.setStatus(Agent.NOSELECTED);
-                                        bC.pl.quitarMarcador();
-
-                                    }
-                        
-                                }
-
-                            }
-
-                            // fin del añadido
-                        }
-                        selectedNPCs.Clear();
-
-                        if (!leaderFollowing){
-
-                            foreach(BuscaCaminos bC in buscadores){
-
-                                if(bC.pl.Equals(selectAgent))
-                                {
-
-                                    bC.pl.setStatus(Agent.SELECTED);
-                                    bC.pl.activarMarcador();
-                                    selectedNPCs.Add(bC.pl);
-                                    
-                                }
-                            }
-                        }
-
-                        
-                    }
-
-                    else if (!leaderFollowing)
-                    {
-                        
-                        foreach(BuscaCaminos bC in buscadores){
-
-                            if(bC.pl.Equals(selectAgent)){
                                 bC.pl.activarMarcador();
-                                selectedNPCs.Add(bC.pl);
+                                selectedNPCs++;
+                                indiceLider = buscadores.IndexOf(bC);
+                                primero = true;
+
                             }
                         }
-
+                            // fin del añadido
                     }
-                    
+                        
                     if (leaderFollowing)
                     {
-                        selectedNPCs.Add(selectAgent);
-                        selectAgent.activarMarcador();
+                        //selectedNPCs.Add(selectAgent);
+                        //selectAgent.activarMarcador();
                     }
 
 
                 } 
                 else if (leaderFollowing)
                 {
-                    foreach (Agent otherAgent in selectedNPCs)
+                    /*foreach (Agent otherAgent in selectedNPCs)
                         {
                             otherAgent.quitarMarcador();
                         }
-                    selectedNPCs.Clear();
+                    selectedNPCs.Clear();*/
                 }
             }
 
@@ -522,15 +468,18 @@ public class MovimientoMouse : MonoBehaviour
 
             GameObject objForm;
             FormationManager formacion;
+            buscadores[indiceLider].pl.isLider = true;
+            Agent lider = buscadores[indiceLider].pl;
 
-            Agent lider = selectedNPCs[0];
-            selectedNPCs[0].isLider = true;
             if (getFormacion(lider) != null)
                 getFormacion(lider).removeCharacter(lider);
 
             string nombre = "";
-            for (int i=1;i<selectedNPCs.Count;i++)
-                nombre = nombre + "_" + selectedNPCs[i]; 
+            foreach (BuscaCaminos bc in buscadores){
+
+                if(bc.pl.select)
+                    nombre = nombre + "_" + bc.pl; 
+            } 
 
             objForm = new GameObject("Formacion1_" + lider + nombre);
             formacion = objForm.AddComponent<FormationManager>();
@@ -545,20 +494,23 @@ public class MovimientoMouse : MonoBehaviour
             uno = objUno.AddComponent<Formacion1>();
             formacion.pattern = uno;
             
-            for (int i=1;i<selectedNPCs.Count;i++)
-            {
-                if (selectedNPCs[i] != lider){
-                    // Si el agente ya estaba en una formación, se elimina de dicha formación
-                    if (getFormacion(selectedNPCs[i]) != null)
-                    {   
-                        getFormacion(selectedNPCs[i]).removeCharacter(selectedNPCs[i]);
-                    }
+            foreach (BuscaCaminos bc in buscadores)
+            {   
+                if(bc.pl.select){
 
-                    // Se añade el agente a la formación
-                    if (formacion.addCharacter(selectedNPCs[i]))
-                        selectedNPCs[i].inFormacion = true;
-                    
+                    if (!bc.pl.Equals(lider)){
+                    // Si el agente ya estaba en una formación, se elimina de dicha formación
+                        if (getFormacion(bc.pl) != null)
+                        {   
+                            getFormacion(bc.pl).removeCharacter(bc.pl);
+                        }
+
+                        // Se añade el agente a la formación
+                        if (formacion.addCharacter(bc.pl))
+                            bc.pl.inFormacion = true;                 
+                    }
                 }
+                
             }
             
             formacion.updateSlots();
@@ -566,11 +518,11 @@ public class MovimientoMouse : MonoBehaviour
 
             if (!leaderFollowing)
             {
-                
                 ActualizaFormacion(formacion);
             }
             
         }
+/*
 
         if (Input.GetKeyDown(KeyCode.Alpha2)){
 
@@ -621,6 +573,6 @@ public class MovimientoMouse : MonoBehaviour
             }
 
         }
- 
+ */
     }
 }

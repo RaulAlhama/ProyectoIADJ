@@ -28,7 +28,7 @@ public class Arrive : SteeringBehaviour
         // Si la distancia es menor al radio interior del personaje, lo paramos.
         if (distance < agent.RadioInterior)
         {
-            if(/*agent.getLLegada() && */ distance < agent.RadioInterior){
+            if(agent.getLLegada() &&  distance < agent.RadioInterior){
                     agent.Velocity = Vector3.zero; //wallAvoidDance
             }
 

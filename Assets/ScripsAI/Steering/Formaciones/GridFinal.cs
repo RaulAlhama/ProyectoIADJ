@@ -13,6 +13,13 @@ public class GridFinal
     public const int NPC = 2;
     public const int LIBRE = 0;
     public const int OBSTACULO = 1;
+    public const int NPCAZUL = 4;
+    public const int NPCROJO = 5;
+    public const int ARMERIA = 6;
+    public const int SANTUARIO = 7;
+    public const int VIGIA = 8;
+    public const int ESTATUAAZUL = 9;
+    public const int ESTATUAROJA = 10;
     private bool Man,Chev,Euc;
 
     public GridFinal(int ancho, int largo, float tamCasilla){
@@ -75,9 +82,13 @@ public class GridFinal
         if((x < ancho && x >=0) && (y < largo  && y >=0))
             gridArray[x,y] = value;
     }
-    private void setValor(int i, int j, int value){
+    public void setValor(int i, int j, int value){
 
         gridArray[i,j] = value;
+    }
+    public int getValor(int i, int j){
+
+        return gridArray[i,j];
     }
     public void setObstaculos(GameObject[] list){
         //Debug.Log(gridArray[15,10]);

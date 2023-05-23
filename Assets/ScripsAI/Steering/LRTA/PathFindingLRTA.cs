@@ -56,7 +56,6 @@ public class PathFindingLRTA : MonoBehaviour
         puntoActual = actualizaPesos(puntos, puntoActual);
         Vector3 aux = mundo.getPosicionReal(puntoActual.x,puntoActual.y) + new Vector3(1,0,1);
         npcVirtual.transform.position = aux;
-        Debug.Log(npcVirtual.Orientation);
         player.setTarget(npcVirtual);
         if(puntoActual.x == iObjetivo && puntoActual.y == jObjetivo)
             player.setLLegada(true);
