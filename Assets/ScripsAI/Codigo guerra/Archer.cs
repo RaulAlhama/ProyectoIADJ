@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Archer : MonoBehaviour
+public class Archer
 {
     // Start is called before the first frame update
     private AgentNPC pj;
@@ -96,25 +97,107 @@ public class Archer : MonoBehaviour
 
         return limites;
     }
-    private bool enemigosEnVision(int[] limites, int[,] mundo){
+    private bool enemigosEnVision(int[,] mundo, out int x, out int y){
 
         bool enemigos = false;
-        for (int i = limites[0]; i < limites[1]; i++)
+        int x1 = 0;
+        int y1 = 0;
+        for (int i = limVision[0]; i < limVision[1]; i++)
         {
-            for (int j = limites[2]; j < limites[3]; j++)
+            for (int j = limVision[2]; j < limVision[3]; j++)
             {
                 if (mundo[i,j] == GridFinal.NPCROJO)
                 {
                     enemigos = true;
+                    x1 = i;
+                    y1 = j;
                 }
             }
         }
+        x = x1;
+        y = y1;
         return enemigos;
     }
-    // Update is called once per frame
-    public Vector3 getDesicion(int[,] mundo, int i, int j){
+    private bool unidadPesadaEnVision(int[,] mundo, out int x,out int y){
 
-        i=0;
-        return Vector3.zero;
+        bool aliado = false;
+        int x1 = 0;
+        int y1 = 0;
+        for (int i = limVision[0]; i < limVision[1]; i++)
+        {
+            for (int j = limVision[2]; j < limVision[3]; j++)
+            {
+                if (mundo[i,j] == ArrayUnidades.UNIDADPESADAAZUL)
+                {
+                    aliado = true;
+                    x1 = i;
+                    y1 = j;
+                }
+            }
+        }
+        x = x1;
+        y = y1;
+        return aliado;
+    }
+    public bool posicionObjetivo(Objetivo[] lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
+        
+        bool objetivo = false;
+        int menor = 99;
+        int index = 0;
+        int k = 0;
+        int x1 = 0;
+        int y1 = 0;
+        double  distancia = 999999;
+        foreach (Objetivo obj in lisObj)
+        {
+            if(obj.getPropiedad() == Objetivo.NEUTRAL){
+
+                if (obj.getPrioridad() < menor)
+                {
+                    menor = obj.getPrioridad();
+                    index = k;
+                }
+                k++;
+            }
+        }
+        foreach (Coordenada cr in lisObj[index].getSlots())
+        {
+            if(PosMundo[cr.getX(),cr.getY()] == 0){
+
+                double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
+                if (disAux < distancia)
+                {
+                    distancia = disAux;
+                    objetivo = true;
+                    x1 = cr.getX();
+                    y1 = cr.getY();
+                }
+            }
+        }
+        x = x1;
+        y = y1;
+        return objetivo;
+    }
+    // Update is called once per frame
+    public Vector3 getDesicion(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
+
+        int x = i;
+        int y = j;
+        Vector3 target = mundo.getPosicionReal(x,y);
+        
+        if(enemigosEnVision(posNPCs,out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+
+        }else if(unidadPesadaEnVision(posNPCs,out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+        }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
+
+            Debug.Log(x+","+y);
+            target = mundo.getPosicionReal(x,y);
+        }
+        //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
+        return target;
     }
 }

@@ -142,6 +142,10 @@ public class GridFinal
             return false;
         }
     }
+    public int[,] getArray(){
+
+        return gridArray;
+    }
     
 
 }

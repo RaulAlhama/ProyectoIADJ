@@ -11,6 +11,8 @@ public class mundoGuerra : MonoBehaviour
     private const int INDEXPESADA1 = 3;
     private const int INDEXPESADA2 = 4;
     private const int INDEXVIGILANTE = 5;
+
+
     public int rows;
     public int cols;
     public float cellSize;
@@ -22,50 +24,193 @@ public class mundoGuerra : MonoBehaviour
     public AgentNPC prefabNPCAzul;
     public AgentNPC prefabNPCRojo;
     private const int numNPC = 1;
+    private const int numObjetives = 4;
     private Archer cArquero;
+
+    // informacion
     
-    struct Coordenadas{
-        public int x;
-        public int y;
-        public Coordenadas(int a, int b){
+    public ArrayUnidades unidades;
 
-            x = a;
-            y = b;
-        }
-    }
+    //objetivos del mundo
 
-    private Coordenadas[] spawnAzul = new Coordenadas[6];
-    private Coordenadas[] spawnRojo = new Coordenadas[6];
+    private Objetivo[] objetivosMundo;
+    
+    private Coordenada[] spawnAzul = new Coordenada[6];
+    private Coordenada[] spawnRojo = new Coordenada[6];
 
     private TextMesh[,] grid;
 
     void Start()
     {
         cArquero = new Archer();
+        unidades = new ArrayUnidades(rows,cols);
+        objetivosMundo = new Objetivo[numObjetives];
 
         for(int i = 0; i < numNPC; i++){
 
-            spawnAzul[i] = new Coordenadas(190 + (i*4),10);
-            spawnRojo[i] = new Coordenadas(190 + (i*4),390);
+            spawnAzul[i] = new Coordenada(190 + (i*4),10);
+            spawnRojo[i] = new Coordenada(190 + (i*4),390);
         }
         for(int i = 0; i < numNPC; i++){
 
             equipoAzul[i] = Instantiate(prefabNPCAzul);
-            equipoAzul[i].Position = new Vector3(spawnAzul[i].x,0,spawnAzul[i].y);
+            equipoAzul[i].Position = new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY());
             equipoRojo[i] = Instantiate(prefabNPCRojo);
-            equipoRojo[i].Position = new Vector3(spawnRojo[i].x,0,spawnRojo[i].y);
+            equipoRojo[i].Position = new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY());
         }
         grFinal = new GridFinal(rows,cols,cellSize);
         setTipos();
         setPosiciones();
+        setTorreVigia();
+        setArmeria();
+        setPuenteIzqAzul();
+        setPuenteDerAzul();
         //creaTexto();
         
      
     }
+
+    private void setTorreVigia(){
+        // Vigia 
+        Coordenada[] coordes = new Coordenada[12];
+        int k=0;
+        for(int i=15;i<19;i++){
+
+            coordes[k] = new Coordenada(12,i);
+            k++;
+        }
+        for(int i=15;i<19;i++){
+
+            coordes[k] = new Coordenada(15,i);
+            k++;
+        }
+        for(int i=13;i<15;i++){
+
+            coordes[k] = new Coordenada(i,15);
+            k++;
+            coordes[k] = new Coordenada(i,18);
+            k++;
+        }
+
+        Objetivo vigia = new Objetivo(1,coordes,Objetivo.TORRE_VIGIA);
+        objetivosMundo[0] = vigia;
+
+    }
+    private void setArmeria(){
+
+        Coordenada[] coordes = new Coordenada[9];
+        int k=0;
+        for(int i=40;i<43;i++){
+
+            coordes[k] = new Coordenada(63,i);
+            k++;
+        }
+        for(int i=64;i<67;i++){
+
+            coordes[k] = new Coordenada(i,42);
+            k++;
+        }
+        for(int i=40;i<42;i++){
+
+            coordes[k] = new Coordenada(66,i);
+            k++;
+        }
+        coordes[k] = new Coordenada(64,39);
+
+        Objetivo armeria = new Objetivo(2,coordes,Objetivo.ARMERIA);
+        objetivosMundo[1] = armeria;
+    }
+    private void setPuenteIzqAzul(){
+
+        Coordenada[] coordes = new Coordenada[18];
+        int k=0;
+        for (int i = 9; i < 15; i++)
+        {
+            for (int j = 44; j < 47; j++)
+            {
+                coordes[k] = new Coordenada(i,j);
+                k++;
+            }
+        }
+        Objetivo puenteIzqAzul = new Objetivo(3,coordes,Objetivo.PUENTE_IZQUIERDO_AZUL);
+        objetivosMundo[2] = puenteIzqAzul;
+    }
+    private void setPuenteDerAzul(){
+
+        Coordenada[] coordes = new Coordenada[24];
+        int k=0;
+        for (int i = 87; i < 93; i++)
+        {
+            for (int j = 43; j < 47; j++)
+            {
+                coordes[k] = new Coordenada(i,j);
+                k++;
+            }
+        }
+        Objetivo puenteDerAzul = new Objetivo(3,coordes,Objetivo.PUENTE_DERECHO_AZUL);
+        objetivosMundo[3] = puenteDerAzul;
+    }
+    private void setUnidades(AgentNPC npc, int eq){
+
+        int x = 0;
+        int y = 0;
+
+        switch (npc.getTipo())
+        {
+            case AgentNPC.ARQUERO:
+                
+                if(eq == 0){
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.ARQUEROAZUL);
+                }else{
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.ARQUEROROJO);
+                }
+            break;
+            case AgentNPC.PESADA:
+                if(eq == 0){
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.UNIDADPESADAAZUL);
+                }else{
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.UNIDADPESADAROJO);
+                }
+            break;
+            case AgentNPC.EXPLORADOR:
+                if(eq == 0){
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.EXPLORADOAZUL);
+                }else{
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.EXPLORADORROJO);
+                }
+            break;
+            case AgentNPC.PATRULLA:
+                if(eq == 0){
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.PATRULLAAZUL);
+                }else{
+
+                    grFinal.getCoordenadas(npc.Position, out x, out y);
+                    unidades.setUnidad(x,y,ArrayUnidades.PATRULLAROJO);
+                }
+            break;
+        }
+    }
+
     private void setPosiciones(){
 
         for(int i=0;i<numNPC;i++){
 
+            setUnidades(equipoAzul[i],0);
+            setUnidades(equipoRojo[i],1);
             grFinal.setValor(equipoAzul[i].Position,GridFinal.NPCAZUL);
             grFinal.setValor(equipoRojo[i].Position,GridFinal.NPCROJO);
         }
@@ -193,11 +338,11 @@ public class mundoGuerra : MonoBehaviour
 
         //equipoAzul[0].setTipo(AgentNPC.EXPLORADOR);
         equipoAzul[0].setTipo(AgentNPC.ARQUERO);
-        /*equipoAzul[2].setTipo(AgentNPC.ARQUERO);
-        equipoAzul[3].setTipo(AgentNPC.PESADA);
-        equipoAzul[4].setTipo(AgentNPC.PESADA);
-        equipoAzul[5].setTipo(AgentNPC.PATRULLA);
-        */
+        //equipoAzul[2].setTipo(AgentNPC.ARQUERO);
+        //equipoAzul[1].setTipo(AgentNPC.PESADA);
+        //equipoAzul[4].setTipo(AgentNPC.PESADA);
+        //equipoAzul[5].setTipo(AgentNPC.PATRULLA);
+        
         equipoRojo[0].setTipo(AgentNPC.ARQUERO);
         /*equipoRojo[1].setTipo(AgentNPC.ARQUERO);
         equipoRojo[2].setTipo(AgentNPC.ARQUERO);
@@ -213,7 +358,7 @@ public class mundoGuerra : MonoBehaviour
         
         for (int i = 0; i < 100; i++)
         {
-            for (int j = 42; j < 58; j++)
+            for (int j = 0; j < 50; j++)
             {
                 GameObject obj = new GameObject("Tile_" + i + "_" + j);
                 obj.transform.position = new Vector3((i * cellSize)+ cellSize/2, 0, (j * cellSize) + cellSize/2);
@@ -269,6 +414,7 @@ public class mundoGuerra : MonoBehaviour
             } 
         }
     }
+
     private void moverNPC(){
 
         foreach(AgentNPC pl in equipoAzul)
@@ -278,8 +424,8 @@ public class mundoGuerra : MonoBehaviour
                 int i;
                 int j;
                 grFinal.getCoordenadas(pl.Position,out i, out j);
-                Debug.Log(i + "  " + j);
                 cArquero.setLimites(i,j);
+                Debug.Log(cArquero.getDesicion(grFinal,objetivosMundo,unidades.getArray(),i,j));
 
             }
         }
