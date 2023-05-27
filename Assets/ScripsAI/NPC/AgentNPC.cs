@@ -17,11 +17,11 @@ public class AgentNPC : Agent
     public bool liderFollowing = true;
     public GameObject indicadorPrefab = null;
     private GameObject indicador = null;
-    public Agent virtualTarget = null;
+    public Agent virtualTarget;
     private GameObject objVirtual;
     private bool firstTime;
     private float tiempo; //Tiempo a esperar para activar el wander en en lider
-    private bool objetivo=false;
+    private bool objetivo=true;
     private int tipo;
 
     public bool getLLegada(){
@@ -70,7 +70,7 @@ public class AgentNPC : Agent
     {
         //Cuando decimos a una unidad que vaya a un lugar. Cuando pasa un tiempo recupera su movimiento inicial
         if(virtualTarget != null && (virtualTarget.Position - this.Position).magnitude < 0.0001f && !inFormacion){
-            Debug.Log("Asignando movimientos iniciales");
+            //Debug.Log("Asignando movimientos iniciales");
             listSteerings = steeringsIniciales;
             setStatus(NPC);
         }

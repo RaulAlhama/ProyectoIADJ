@@ -278,6 +278,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+--- !u!1 &67488315 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 155240762}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &101288881
 GameObject:
   m_ObjectHideFlags: 0
@@ -3391,6 +3396,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 475780, guid: b16d31c474ad0184690aae14bfab60b2, type: 3}
   m_PrefabInstance: {fileID: 1575515372}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &848414056 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 1400597282}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &876596321
 GameObject:
   m_ObjectHideFlags: 0
@@ -4845,6 +4855,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289968340}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1300888263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 4518813694858639009}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1308216386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5005,6 +5020,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321569227}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1381540115 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 1834671518}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1400597282
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5652,11 +5672,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65efda98013a68f42b30e5679a6c69ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  azul: {fileID: 2100000, guid: 2053efcfaa636054ea5466e84d613598, type: 2}
+  rojo: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
   rows: 100
   cols: 100
   cellSize: 4
+  npcVirtual: {fileID: 2468424658172680722, guid: a6f01d7cbcf3cc6459efab38e1cce2ee, type: 3}
   backgroundColor: {r: 1, g: 1, b: 1, a: 1}
   wallPrefab: {fileID: 5691929054776158045, guid: 60c009b953190d84a958ed1c5884e67a, type: 3}
+  torreVigia:
+  - {fileID: 1300888263}
+  - {fileID: 848414056}
+  - {fileID: 1381540115}
+  - {fileID: 67488315}
   prefabNPCAzul: {fileID: 7860291542884268978, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
   prefabNPCRojo: {fileID: 5044310171192284528, guid: 46d076c48369739449191052ba157870, type: 3}
 --- !u!4 &1592357733

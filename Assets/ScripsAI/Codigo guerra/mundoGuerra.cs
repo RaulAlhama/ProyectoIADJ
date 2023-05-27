@@ -11,21 +11,33 @@ public class mundoGuerra : MonoBehaviour
     private const int INDEXPESADA1 = 3;
     private const int INDEXPESADA2 = 4;
     private const int INDEXVIGILANTE = 5;
+    private const int INDEX_TORRE_VIGIA = 0;
 
-
+    public Material azul;
+    public Material rojo;
     public int rows;
     public int cols;
     public float cellSize;
+    public Agent npcVirtual;
     private GridFinal grFinal;
     public Color backgroundColor = Color.white;
     public GameObject wallPrefab;
+    public GameObject[] torreVigia;
+
     private AgentNPC[] equipoRojo = new AgentNPC[6];
+    private Agent[] npcVirtualRojo = new Agent[6];
+
     private AgentNPC[] equipoAzul = new AgentNPC[1];
+    private Agent[] npcVirtualAzul = new Agent[1];
+    private BuscaCaminos[] buscadoresAzul = new BuscaCaminos[1];
+
+
     public AgentNPC prefabNPCAzul;
     public AgentNPC prefabNPCRojo;
     private const int numNPC = 1;
     private const int numObjetives = 4;
     private Archer cArquero;
+
 
     // informacion
     
@@ -36,7 +48,9 @@ public class mundoGuerra : MonoBehaviour
     private Objetivo[] objetivosMundo;
     
     private Coordenada[] spawnAzul = new Coordenada[6];
+    private Posicion[] teamBlue = new Posicion[6];
     private Coordenada[] spawnRojo = new Coordenada[6];
+    private Posicion[] teamRed = new Posicion[6];
 
     private TextMesh[,] grid;
 
@@ -45,6 +59,8 @@ public class mundoGuerra : MonoBehaviour
         cArquero = new Archer();
         unidades = new ArrayUnidades(rows,cols);
         objetivosMundo = new Objetivo[numObjetives];
+        grFinal = new GridFinal(rows,cols,cellSize);
+        grFinal.setDistancia(2);
 
         for(int i = 0; i < numNPC; i++){
 
@@ -53,12 +69,24 @@ public class mundoGuerra : MonoBehaviour
         }
         for(int i = 0; i < numNPC; i++){
 
+            int iAux;
+            int jAux;
+
             equipoAzul[i] = Instantiate(prefabNPCAzul);
+            npcVirtualAzul[i] = Instantiate(npcVirtual);
+            npcVirtualAzul[i].name = "NPCVirtual" + equipoAzul[i];
+            equipoAzul[i].virtualTarget = npcVirtualAzul[i];
+            equipoAzul[i].setStatus(Agent.STOPPED);
+
+            buscadoresAzul[i] = new BuscaCaminos(grFinal,equipoAzul[i],npcVirtualAzul[i]);
             equipoAzul[i].Position = new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY());
+            grFinal.getCoordenadas(equipoAzul[i].Position,out iAux,out jAux);
+            teamBlue[i] = new Posicion(iAux,jAux);
+
             equipoRojo[i] = Instantiate(prefabNPCRojo);
             equipoRojo[i].Position = new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY());
         }
-        grFinal = new GridFinal(rows,cols,cellSize);
+        
         setTipos();
         setPosiciones();
         setTorreVigia();
@@ -93,7 +121,7 @@ public class mundoGuerra : MonoBehaviour
         }
 
         Objetivo vigia = new Objetivo(1,coordes,Objetivo.TORRE_VIGIA);
-        objetivosMundo[0] = vigia;
+        objetivosMundo[INDEX_TORRE_VIGIA] = vigia;
 
     }
     private void setArmeria(){
@@ -382,14 +410,18 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
+        moverNPC();
+        verificaTorreVigia();
         if (Input.GetMouseButtonDown(1))
         {   
-            moverNPC();
+            
+
         }
         if (Input.GetMouseButtonDown(0))
         {
             seleccionarNPC();
         }
+
     }
 
     private void seleccionarNPC(){
@@ -416,18 +448,91 @@ public class mundoGuerra : MonoBehaviour
     }
 
     private void moverNPC(){
-
+        
         foreach(AgentNPC pl in equipoAzul)
         {
+            int xDespues;
+            int yDespues;
+            
             if(pl.getTipo() == AgentNPC.ARQUERO)
             {
-                int i;
-                int j;
-                grFinal.getCoordenadas(pl.Position,out i, out j);
-                cArquero.setLimites(i,j);
-                Debug.Log(cArquero.getDesicion(grFinal,objetivosMundo,unidades.getArray(),i,j));
+                
+                if(pl.getLLegada()){
+                    
+                    int i;
+                    int j;
+                    grFinal.getCoordenadas(pl.Position,out i, out j);
+                    
+                    int iObjetivo = i;
+                    int jObjetivo = j;
+                    
+                    cArquero.setLimites(i,j);
+                    npcVirtualAzul[0].Position = cArquero.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j);
+                    grFinal.getCoordenadas(npcVirtualAzul[0].Position,out iObjetivo,out jObjetivo);
+                    
 
+                    if(cArquero.cambioCom()){
+
+                        buscadoresAzul[0].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[0]);
+
+                        buscadoresAzul[0].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+                    }
+                    buscadoresAzul[0].LRTA();
+
+                }else if((pl.status == Agent.STOPPED)){
+                            
+                    
+                    buscadoresAzul[0].LRTA();
+                }
+                //buscadoresAzul[0].LRTA();
+                grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+                
+                if(teamBlue[0].getI() != xDespues || teamBlue[0].getJ() != yDespues){
+                    Debug.Log("Antes: "+teamBlue[0].getI()+","+teamBlue[0].getI()+"  Despues: "+xDespues+","+yDespues);
+                    grFinal.setValor(teamBlue[0].getI(),teamBlue[0].getJ(),GridFinal.LIBRE);
+                    unidades.setUnidad(teamBlue[0].getI(),teamBlue[0].getJ(),ArrayUnidades.LIBRE);
+                    grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
+                    unidades.setUnidad(xDespues,yDespues,ArrayUnidades.ARQUEROAZUL);
+                    teamBlue[0].setNueva(xDespues,yDespues);
+                    
+                }  
+            }   
+        }
+    }
+    private void verificaTorreVigia(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_TORRE_VIGIA].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_TORRE_VIGIA].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO)
+                {
+                    contRojo++;
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+                }
+                objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.ROJO);
             }
         }
+        
     }
 }

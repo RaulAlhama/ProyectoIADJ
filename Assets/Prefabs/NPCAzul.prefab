@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5044310171192284528, guid: 46d076c48369739449191052ba157870, type: 3}
+      propertyPath: _maxSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6422018024418208635, guid: 46d076c48369739449191052ba157870, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

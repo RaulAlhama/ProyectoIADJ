@@ -22,4 +22,9 @@ public class Coordenada
 
         return y;
     }
+    public void setNueva(int xn,int yn){
+
+        x = xn;
+        y = yn;
+    }
 }

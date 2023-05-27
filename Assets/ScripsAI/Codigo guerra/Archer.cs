@@ -19,12 +19,21 @@ public class Archer
     private const int MAXVALOR = 99;
     private const int MINVALOR = 0;
 
+    private int com;
+    private int lastCom;
+
+    public const int MOVERSE = 20;
+    public const int ATACAR = 21;
+    public const int SEGUIR = 22;
+    public const int QUIETO = 23;
+
     public Archer(){
 
         mAtaque = new int[rangoAtaque,rangoAtaque];
         mVision = new int[rangoVision,rangoVision];
         centroAtaque = (rangoAtaque - 1)/2;
         centroVision = (rangoVision - 1)/2;
+        com = Archer.QUIETO;
     }
     public void setLimites(int i, int j){
 
@@ -111,6 +120,7 @@ public class Archer
                     enemigos = true;
                     x1 = i;
                     y1 = j;
+                    
                 }
             }
         }
@@ -179,25 +189,41 @@ public class Archer
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDesicion(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
+    public Vector3 getDecision(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
 
         int x = i;
         int y = j;
         Vector3 target = mundo.getPosicionReal(x,y);
         
-        if(enemigosEnVision(posNPCs,out x, out y)){
+        if(enemigosEnVision(mundo.getArray(),out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.ATACAR;
 
         }else if(unidadPesadaEnVision(posNPCs,out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.SEGUIR;
         }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
 
-            Debug.Log(x+","+y);
             target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
         }
         //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
+        
         return target;
+    }
+    public bool cambioCom(){
+
+        if(lastCom == com){
+
+            return false;
+        }else{
+
+            return true;
+        }
     }
 }

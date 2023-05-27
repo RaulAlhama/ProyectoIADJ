@@ -54,12 +54,13 @@ public class PathFindingLRTA : MonoBehaviour
 
         puntos = generaEspacioLocal(puntoActual);
         puntoActual = actualizaPesos(puntos, puntoActual);
-        Vector3 aux = mundo.getPosicionReal(puntoActual.x,puntoActual.y) + new Vector3(1,0,1);
+        Vector3 aux = mundo.getPosicionReal(puntoActual.x,puntoActual.y) + new Vector3(2,0,2); // 1,0,1
         npcVirtual.transform.position = aux;
         player.setTarget(npcVirtual);
         if(puntoActual.x == iObjetivo && puntoActual.y == jObjetivo)
             player.setLLegada(true);
-
+        else
+            player.setLLegada(false);
     }
     private List<Coordenadas> generaEspacioLocal(Coordenadas puntoActual){
 
@@ -77,7 +78,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i,j] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i-1,j] != infinito){ // izquierda
+        if((i-1 >= 0)  && grafoMovimiento[i-1,j] != infinito){ // izquierda
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i-1;
@@ -87,7 +88,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i-1,j] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i-1,j+1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ // arriba-izquierda
+        if((i-1 >= 0 && j+1 < 100) && grafoMovimiento[i-1,j+1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ // arriba-izquierda
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i-1;
@@ -97,7 +98,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i-1,j+1] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i+1,j+1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ // arriba-derecha
+        if((i+1 < 100 && j+1 < 100) && grafoMovimiento[i+1,j+1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ // arriba-derecha
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i+1;
@@ -107,7 +108,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i+1,j+1] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i-1,j-1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ // abajo-izquierda
+        if((i-1 >= 0 && j-1 >= 0) && grafoMovimiento[i-1,j-1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ // abajo-izquierda
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i-1;
@@ -117,7 +118,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i-1,j-1] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i+1,j-1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ // abajo-derecha
+        if((j-1 >= 0 && i+1 < 100) && grafoMovimiento[i+1,j-1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ // abajo-derecha
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i+1;
@@ -127,7 +128,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i+1,j-1] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i,j+1] != infinito){ // arriba
+        if((j+1 < 100) &&grafoMovimiento[i,j+1] != infinito){ // arriba
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i;
@@ -137,7 +138,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i,j+1] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i+1,j] != infinito){ // derecha
+        if((i+1 < 100) && grafoMovimiento[i+1,j] != infinito){ // derecha
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i+1;
@@ -147,7 +148,7 @@ public class PathFindingLRTA : MonoBehaviour
                 grafoMovimiento[i+1,j] = Double.PositiveInfinity;
 
         }
-        if(grafoMovimiento[i,j-1] != infinito){ // abajo
+        if((j-1 >= 0) && grafoMovimiento[i,j-1] != infinito){ // abajo
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i;
@@ -178,7 +179,7 @@ public class PathFindingLRTA : MonoBehaviour
                 continua--;
             }
 
-            if(grafoMovimiento[auxPunto.x - 1,auxPunto.y + 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // arriba izquierda
+            if((auxPunto.x-1 >= 0 && auxPunto.y + 1 < 100) && (grafoMovimiento[auxPunto.x - 1,auxPunto.y + 1] < grafoMovimiento[auxPunto.x,auxPunto.y])){ // arriba izquierda
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -189,7 +190,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x,auxPunto.y + 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // arriba
+            if((auxPunto.y + 1 < 100) && grafoMovimiento[auxPunto.x,auxPunto.y + 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // arriba
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -200,7 +201,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x + 1,auxPunto.y + 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // arriba derecha
+            if((auxPunto.x + 1 < 100 && auxPunto.y + 1 < 100) && grafoMovimiento[auxPunto.x + 1,auxPunto.y + 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // arriba derecha
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -211,7 +212,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x + 1,auxPunto.y] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // derecha
+            if((auxPunto.x + 1 < 100) && grafoMovimiento[auxPunto.x + 1,auxPunto.y] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // derecha
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -222,7 +223,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x + 1,auxPunto.y - 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // abajo derecha
+            if((auxPunto.x + 1 < 100 && auxPunto.y - 1 >= 0) && grafoMovimiento[auxPunto.x + 1,auxPunto.y - 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // abajo derecha
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -233,7 +234,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x,auxPunto.y - 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // abajo
+            if((auxPunto.y - 1 >= 0) && grafoMovimiento[auxPunto.x,auxPunto.y - 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // abajo
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -244,7 +245,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x -1,auxPunto.y - 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // abajo izquierda
+            if((auxPunto.x - 1 >= 0 && auxPunto.y - 1 >= 0) && grafoMovimiento[auxPunto.x -1,auxPunto.y - 1] < grafoMovimiento[auxPunto.x,auxPunto.y]){ // abajo izquierda
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();
@@ -255,7 +256,7 @@ public class PathFindingLRTA : MonoBehaviour
                 rutasP.Add(aAux);
 
             }
-            if(grafoMovimiento[auxPunto.x - 1,auxPunto.y] <  grafoMovimiento[auxPunto.x,auxPunto.y]){ // izquierda
+            if((auxPunto.x - 1 >= 0) && grafoMovimiento[auxPunto.x - 1,auxPunto.y] <  grafoMovimiento[auxPunto.x,auxPunto.y]){ // izquierda
 
                 nAbierto aAux = new nAbierto();
                 Coordenadas pAux = new Coordenadas();

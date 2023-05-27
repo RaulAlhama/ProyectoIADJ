@@ -5,14 +5,15 @@ using UnityEngine;
 public class ArrayUnidades
 {
     private int[,] array;
-    public const int ARQUEROROJO = 0;
-    public const int UNIDADPESADAROJO = 1;
-    public const int EXPLORADORROJO = 2;
-    public const int PATRULLAROJO = 3;
-    public const int ARQUEROAZUL = 4;
-    public const int UNIDADPESADAAZUL = 5;
-    public const int EXPLORADOAZUL = 6;
-    public const int PATRULLAAZUL = 7;
+    public const int LIBRE = 0;
+    public const int ARQUEROROJO = 1;
+    public const int UNIDADPESADAROJO = 2;
+    public const int EXPLORADORROJO = 3;
+    public const int PATRULLAROJO = 4;
+    public const int ARQUEROAZUL = 5;
+    public const int UNIDADPESADAAZUL = 6;
+    public const int EXPLORADOAZUL = 7;
+    public const int PATRULLAAZUL = 8;
 
     public ArrayUnidades(int a, int b){
 
