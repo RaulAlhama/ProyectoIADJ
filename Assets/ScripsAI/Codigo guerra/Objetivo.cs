@@ -47,4 +47,44 @@ public class Objetivo
         return prioridad;
     }
 
+    public int getXInicial(){
+        int min=900;
+        for (int i=0; i<cordes.Length;i++){
+            if (cordes[i].getX()<=min)
+                min = cordes[i].getX();
+        }
+        return min;
+        
+    }
+
+    public int getXFinal(){
+        int max=0;
+        for (int i=0; i<cordes.Length;i++){
+            if (cordes[i].getX()>=max)
+                max = cordes[i].getX();
+        }
+        return max;
+        
+    }
+
+    public int getYInicial(){
+        int min=900;
+        for (int i=0; i<cordes.Length;i++){
+            if (cordes[i].getY()<=min)
+                min = cordes[i].getY();
+        }
+        return min;
+        
+    }
+
+    public int getYFinal(){
+        int max=0;
+        for (int i=0; i<cordes.Length;i++){
+            if (cordes[i].getY()>=max)
+                max = cordes[i].getY();
+        }
+        return max;
+        
+    }
+
 }

@@ -48,6 +48,12 @@ public class mundoGuerra : MonoBehaviour
     private Archer cArquero;
     private UnidadPesada cPesada;
 
+    // Minimapa
+    public GameObject prefabPlano;
+    public Material materialEquipoRojo;
+    public Material materialEquipoAzul;
+    public Material materialNeutro; 
+    public Material materialPeleado;  
 
     // informacion
     
@@ -105,8 +111,78 @@ public class mundoGuerra : MonoBehaviour
         setPuenteIzqAzul();
         setPuenteDerAzul();
         //creaTexto();
-        
+        inicializarMinimapa();
      
+    }
+
+    // Función que inicializa todas las casillas del minimapa a neutro, 
+    // recorriendo cada una de las casillas del grid y creando un plano del tamaño de una casilla
+    private void inicializarMinimapa(){
+
+        Vector3 ajuste = new Vector3(2,-0.2f,2);
+        GameObject minimapa = new GameObject("minimapa");
+
+        for (int j = 0; j < cols; j++){
+
+            for (int i = 0; i< rows; i++){
+
+                GameObject plane = Instantiate(prefabPlano, minimapa.transform);
+                plane.name = "minimap_" + i + "_" + j;
+                plane.transform.localScale = new Vector3(cellSize/10, 1f, cellSize/10);
+                plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
+                //Debug.Log("(" + i + "," + j + ") = " + grFinal.getPosicionReal(i,j));
+                plane.layer = 7;
+                plane.GetComponent<Renderer>().material = materialNeutro;
+            }
+        }
+
+        for (int j=0;j<=7;j++){
+
+            for (int i=43;i<=56;i++){
+                GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
+                casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+            }
+        }
+
+         for (int j=92;j<=99;j++){
+
+            for (int i=43;i<=56;i++){
+                GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
+                casilla.GetComponent<Renderer>().material = materialEquipoRojo;
+            }
+        }
+        
+
+    }
+
+    private void actualizarMinimapa(){
+
+
+        for (int z=0;z<objetivosMundo.Length;z++){
+
+            if (objetivosMundo[z].getPropiedad() != Objetivo.NEUTRAL){
+                int xinicial = objetivosMundo[INDEX_TORRE_VIGIA].getXInicial();
+                int xfinal = objetivosMundo[INDEX_TORRE_VIGIA].getXFinal();
+                int yinicial = objetivosMundo[INDEX_TORRE_VIGIA].getYInicial();
+                int yfinal = objetivosMundo[INDEX_TORRE_VIGIA].getYFinal();
+
+                for (int j=yinicial-2;j<=yfinal+2;j++){
+                            
+                    for (int i=xinicial-2;i<=xfinal+2;i++){
+
+                        // Actualizamos las casillas del minimapa
+                        GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
+
+                        if (objetivosMundo[z].getPropiedad() == Objetivo.AZUL)
+                            casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+
+                        else
+                            casilla.GetComponent<Renderer>().material = materialEquipoRojo;
+                    }
+
+                }
+            }
+        }
     }
 
     private void setTorreVigia(){
@@ -421,6 +497,7 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
+        actualizarMinimapa();
         moverNPC();
         verificaTorreVigia();
         verificaArmeria();
@@ -494,6 +571,12 @@ public class mundoGuerra : MonoBehaviour
                     
             int iObjetivo = i;
             int jObjetivo = j;
+                    int i;
+                    int j;
+                    grFinal.getCoordenadas(pl.Position,out i, out j);
+
+                    int iObjetivo = i;
+                    int jObjetivo = j;
                     
             cArquero.setLimites(i,j);
             npcVirtualAzul[0].Position = cArquero.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
@@ -579,6 +662,9 @@ public class mundoGuerra : MonoBehaviour
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = azul;
+
+                    
+
                 }
                 objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.AZUL);
             }else if(contRojo > 0 && contAzul == 0){
