@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public class Archer
+public class UnidadPesada : MonoBehaviour
 {
     // Start is called before the first frame update
+     // Start is called before the first frame update
     private AgentNPC pj;
     private int rangoVision = 11;
     private int rangoAtaque = 7;
@@ -29,13 +29,13 @@ public class Archer
     public const int SEGUIR = 22;
     public const int QUIETO = 23;
 
-    public Archer(){
+    public UnidadPesada(){
 
         mAtaque = new int[rangoAtaque,rangoAtaque];
         mVision = new int[rangoVision,rangoVision];
         centroAtaque = (rangoAtaque - 1)/2;
         centroVision = (rangoVision - 1)/2;
-        com = Archer.QUIETO;
+        com = UnidadPesada.QUIETO;
     }
     public void setLimites(int i, int j){
 
@@ -132,82 +132,6 @@ public class Archer
         y = y1;
         return enemigos;
     }
-    private bool unidadPesadaEnVision(GridFinal valmundo,int[,] mundo, out int x,out int y){
-
-        bool aliado = false;
-        int x1 = 0;
-        int y1 = 0;
-        for (int i = limVision[0]; i < limVision[1]; i++)
-        {
-            for (int j = limVision[2]; j < limVision[3]; j++)
-            {
-                if (mundo[i,j] == ArrayUnidades.UNIDADPESADAAZUL)
-                {
-                    aliado = true;
-                    x1 = i;
-                    y1 = j;
-                }
-            }
-        }
-        List<Coordenada> slots = new List<Coordenada>();
-        if(x1-1 >= MINVALOR && y1-1 >= MINVALOR && valmundo.Posible(x1-1,y1-1)){
-
-            Coordenada cr = new Coordenada(x1-1,y1-1);
-            slots.Add(cr);
-        }
-        if(y1-1 >= MINVALOR && valmundo.Posible(x1,y1-1) ){
-
-            Coordenada cr = new Coordenada(x1,y1-1);
-            slots.Add(cr);
-        }
-        if(x1+1 <= MAXVALOR && y1-1 >= MINVALOR && valmundo.Posible(x1+1,y1-1)){
-
-            Coordenada cr = new Coordenada(x1+1,y1-1);
-            slots.Add(cr);
-        }
-        if(x1-1 >= MINVALOR && valmundo.Posible(x1-1,y1)){
-
-            Coordenada cr = new Coordenada(x1-1,y1);
-            slots.Add(cr);
-        }
-        if(x1+1 <= MAXVALOR && valmundo.Posible(x1+1,y1)){
-
-            Coordenada cr = new Coordenada(x1+1,y1);
-            slots.Add(cr);
-        }
-        if(x1-1 >= MINVALOR && y1+1 <= MAXVALOR && valmundo.Posible(x1-1,y1+1)){
-
-            Coordenada cr = new Coordenada(x1-1,y1+1);
-            slots.Add(cr);
-        }
-        if( y1+1 <= MAXVALOR && valmundo.Posible(x1,y1+1)){
-
-            Coordenada cr = new Coordenada(x1,y1+1);
-            slots.Add(cr);
-        }
-        if( x1+1 <= MAXVALOR && y1+1 <= MAXVALOR && valmundo.Posible(x1+1,y1+1)){
-
-            Coordenada cr = new Coordenada(x1+1,y1+1);
-            slots.Add(cr);
-        }
-
-        double distancia = 999999;
-
-        foreach (Coordenada cr in slots)
-        {
-            double disAux = Mathf.Max(Mathf.Abs(posI-cr.getX()),Mathf.Abs(posJ-cr.getY()));
-            if (disAux < distancia)
-            {
-                distancia = disAux;
-                x1 = cr.getX();
-                y1 = cr.getY();
-            }
-        }
-        Debug.Log(x1+","+y1);
-        x = x1;
-        y = y1;
-        return aliado;
-    }
     public bool posicionObjetivo(Objetivo[] lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = false;
@@ -257,18 +181,13 @@ public class Archer
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
-            com = Archer.ATACAR;
+            com = UnidadPesada.ATACAR;
 
-        }else if(unidadPesadaEnVision(mundo, posNPCs,out x, out y)){
-
-            target = mundo.getPosicionReal(x,y);
-            lastCom = com;
-            com = Archer.SEGUIR;
         }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
-            com = Archer.MOVERSE;
+            com = UnidadPesada.MOVERSE;
         }
         //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
         
@@ -285,3 +204,5 @@ public class Archer
         }
     }
 }
+
+

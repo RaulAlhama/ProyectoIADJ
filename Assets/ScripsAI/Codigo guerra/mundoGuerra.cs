@@ -12,6 +12,11 @@ public class mundoGuerra : MonoBehaviour
     private const int INDEXPESADA2 = 4;
     private const int INDEXVIGILANTE = 5;
     private const int INDEX_TORRE_VIGIA = 0;
+    private const int INDEX_ARMERIA = 1;
+    private const int INDEX_PUENTE_IZQUIERDO_AZUL = 2;
+    private const int INDEX_PUENTE_DERECHO_AZUL = 3;
+    
+
 
     public Material azul;
     public Material rojo;
@@ -23,20 +28,25 @@ public class mundoGuerra : MonoBehaviour
     public Color backgroundColor = Color.white;
     public GameObject wallPrefab;
     public GameObject[] torreVigia;
+    public GameObject[] armeria;
+    public GameObject[] puenteDerecho;
+    public GameObject[] puenteIzquierdo;
+    public GameObject[] santuario;
 
     private AgentNPC[] equipoRojo = new AgentNPC[6];
     private Agent[] npcVirtualRojo = new Agent[6];
 
-    private AgentNPC[] equipoAzul = new AgentNPC[1];
-    private Agent[] npcVirtualAzul = new Agent[1];
-    private BuscaCaminos[] buscadoresAzul = new BuscaCaminos[1];
+    private AgentNPC[] equipoAzul = new AgentNPC[numNPC];
+    private Agent[] npcVirtualAzul = new Agent[numNPC];
+    private BuscaCaminos[] buscadoresAzul = new BuscaCaminos[numNPC];
 
 
     public AgentNPC prefabNPCAzul;
     public AgentNPC prefabNPCRojo;
-    private const int numNPC = 1;
+    private const int numNPC = 2;
     private const int numObjetives = 4;
     private Archer cArquero;
+    private UnidadPesada cPesada;
 
 
     // informacion
@@ -57,6 +67,7 @@ public class mundoGuerra : MonoBehaviour
     void Start()
     {
         cArquero = new Archer();
+        cPesada = new UnidadPesada();
         unidades = new ArrayUnidades(rows,cols);
         objetivosMundo = new Objetivo[numObjetives];
         grFinal = new GridFinal(rows,cols,cellSize);
@@ -146,7 +157,7 @@ public class mundoGuerra : MonoBehaviour
         coordes[k] = new Coordenada(64,39);
 
         Objetivo armeria = new Objetivo(2,coordes,Objetivo.ARMERIA);
-        objetivosMundo[1] = armeria;
+        objetivosMundo[INDEX_ARMERIA] = armeria;
     }
     private void setPuenteIzqAzul(){
 
@@ -161,7 +172,7 @@ public class mundoGuerra : MonoBehaviour
             }
         }
         Objetivo puenteIzqAzul = new Objetivo(3,coordes,Objetivo.PUENTE_IZQUIERDO_AZUL);
-        objetivosMundo[2] = puenteIzqAzul;
+        objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL] = puenteIzqAzul;
     }
     private void setPuenteDerAzul(){
 
@@ -176,7 +187,7 @@ public class mundoGuerra : MonoBehaviour
             }
         }
         Objetivo puenteDerAzul = new Objetivo(3,coordes,Objetivo.PUENTE_DERECHO_AZUL);
-        objetivosMundo[3] = puenteDerAzul;
+        objetivosMundo[INDEX_PUENTE_DERECHO_AZUL] = puenteDerAzul;
     }
     private void setUnidades(AgentNPC npc, int eq){
 
@@ -367,7 +378,7 @@ public class mundoGuerra : MonoBehaviour
         //equipoAzul[0].setTipo(AgentNPC.EXPLORADOR);
         equipoAzul[0].setTipo(AgentNPC.ARQUERO);
         //equipoAzul[2].setTipo(AgentNPC.ARQUERO);
-        //equipoAzul[1].setTipo(AgentNPC.PESADA);
+        equipoAzul[1].setTipo(AgentNPC.PESADA);
         //equipoAzul[4].setTipo(AgentNPC.PESADA);
         //equipoAzul[5].setTipo(AgentNPC.PATRULLA);
         
@@ -412,6 +423,7 @@ public class mundoGuerra : MonoBehaviour
 
         moverNPC();
         verificaTorreVigia();
+        verificaArmeria();
         if (Input.GetMouseButtonDown(1))
         {   
             
@@ -451,53 +463,99 @@ public class mundoGuerra : MonoBehaviour
         
         foreach(AgentNPC pl in equipoAzul)
         {
-            int xDespues;
-            int yDespues;
             
             if(pl.getTipo() == AgentNPC.ARQUERO)
             {
+                movArcher(pl);
+            }else if (pl.getTipo() == AgentNPC.PESADA)
+            {
+                movPesada(pl);
+            }
+            else if (pl.getTipo() == AgentNPC.EXPLORADOR)
+            {
                 
-                if(pl.getLLegada()){
-                    
-                    int i;
-                    int j;
-                    grFinal.getCoordenadas(pl.Position,out i, out j);
-                    
-                    int iObjetivo = i;
-                    int jObjetivo = j;
-                    
-                    cArquero.setLimites(i,j);
-                    npcVirtualAzul[0].Position = cArquero.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j);
-                    grFinal.getCoordenadas(npcVirtualAzul[0].Position,out iObjetivo,out jObjetivo);
-                    
-
-                    if(cArquero.cambioCom()){
-
-                        buscadoresAzul[0].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[0]);
-
-                        buscadoresAzul[0].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-                    }
-                    buscadoresAzul[0].LRTA();
-
-                }else if((pl.status == Agent.STOPPED)){
-                            
-                    
-                    buscadoresAzul[0].LRTA();
-                }
-                //buscadoresAzul[0].LRTA();
-                grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+            }
+            else if (pl.getTipo() == AgentNPC.PATRULLA)
+            {
                 
-                if(teamBlue[0].getI() != xDespues || teamBlue[0].getJ() != yDespues){
-                    Debug.Log("Antes: "+teamBlue[0].getI()+","+teamBlue[0].getI()+"  Despues: "+xDespues+","+yDespues);
-                    grFinal.setValor(teamBlue[0].getI(),teamBlue[0].getJ(),GridFinal.LIBRE);
-                    unidades.setUnidad(teamBlue[0].getI(),teamBlue[0].getJ(),ArrayUnidades.LIBRE);
-                    grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
-                    unidades.setUnidad(xDespues,yDespues,ArrayUnidades.ARQUEROAZUL);
-                    teamBlue[0].setNueva(xDespues,yDespues);
-                    
-                }  
-            }   
+            }
         }
+    }
+    private void movArcher(AgentNPC pl){
+        
+        int xDespues;
+        int yDespues;
+
+        if(pl.getLLegada()){
+                    
+            int i;
+            int j;
+            grFinal.getCoordenadas(pl.Position,out i, out j);
+                    
+            int iObjetivo = i;
+            int jObjetivo = j;
+                    
+            cArquero.setLimites(i,j);
+            npcVirtualAzul[0].Position = cArquero.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[0].Position,out iObjetivo,out jObjetivo);
+                    
+            buscadoresAzul[0].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[0]);
+            buscadoresAzul[0].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            buscadoresAzul[0].LRTA();
+            
+        }else if((pl.status == Agent.STOPPED)){
+                            
+            buscadoresAzul[0].LRTA();
+        }
+        grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+                
+        if(teamBlue[0].getI() != xDespues || teamBlue[0].getJ() != yDespues){
+            
+            grFinal.setValor(teamBlue[0].getI(),teamBlue[0].getJ(),GridFinal.LIBRE);
+            unidades.setUnidad(teamBlue[0].getI(),teamBlue[0].getJ(),ArrayUnidades.LIBRE);
+            grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
+            unidades.setUnidad(xDespues,yDespues,ArrayUnidades.ARQUEROAZUL);
+            teamBlue[0].setNueva(xDespues,yDespues);
+                    
+        }  
+    }
+    private void movPesada(AgentNPC pl){
+
+        int xDespues;
+        int yDespues;
+
+        if(pl.getLLegada()){
+                    
+            int i;
+            int j;
+            grFinal.getCoordenadas(pl.Position,out i, out j);
+                    
+            int iObjetivo = i;
+            int jObjetivo = j;
+                    
+            cPesada.setLimites(i,j);
+            npcVirtualAzul[1].Position = cPesada.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[1].Position,out iObjetivo,out jObjetivo);
+                    
+            buscadoresAzul[1].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[1]);
+            buscadoresAzul[1].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            buscadoresAzul[1].LRTA();
+            
+        }else if((pl.status == Agent.STOPPED)){
+                            
+            buscadoresAzul[1].LRTA();
+        }
+        grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+                
+        if(teamBlue[1].getI() != xDespues || teamBlue[1].getJ() != yDespues){
+            
+            grFinal.setValor(teamBlue[1].getI(),teamBlue[1].getJ(),GridFinal.LIBRE);
+            unidades.setUnidad(teamBlue[1].getI(),teamBlue[1].getJ(),ArrayUnidades.LIBRE);
+            grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
+            unidades.setUnidad(xDespues,yDespues,ArrayUnidades.UNIDADPESADAAZUL);
+            teamBlue[1].setNueva(xDespues,yDespues);
+                    
+        }  
     }
     private void verificaTorreVigia(){
 
@@ -531,6 +589,42 @@ public class mundoGuerra : MonoBehaviour
                     renderer.material = rojo;
                 }
                 objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.ROJO);
+            }
+        }
+        
+    }
+    private void verificaArmeria(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_ARMERIA].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_ARMERIA].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO)
+                {
+                    contRojo++;
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in armeria)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+                }
+                objetivosMundo[INDEX_ARMERIA].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in armeria)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_ARMERIA].setPropiedad(Objetivo.ROJO);
             }
         }
         

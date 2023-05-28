@@ -13,6 +13,7 @@ public class PathFindingLRTA : MonoBehaviour
     private const double infinito = Double.PositiveInfinity;
     private int iObjetivo;
     private int jObjetivo;
+    private const float DIS_MINIMA = 0.2f; 
     struct Coordenadas{
         public int x;
         public int y;
@@ -57,10 +58,17 @@ public class PathFindingLRTA : MonoBehaviour
         Vector3 aux = mundo.getPosicionReal(puntoActual.x,puntoActual.y) + new Vector3(2,0,2); // 1,0,1
         npcVirtual.transform.position = aux;
         player.setTarget(npcVirtual);
-        if(puntoActual.x == iObjetivo && puntoActual.y == jObjetivo)
-            player.setLLegada(true);
-        else
+        
+        if(puntoActual.x == iObjetivo && puntoActual.y == jObjetivo){
+            float dis = (aux-player.Position).magnitude;
+
+            if(dis < DIS_MINIMA)
+                player.setLLegada(true);
+            else
+                player.setLLegada(false);
+        }else{
             player.setLLegada(false);
+        }
     }
     private List<Coordenadas> generaEspacioLocal(Coordenadas puntoActual){
 

@@ -801,6 +801,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &249437565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 1977232901}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &275171393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -929,6 +934,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 764565790112307728, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
   m_PrefabInstance: {fileID: 1977232901}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &314818755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 1933093188}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &378367763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1003,7 +1013,7 @@ GameObject:
   - component: {fileID: 379478077}
   - component: {fileID: 379478076}
   m_Layer: 0
-  m_Name: Suelo Blue
+  m_Name: Suelo Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2244,7 +2254,7 @@ GameObject:
   - component: {fileID: 567878506}
   - component: {fileID: 567878505}
   m_Layer: 0
-  m_Name: Suelo Red
+  m_Name: Suelo Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3616,6 +3626,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 974506107}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &995376954 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 748454878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1001651116 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3771914321497030699, guid: 60c009b953190d84a958ed1c5884e67a, type: 3}
@@ -5685,6 +5700,11 @@ MonoBehaviour:
   - {fileID: 848414056}
   - {fileID: 1381540115}
   - {fileID: 67488315}
+  armeria:
+  - {fileID: 314818755}
+  - {fileID: 995376954}
+  - {fileID: 249437565}
+  - {fileID: 2028615380}
   prefabNPCAzul: {fileID: 7860291542884268978, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
   prefabNPCRojo: {fileID: 5044310171192284528, guid: 46d076c48369739449191052ba157870, type: 3}
 --- !u!4 &1592357733
@@ -7804,6 +7824,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &2028615380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6840122338160831837, guid: b49309e1b3f35ff41b016188d7e9d0ed, type: 3}
+  m_PrefabInstance: {fileID: 60144994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2039955340
 GameObject:
   m_ObjectHideFlags: 0
