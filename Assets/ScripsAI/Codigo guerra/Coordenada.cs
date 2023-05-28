@@ -27,4 +27,5 @@ public class Coordenada
         x = xn;
         y = yn;
     }
+    
 }
