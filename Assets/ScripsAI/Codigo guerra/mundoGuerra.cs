@@ -571,12 +571,6 @@ public class mundoGuerra : MonoBehaviour
                     
             int iObjetivo = i;
             int jObjetivo = j;
-                    int i;
-                    int j;
-                    grFinal.getCoordenadas(pl.Position,out i, out j);
-
-                    int iObjetivo = i;
-                    int jObjetivo = j;
                     
             cArquero.setLimites(i,j);
             npcVirtualAzul[0].Position = cArquero.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
