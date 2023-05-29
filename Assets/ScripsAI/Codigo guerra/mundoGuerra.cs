@@ -54,7 +54,9 @@ public class mundoGuerra : MonoBehaviour
     public Material materialEquipoRojo;
     public Material materialEquipoAzul;
     public Material materialNeutro; 
-    public Material materialPeleado;  
+    public Material materialPeleado;
+    private GameObject[,] casillas_minimapa = new GameObject[34, 34];
+    private GameObject minimapa;
 
     // informacion
     
@@ -121,7 +123,7 @@ public class mundoGuerra : MonoBehaviour
     private void inicializarMinimapa(){
 
         Vector3 ajuste = new Vector3(6,-0.2f,6);
-        GameObject minimapa = new GameObject("minimapa");
+        minimapa = new GameObject("minimapa");
         int contx=0;
         int conty=0;
 
@@ -133,6 +135,7 @@ public class mundoGuerra : MonoBehaviour
 
                 GameObject plane = Instantiate(prefabPlano, minimapa.transform);
                 plane.name = "minimap_" + contx + "_" + conty;
+                casillas_minimapa[contx,conty] = plane;
                 plane.transform.localScale = new Vector3(cellSize/3.33f, 1f, cellSize/3.33f);
                 plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
                 //Debug.Log("(" + i + "," + j + ") = " + grFinal.getPosicionReal(i,j));
@@ -145,32 +148,14 @@ public class mundoGuerra : MonoBehaviour
             conty++;
         }
 
-        /*
-        for (int j=0;j<=7;j++){
-
-            for (int i=43;i<=56;i++){
-                GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
-                casilla.GetComponent<Renderer>().material = materialEquipoAzul;
-            }
-        }
-
-         for (int j=92;j<=99;j++){
-
-            for (int i=43;i<=56;i++){
-                GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
-                casilla.GetComponent<Renderer>().material = materialEquipoRojo;
-            }
-        }
-        */
-
     }
 
     private void actualizarMinimapa(){
 
-
         for (int z=0;z<objetivosMundo.Length;z++){
 
             if (objetivosMundo[z].getPropiedad() != Objetivo.NEUTRAL){
+
                 int xinicial = objetivosMundo[z].getXInicial();
                 int xfinal = objetivosMundo[z].getXFinal();
                 int yinicial = objetivosMundo[z].getYInicial();
@@ -181,7 +166,8 @@ public class mundoGuerra : MonoBehaviour
                     for (int i=xinicial-2;i<=xfinal+2;i++){
 
                         // Actualizamos las casillas del minimapa
-                        GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
+                        //GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
+                        GameObject casilla = casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)];
 
                         if (objetivosMundo[z].getPropiedad() == Objetivo.AZUL)
                             casilla.GetComponent<Renderer>().material = materialEquipoAzul;
@@ -512,7 +498,7 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
-        //actualizarMinimapa();
+        actualizarMinimapa();
         moverNPC();
         verificaTorreVigia();
         verificaArmeria();
@@ -616,7 +602,11 @@ public class mundoGuerra : MonoBehaviour
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
 
-        // Actualizamos las casillas por las que se trasladan los personaje
+        // Actualizamos las casillas por las que se trasladan los personajes
+        int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+        int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+        GameObject casilla = GameObject.Find("minimap_" + xcasilla + "_" + ycasilla);
+        casilla.GetComponent<Renderer>().material = materialEquipoAzul;
         
                 
         if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
@@ -665,6 +655,12 @@ public class mundoGuerra : MonoBehaviour
             buscadoresAzul[indice].LRTA();
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+
+        // Actualizamos las casillas por las que se trasladan los personajes
+        int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+        int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+        GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
+        casilla.GetComponent<Renderer>().material = materialEquipoAzul;
                 
         if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
             
