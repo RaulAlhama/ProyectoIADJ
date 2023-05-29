@@ -47,6 +47,7 @@ public class mundoGuerra : MonoBehaviour
     private const int numObjetives = 4;
     private Archer[] cArquero;
     private UnidadPesada[] cPesada;
+    private Explorador cExplorador;
 
     // Minimapa
     public GameObject prefabPlano;
@@ -110,8 +111,8 @@ public class mundoGuerra : MonoBehaviour
         setArmeria();
         setPuenteIzqAzul();
         setPuenteDerAzul();
-        creaTexto();
-        //inicializarMinimapa();
+        //creaTexto();
+        inicializarMinimapa();
      
     }
 
@@ -461,7 +462,7 @@ public class mundoGuerra : MonoBehaviour
     private void setTipos(){
 
         equipoAzul[INDEXEXPLORADOR].setTipo(AgentNPC.EXPLORADOR);
-
+        cExplorador = new Explorador(INDEXEXPLORADOR);
         equipoAzul[INDEXARCHER1].setTipo(AgentNPC.ARQUERO);
         cArquero[0] = new Archer(INDEXARCHER1);
         equipoAzul[INDEXARCHER2].setTipo(AgentNPC.ARQUERO);
@@ -577,7 +578,7 @@ public class mundoGuerra : MonoBehaviour
             }
             else if (equipoAzul[i].getTipo() == AgentNPC.EXPLORADOR)
             {
-                //movExplorer(equipoAzul[i]);
+                movExplorer(equipoAzul[i]);
             }
             else if (equipoAzul[i].getTipo() == AgentNPC.PATRULLA)
             {
@@ -615,11 +616,7 @@ public class mundoGuerra : MonoBehaviour
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
 
-        // Actualizamos las casillas por las que se trasladan los personajes
-        int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
-        int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
-        GameObject casilla = GameObject.Find("minimap_" + xcasilla + "_" + ycasilla);
-        casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+        // Actualizamos las casillas por las que se trasladan los personaje
         
                 
         if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
@@ -627,14 +624,17 @@ public class mundoGuerra : MonoBehaviour
             grFinal.setValor(teamBlue[indice].getI(),teamBlue[indice].getJ(),GridFinal.LIBRE);
             unidades.setUnidad(teamBlue[indice].getI(),teamBlue[indice].getJ(),ArrayUnidades.LIBRE);
 
-            grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
+            //grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
 
             grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
             unidades.setUnidad(xDespues,yDespues,ArrayUnidades.ARQUEROAZUL);
             teamBlue[indice].setNueva(xDespues,yDespues);
 
-            grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
-                    
+            //grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
+            int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+            int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+            GameObject casilla = GameObject.Find("minimap_" + xcasilla + "_" + ycasilla);
+            casilla.GetComponent<Renderer>().material = materialEquipoAzul;    
         }  
     }
     private void movPesada(AgentNPC pl, int index){
@@ -642,6 +642,7 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = cPesada[index].getIndexNPC();
+        
         if(pl.getLLegada()){
                     
             int i;
@@ -670,14 +671,17 @@ public class mundoGuerra : MonoBehaviour
             grFinal.setValor(teamBlue[indice].getI(),teamBlue[indice].getJ(),GridFinal.LIBRE);
             unidades.setUnidad(teamBlue[indice].getI(),teamBlue[indice].getJ(),ArrayUnidades.LIBRE);
 
-            grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
+            //grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
 
             grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
             unidades.setUnidad(xDespues,yDespues,ArrayUnidades.UNIDADPESADAAZUL);
             teamBlue[indice].setNueva(xDespues,yDespues);
 
-            grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
-                    
+            //grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
+            int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+            int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+            GameObject casilla = GameObject.Find("minimap_" + xcasilla + "_" + ycasilla);
+            casilla.GetComponent<Renderer>().material = materialEquipoAzul;   
         }  
     }
     private void verificaTorreVigia(){
@@ -727,10 +731,10 @@ public class mundoGuerra : MonoBehaviour
         {
             foreach (Coordenada coor in objetivosMundo[INDEX_ARMERIA].getSlots())
             {
-                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL)
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
                 {
                     contAzul++;
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO)
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
                 {
                     contRojo++;
                 }
@@ -758,7 +762,54 @@ public class mundoGuerra : MonoBehaviour
 
     private void movExplorer(AgentNPC pl){
 
-        Debug.Log("mov explorer");
+        int xDespues;
+        int yDespues;
+        int indice = cExplorador.getIndexNPC();
+        Debug.Log(indice);
+        if(pl.getLLegada()){
+                    
+            int i;
+            int j;
+            grFinal.getCoordenadas(pl.Position,out i, out j);
+                    
+            int iObjetivo = i;
+            int jObjetivo = j;
+            
+            cExplorador.setLimites(i,j);
+            npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
+                    
+            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            buscadoresAzul[indice].LRTA();
+            
+        }else if((pl.status == Agent.STOPPED)){
+                            
+            buscadoresAzul[indice].LRTA();
+        }
+        grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+
+
+        // Actualizamos las casillas por las que se trasladan los personaje
+        
+                
+        if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
+            
+            grFinal.setValor(teamBlue[indice].getI(),teamBlue[indice].getJ(),GridFinal.LIBRE);
+            unidades.setUnidad(teamBlue[indice].getI(),teamBlue[indice].getJ(),ArrayUnidades.LIBRE);
+
+            //grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
+
+            grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
+            unidades.setUnidad(xDespues,yDespues,ArrayUnidades.EXPLORADOAZUL);
+            teamBlue[indice].setNueva(xDespues,yDespues);
+
+            //grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
+            int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+            int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+            GameObject casilla = GameObject.Find("minimap_" + xcasilla + "_" + ycasilla);
+            casilla.GetComponent<Renderer>().material = materialEquipoAzul;    
+        }  
     }
     private void movPatrulla(AgentNPC pl){
 
