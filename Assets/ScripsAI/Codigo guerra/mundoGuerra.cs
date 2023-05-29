@@ -43,10 +43,10 @@ public class mundoGuerra : MonoBehaviour
 
     public AgentNPC prefabNPCAzul;
     public AgentNPC prefabNPCRojo;
-    private const int numNPC = 2;
+    private const int numNPC = 6;
     private const int numObjetives = 4;
-    private Archer cArquero;
-    private UnidadPesada cPesada;
+    private Archer[] cArquero;
+    private UnidadPesada[] cPesada;
 
     // Minimapa
     public GameObject prefabPlano;
@@ -72,8 +72,8 @@ public class mundoGuerra : MonoBehaviour
 
     void Start()
     {
-        cArquero = new Archer();
-        cPesada = new UnidadPesada();
+        cArquero = new Archer[2];
+        cPesada = new UnidadPesada[2];
         unidades = new ArrayUnidades(rows,cols);
         objetivosMundo = new Objetivo[numObjetives];
         grFinal = new GridFinal(rows,cols,cellSize);
@@ -110,8 +110,8 @@ public class mundoGuerra : MonoBehaviour
         setArmeria();
         setPuenteIzqAzul();
         setPuenteDerAzul();
-        //creaTexto();
-        inicializarMinimapa();
+        creaTexto();
+        //inicializarMinimapa();
      
     }
 
@@ -451,12 +451,17 @@ public class mundoGuerra : MonoBehaviour
     }
     private void setTipos(){
 
-        //equipoAzul[0].setTipo(AgentNPC.EXPLORADOR);
-        equipoAzul[0].setTipo(AgentNPC.ARQUERO);
-        //equipoAzul[2].setTipo(AgentNPC.ARQUERO);
-        equipoAzul[1].setTipo(AgentNPC.PESADA);
-        //equipoAzul[4].setTipo(AgentNPC.PESADA);
-        //equipoAzul[5].setTipo(AgentNPC.PATRULLA);
+        equipoAzul[INDEXEXPLORADOR].setTipo(AgentNPC.EXPLORADOR);
+
+        equipoAzul[INDEXARCHER1].setTipo(AgentNPC.ARQUERO);
+        cArquero[0] = new Archer(INDEXARCHER1);
+        equipoAzul[INDEXARCHER2].setTipo(AgentNPC.ARQUERO);
+        cArquero[1] = new Archer(INDEXARCHER2);
+        equipoAzul[INDEXPESADA1].setTipo(AgentNPC.PESADA);
+        cPesada[0] = new UnidadPesada(INDEXPESADA1);
+        equipoAzul[INDEXPESADA2].setTipo(AgentNPC.PESADA);
+        cPesada[1] = new UnidadPesada(INDEXPESADA2);
+        equipoAzul[INDEXVIGILANTE].setTipo(AgentNPC.PATRULLA);
         
         equipoRojo[0].setTipo(AgentNPC.ARQUERO);
         /*equipoRojo[1].setTipo(AgentNPC.ARQUERO);
@@ -471,7 +476,7 @@ public class mundoGuerra : MonoBehaviour
         int cont = 0;
         grid = new TextMesh[rows, cols];
         
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 80; i++)
         {
             for (int j = 0; j < 50; j++)
             {
@@ -497,7 +502,7 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
-        actualizarMinimapa();
+        //actualizarMinimapa();
         moverNPC();
         verificaTorreVigia();
         verificaArmeria();
@@ -538,30 +543,44 @@ public class mundoGuerra : MonoBehaviour
 
     private void moverNPC(){
         
-        foreach(AgentNPC pl in equipoAzul)
+        for(int i=0;i<numNPC;i++)
         {
             
-            if(pl.getTipo() == AgentNPC.ARQUERO)
+            if(equipoAzul[i].getTipo() == AgentNPC.ARQUERO)
             {
-                movArcher(pl);
-            }else if (pl.getTipo() == AgentNPC.PESADA)
-            {
-                movPesada(pl);
-            }
-            else if (pl.getTipo() == AgentNPC.EXPLORADOR)
-            {
+                if (i == INDEXARCHER1)
+                {
+                    movArcher(equipoAzul[i],0);
+                }else{
+
+                    movArcher(equipoAzul[i],1);
+                }
                 
-            }
-            else if (pl.getTipo() == AgentNPC.PATRULLA)
+            }else if (equipoAzul[i].getTipo() == AgentNPC.PESADA)
             {
-                
+                if (i == INDEXPESADA1)
+                {
+                    movPesada(equipoAzul[i],0);
+                }else{
+
+                    movPesada(equipoAzul[i],1);
+                }
+            }
+            else if (equipoAzul[i].getTipo() == AgentNPC.EXPLORADOR)
+            {
+                //movExplorer(equipoAzul[i]);
+            }
+            else if (equipoAzul[i].getTipo() == AgentNPC.PATRULLA)
+            {
+                //movPatrulla(equipoAzul[i]);
             }
         }
     }
-    private void movArcher(AgentNPC pl){
+    private void movArcher(AgentNPC pl, int index){
         
         int xDespues;
         int yDespues;
+        int indice = cArquero[index].getIndexNPC();
 
         if(pl.getLLegada()){
                     
@@ -571,36 +590,41 @@ public class mundoGuerra : MonoBehaviour
                     
             int iObjetivo = i;
             int jObjetivo = j;
+            
+            cArquero[index].setLimites(i,j);
+            npcVirtualAzul[indice].Position = cArquero[index].getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
-            cArquero.setLimites(i,j);
-            npcVirtualAzul[0].Position = cArquero.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
-            grFinal.getCoordenadas(npcVirtualAzul[0].Position,out iObjetivo,out jObjetivo);
-                    
-            buscadoresAzul[0].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[0]);
-            buscadoresAzul[0].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresAzul[0].LRTA();
+            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            buscadoresAzul[indice].LRTA();
             
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresAzul[0].LRTA();
+            buscadoresAzul[indice].LRTA();
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
                 
-        if(teamBlue[0].getI() != xDespues || teamBlue[0].getJ() != yDespues){
+        if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
             
-            grFinal.setValor(teamBlue[0].getI(),teamBlue[0].getJ(),GridFinal.LIBRE);
-            unidades.setUnidad(teamBlue[0].getI(),teamBlue[0].getJ(),ArrayUnidades.LIBRE);
+            grFinal.setValor(teamBlue[indice].getI(),teamBlue[indice].getJ(),GridFinal.LIBRE);
+            unidades.setUnidad(teamBlue[indice].getI(),teamBlue[indice].getJ(),ArrayUnidades.LIBRE);
+
+            grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
+
             grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
             unidades.setUnidad(xDespues,yDespues,ArrayUnidades.ARQUEROAZUL);
-            teamBlue[0].setNueva(xDespues,yDespues);
+            teamBlue[indice].setNueva(xDespues,yDespues);
+
+            grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
                     
         }  
     }
-    private void movPesada(AgentNPC pl){
+    private void movPesada(AgentNPC pl, int index){
 
         int xDespues;
         int yDespues;
-
+        int indice = cPesada[index].getIndexNPC();
         if(pl.getLLegada()){
                     
             int i;
@@ -610,27 +634,32 @@ public class mundoGuerra : MonoBehaviour
             int iObjetivo = i;
             int jObjetivo = j;
                     
-            cPesada.setLimites(i,j);
-            npcVirtualAzul[1].Position = cPesada.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
-            grFinal.getCoordenadas(npcVirtualAzul[1].Position,out iObjetivo,out jObjetivo);
+            cPesada[index].setLimites(i,j);
+            npcVirtualAzul[indice].Position = cPesada[index].getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
-            buscadoresAzul[1].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[1]);
-            buscadoresAzul[1].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresAzul[1].LRTA();
+            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            buscadoresAzul[indice].LRTA();
             
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresAzul[1].LRTA();
+            buscadoresAzul[indice].LRTA();
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
                 
-        if(teamBlue[1].getI() != xDespues || teamBlue[1].getJ() != yDespues){
+        if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
             
-            grFinal.setValor(teamBlue[1].getI(),teamBlue[1].getJ(),GridFinal.LIBRE);
-            unidades.setUnidad(teamBlue[1].getI(),teamBlue[1].getJ(),ArrayUnidades.LIBRE);
+            grFinal.setValor(teamBlue[indice].getI(),teamBlue[indice].getJ(),GridFinal.LIBRE);
+            unidades.setUnidad(teamBlue[indice].getI(),teamBlue[indice].getJ(),ArrayUnidades.LIBRE);
+
+            grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
+
             grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
             unidades.setUnidad(xDespues,yDespues,ArrayUnidades.UNIDADPESADAAZUL);
-            teamBlue[1].setNueva(xDespues,yDespues);
+            teamBlue[indice].setNueva(xDespues,yDespues);
+
+            grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
                     
         }  
     }
@@ -708,5 +737,14 @@ public class mundoGuerra : MonoBehaviour
             }
         }
         
+    }
+
+    private void movExplorer(AgentNPC pl){
+
+        Debug.Log("mov explorer");
+    }
+    private void movPatrulla(AgentNPC pl){
+
+        Debug.Log("mov patrulla");
     }
 }

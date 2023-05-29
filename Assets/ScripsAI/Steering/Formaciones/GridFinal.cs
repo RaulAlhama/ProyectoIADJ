@@ -84,7 +84,11 @@ public class GridFinal
     }
     public void setValor(int i, int j, int value){
 
-        gridArray[i,j] = value;
+        if (gridArray[i,j] == GridFinal.LIBRE || gridArray[i,j] == GridFinal.NPCAZUL || gridArray[i,j] == GridFinal.NPCROJO)
+        {
+            gridArray[i,j] = value;
+        }
+        
     }
     public int getValor(int i, int j){
 

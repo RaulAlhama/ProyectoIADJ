@@ -6,7 +6,7 @@ using System;
 public class Archer
 {
     // Start is called before the first frame update
-    private AgentNPC pj;
+    private int pj;
     private int rangoVision = 11;
     private int rangoAtaque = 7;
     private int centroAtaque;
@@ -29,13 +29,18 @@ public class Archer
     public const int SEGUIR = 22;
     public const int QUIETO = 23;
 
-    public Archer(){
+    public Archer(int index){
 
         mAtaque = new int[rangoAtaque,rangoAtaque];
         mVision = new int[rangoVision,rangoVision];
         centroAtaque = (rangoAtaque - 1)/2;
         centroVision = (rangoVision - 1)/2;
         com = Archer.QUIETO;
+        pj = index;
+    }
+    public int getIndexNPC(){
+
+        return pj;
     }
     public void setLimites(int i, int j){
 
@@ -203,7 +208,6 @@ public class Archer
                 y1 = cr.getY();
             }
         }
-        Debug.Log(x1+","+y1);
         x = x1;
         y = y1;
         return aliado;
@@ -264,6 +268,7 @@ public class Archer
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
             com = Archer.SEGUIR;
+            //Debug.Log("Arquero "+pj+": "+x+","+y);
         }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
 
             target = mundo.getPosicionReal(x,y);

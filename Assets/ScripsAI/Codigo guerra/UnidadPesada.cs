@@ -6,7 +6,7 @@ public class UnidadPesada : MonoBehaviour
 {
     // Start is called before the first frame update
      // Start is called before the first frame update
-    private AgentNPC pj;
+    private int pj;
     private int rangoVision = 11;
     private int rangoAtaque = 7;
     private int centroAtaque;
@@ -29,13 +29,18 @@ public class UnidadPesada : MonoBehaviour
     public const int SEGUIR = 22;
     public const int QUIETO = 23;
 
-    public UnidadPesada(){
+    public UnidadPesada(int index){
 
         mAtaque = new int[rangoAtaque,rangoAtaque];
         mVision = new int[rangoVision,rangoVision];
         centroAtaque = (rangoAtaque - 1)/2;
         centroVision = (rangoVision - 1)/2;
         com = UnidadPesada.QUIETO;
+        pj = index;
+    }
+    public int getIndexNPC(){
+
+        return pj;
     }
     public void setLimites(int i, int j){
 
