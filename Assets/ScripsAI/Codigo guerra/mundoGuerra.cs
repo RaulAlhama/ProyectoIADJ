@@ -119,23 +119,32 @@ public class mundoGuerra : MonoBehaviour
     // recorriendo cada una de las casillas del grid y creando un plano del tamaño de una casilla
     private void inicializarMinimapa(){
 
-        Vector3 ajuste = new Vector3(2,-0.2f,2);
+        Vector3 ajuste = new Vector3(6,-0.2f,6);
         GameObject minimapa = new GameObject("minimapa");
+        int contx=0;
+        int conty=0;
 
-        for (int j = 0; j < cols; j++){
+        for (int j = 0; j < cols; j+=3){
 
-            for (int i = 0; i< rows; i++){
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
 
                 GameObject plane = Instantiate(prefabPlano, minimapa.transform);
-                plane.name = "minimap_" + i + "_" + j;
-                plane.transform.localScale = new Vector3(cellSize/10, 1f, cellSize/10);
+                plane.name = "minimap_" + contx + "_" + conty;
+                plane.transform.localScale = new Vector3(cellSize/3.33f, 1f, cellSize/3.33f);
                 plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
                 //Debug.Log("(" + i + "," + j + ") = " + grFinal.getPosicionReal(i,j));
                 plane.layer = 7;
                 plane.GetComponent<Renderer>().material = materialNeutro;
+
+                contx++;
             }
+
+            conty++;
         }
 
+        /*
         for (int j=0;j<=7;j++){
 
             for (int i=43;i<=56;i++){
@@ -151,7 +160,7 @@ public class mundoGuerra : MonoBehaviour
                 casilla.GetComponent<Renderer>().material = materialEquipoRojo;
             }
         }
-        
+        */
 
     }
 
@@ -161,10 +170,10 @@ public class mundoGuerra : MonoBehaviour
         for (int z=0;z<objetivosMundo.Length;z++){
 
             if (objetivosMundo[z].getPropiedad() != Objetivo.NEUTRAL){
-                int xinicial = objetivosMundo[INDEX_TORRE_VIGIA].getXInicial();
-                int xfinal = objetivosMundo[INDEX_TORRE_VIGIA].getXFinal();
-                int yinicial = objetivosMundo[INDEX_TORRE_VIGIA].getYInicial();
-                int yfinal = objetivosMundo[INDEX_TORRE_VIGIA].getYFinal();
+                int xinicial = objetivosMundo[z].getXInicial();
+                int xfinal = objetivosMundo[z].getXFinal();
+                int yinicial = objetivosMundo[z].getYInicial();
+                int yfinal = objetivosMundo[z].getYFinal();
 
                 for (int j=yinicial-2;j<=yfinal+2;j++){
                             
@@ -604,6 +613,14 @@ public class mundoGuerra : MonoBehaviour
             buscadoresAzul[indice].LRTA();
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+
+
+        // Actualizamos las casillas por las que se trasladan los personajes
+        int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+        int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+        GameObject casilla = GameObject.Find("minimap_" + xcasilla + "_" + ycasilla);
+        casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+        
                 
         if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
             
