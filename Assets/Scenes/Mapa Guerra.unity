@@ -3093,7 +3093,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756702569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 226, y: -2.8514595, z: 30.13}
+  m_LocalPosition: {x: 0.34, y: -2.8514595, z: 0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5886,6 +5886,9 @@ MonoBehaviour:
   - {fileID: 995376954}
   - {fileID: 249437565}
   - {fileID: 2028615380}
+  puenteDerecho: []
+  puenteIzquierdo: []
+  santuario: []
   prefabNPCAzul: {fileID: 7860291542884268978, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
   prefabNPCRojo: {fileID: 5044310171192284528, guid: 46d076c48369739449191052ba157870, type: 3}
   prefabPlano: {fileID: 954812085513583266, guid: e51173c7224c39143bc7d2ea90bd3146, type: 3}
