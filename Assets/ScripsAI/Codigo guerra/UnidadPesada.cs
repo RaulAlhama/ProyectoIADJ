@@ -173,6 +173,7 @@ public class UnidadPesada : MonoBehaviour
         }
         x = x1;
         y = y1;
+        Debug.Log("Pesada "+pj+": "+x+","+y);
         return objetivo;
     }
     // Update is called once per frame

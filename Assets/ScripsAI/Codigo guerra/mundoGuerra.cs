@@ -31,7 +31,7 @@ public class mundoGuerra : MonoBehaviour
     public GameObject[] armeria;
     public GameObject[] puenteDerecho;
     public GameObject[] puenteIzquierdo;
-    public GameObject[] santuario;
+    //public GameObject[] santuario;
 
     private AgentNPC[] equipoRojo = new AgentNPC[6];
     private Agent[] npcVirtualRojo = new Agent[6];
@@ -48,6 +48,7 @@ public class mundoGuerra : MonoBehaviour
     private Archer[] cArquero;
     private UnidadPesada[] cPesada;
     private Explorador cExplorador;
+    private Patrulla cPatrulla;
 
     // Minimapa
     public GameObject prefabPlano;
@@ -65,11 +66,16 @@ public class mundoGuerra : MonoBehaviour
     //objetivos del mundo
 
     private Objetivo[] objetivosMundo;
+    private List<Objetivo> objetivosTemaBlue;
+    private List<Objetivo> objetivosTeamRed;
     
     private Coordenada[] spawnAzul = new Coordenada[6];
     private Posicion[] teamBlue = new Posicion[6];
     private Coordenada[] spawnRojo = new Coordenada[6];
     private Posicion[] teamRed = new Posicion[6];
+
+    // waypoint explorador azul
+    private Ruta rutaAzul;
 
     private TextMesh[,] grid;
 
@@ -79,6 +85,8 @@ public class mundoGuerra : MonoBehaviour
         cPesada = new UnidadPesada[2];
         unidades = new ArrayUnidades(rows,cols);
         objetivosMundo = new Objetivo[numObjetives];
+        objetivosTemaBlue = new List<Objetivo>();
+        objetivosTeamRed = new List<Objetivo>();
         grFinal = new GridFinal(rows,cols,cellSize);
         grFinal.setDistancia(2);
 
@@ -107,6 +115,7 @@ public class mundoGuerra : MonoBehaviour
             equipoRojo[i].Position = new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY());
         }
         
+        setWaypointsBlue();
         setTipos();
         setPosiciones();
         setTorreVigia();
@@ -120,6 +129,89 @@ public class mundoGuerra : MonoBehaviour
 
     // Función que inicializa todas las casillas del minimapa a neutro, 
     // recorriendo cada una de las casillas del grid y creando un plano del tamaño de una casilla
+    private void setWaypointsBlue(){
+
+        //way point base azul
+        WayPoint[] puntos = new WayPoint[10];
+        WayPoint[] puntos2 = new WayPoint[13];
+        
+        // way points lado azul izquierdo
+
+        Posicion p1 = new Posicion(49,10);
+        puntos[0] = new WayPoint(true,p1);
+
+        Posicion p2 = new Posicion(41,10);
+        puntos[1] = new WayPoint(true,p2);
+
+        Posicion p3 = new Posicion(41,13);
+        puntos[2] = new WayPoint(true,p3);
+
+        Posicion p4 = new Posicion(29,13);
+        puntos[3] = new WayPoint(true,p4);
+
+        Posicion p5 = new Posicion(16,16);  // torre vigia
+        puntos[4] = new WayPoint(false,p5);
+
+        Posicion p6 = new Posicion(29,23);
+        puntos[5] = new WayPoint(true,p6);
+
+        Posicion p7 = new Posicion(32,23);
+        puntos[6] = new WayPoint(true,p7);
+
+        Posicion p8 = new Posicion(32,35);
+        puntos[7] = new WayPoint(true,p8);
+
+        Posicion p9 = new Posicion(14,35);
+        puntos[8] = new WayPoint(true,p9);
+
+        Posicion p10 = new Posicion(11,46);  // puente izquierdo
+        puntos[9] = new WayPoint(false,p10);
+
+        // way points lado azul derecho
+
+        Posicion p11 = new Posicion(48,22);  // armeria
+        puntos2[0] = new WayPoint(false,p11);
+
+        Posicion p12 = new Posicion(58,11);  // deshabilitar si armeria habilitado
+        puntos2[1] = new WayPoint(true,p12);
+
+        Posicion p13 = new Posicion(53,13);  
+        puntos2[2] = new WayPoint(true,p13);
+
+        Posicion p14 = new Posicion(70,13); 
+        puntos2[3] = new WayPoint(true,p14); 
+
+        Posicion p15 = new Posicion(70,8);  
+        puntos2[4] = new WayPoint(true,p15);
+
+        Posicion p16 = new Posicion(84,9);  
+        puntos2[5] = new WayPoint(true,p16);
+
+        Posicion p17 = new Posicion(84,19);  
+        puntos2[6] = new WayPoint(true,p17);
+
+        Posicion p18 = new Posicion(86,19);  
+        puntos2[7] = new WayPoint(true,p18);
+
+        Posicion p19 = new Posicion(85,29); 
+        puntos2[8] = new WayPoint(true,p19);
+
+        Posicion p20 = new Posicion(88,29);   
+        puntos2[9] = new WayPoint(true,p20);
+
+        Posicion p21 = new Posicion(87,39);  
+        puntos2[10] = new WayPoint(true,p21);
+
+        Posicion p22 = new Posicion(90,39); 
+        puntos2[11] = new WayPoint(true,p22);
+
+        Posicion p23 = new Posicion(89,46);  // puente derecho 
+        puntos2[12] = new WayPoint(false,p23);
+
+        rutaAzul = new Ruta(puntos,puntos2);
+        
+
+    }
     private void inicializarMinimapa(){
 
         Vector3 ajuste = new Vector3(6,-0.2f,6);
@@ -167,13 +259,13 @@ public class mundoGuerra : MonoBehaviour
 
                         // Actualizamos las casillas del minimapa
                         //GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
-                        GameObject casilla = casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)];
+                        //GameObject casilla = casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)];
 
                         if (objetivosMundo[z].getPropiedad() == Objetivo.AZUL)
-                            casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().material = materialEquipoAzul;
 
                         else
-                            casilla.GetComponent<Renderer>().material = materialEquipoRojo;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().material = materialEquipoRojo;
                     }
 
                 }
@@ -458,6 +550,7 @@ public class mundoGuerra : MonoBehaviour
         equipoAzul[INDEXPESADA2].setTipo(AgentNPC.PESADA);
         cPesada[1] = new UnidadPesada(INDEXPESADA2);
         equipoAzul[INDEXVIGILANTE].setTipo(AgentNPC.PATRULLA);
+        cPatrulla = new Patrulla(INDEXVIGILANTE);
         
         equipoRojo[0].setTipo(AgentNPC.ARQUERO);
         /*equipoRojo[1].setTipo(AgentNPC.ARQUERO);
@@ -472,7 +565,7 @@ public class mundoGuerra : MonoBehaviour
         int cont = 0;
         grid = new TextMesh[rows, cols];
         
-        for (int i = 0; i < 80; i++)
+        for (int i = 0; i < 100; i++)
         {
             for (int j = 0; j < 50; j++)
             {
@@ -498,7 +591,7 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
-        //actualizarMinimapa();
+        actualizarMinimapa();
         moverNPC();
         verificaTorreVigia();
         verificaArmeria();
@@ -570,7 +663,7 @@ public class mundoGuerra : MonoBehaviour
             }
             else if (equipoAzul[i].getTipo() == AgentNPC.PATRULLA)
             {
-                //movPatrulla(equipoAzul[i]);
+                movPatrulla(equipoAzul[i]);
             }
         }
     }
@@ -728,18 +821,16 @@ public class mundoGuerra : MonoBehaviour
             }
             if(contAzul > 0 && contRojo == 0){
 
-                foreach (GameObject item in torreVigia)
+                foreach (GameObject item in puenteIzquierdo)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = azul;
-
-                    
 
                 }
                 objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].setPropiedad(Objetivo.AZUL);
             }else if(contRojo > 0 && contAzul == 0){
 
-                foreach (GameObject item in torreVigia)
+                foreach (GameObject item in puenteIzquierdo)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = rojo;
@@ -767,18 +858,16 @@ public class mundoGuerra : MonoBehaviour
             }
             if(contAzul > 0 && contRojo == 0){
 
-                foreach (GameObject item in torreVigia)
+                foreach (GameObject item in puenteDerecho)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = azul;
-
-                    
 
                 }
                 objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].setPropiedad(Objetivo.AZUL);
             }else if(contRojo > 0 && contAzul == 0){
 
-                foreach (GameObject item in torreVigia)
+                foreach (GameObject item in puenteDerecho)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = rojo;
@@ -878,6 +967,52 @@ public class mundoGuerra : MonoBehaviour
     }
     private void movPatrulla(AgentNPC pl){
 
-        Debug.Log("mov patrulla");
+        int xDespues;
+        int yDespues;
+        int indice = cPatrulla.getIndexNPC();
+        if(pl.getLLegada()){
+                    
+            int i;
+            int j;
+            grFinal.getCoordenadas(pl.Position,out i, out j);
+                    
+            int iObjetivo = i;
+            int jObjetivo = j;
+            
+            cPatrulla.setLimites(i,j);
+            npcVirtualAzul[indice].Position = cPatrulla.getDecision(grFinal,rutaAzul,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
+                    
+            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            buscadoresAzul[indice].LRTA();
+            
+        }else if((pl.status == Agent.STOPPED)){
+                            
+            buscadoresAzul[indice].LRTA();
+        }
+        grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
+
+
+        // Actualizamos las casillas por las que se trasladan los personaje
+        
+                
+        if(teamBlue[indice].getI() != xDespues || teamBlue[indice].getJ() != yDespues){
+            
+            grFinal.setValor(teamBlue[indice].getI(),teamBlue[indice].getJ(),GridFinal.LIBRE);
+            unidades.setUnidad(teamBlue[indice].getI(),teamBlue[indice].getJ(),ArrayUnidades.LIBRE);
+
+            //grid[teamBlue[indice].getI(),teamBlue[indice].getJ()].text = "" + grFinal.getValor(teamBlue[indice].getI(),teamBlue[indice].getJ()) + "  " + teamBlue[indice].getI() + "," + teamBlue[indice].getJ();
+
+            grFinal.setValor(xDespues,yDespues,GridFinal.NPCAZUL);
+            unidades.setUnidad(xDespues,yDespues,ArrayUnidades.PATRULLAAZUL);
+            teamBlue[indice].setNueva(xDespues,yDespues);
+
+            //grid[xDespues,yDespues].text = "" + grFinal.getValor(xDespues,yDespues) + "  " + xDespues + "," + yDespues;
+                  // Actualizamos las casillas por las que se trasladan los personajes
+            int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
+            int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().material = materialEquipoAzul;  
+        }  
     }
 }

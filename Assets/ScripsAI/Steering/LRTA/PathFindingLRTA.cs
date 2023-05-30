@@ -13,7 +13,7 @@ public class PathFindingLRTA : MonoBehaviour
     private const double infinito = Double.PositiveInfinity;
     private int iObjetivo;
     private int jObjetivo;
-    private const float DIS_MINIMA = 0.2f; 
+    private const float DIS_MINIMA = 0.3f; 
     struct Coordenadas{
         public int x;
         public int y;
