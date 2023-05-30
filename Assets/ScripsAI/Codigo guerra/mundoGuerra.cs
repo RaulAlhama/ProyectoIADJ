@@ -498,10 +498,12 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
-        actualizarMinimapa();
+        //actualizarMinimapa();
         moverNPC();
         verificaTorreVigia();
         verificaArmeria();
+        verificaPuenteAzulDerecho();
+        verificaPuenteAzulIzquierdo();
         if (Input.GetMouseButtonDown(1))
         {   
             
@@ -679,10 +681,47 @@ public class mundoGuerra : MonoBehaviour
         {
             foreach (Coordenada coor in objetivosMundo[INDEX_TORRE_VIGIA].getSlots())
             {
-                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL)
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
                 {
                     contAzul++;
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO)
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+                objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.ROJO);
+            }
+        }
+        
+    }
+    private void verificaPuenteAzulIzquierdo(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
                 {
                     contRojo++;
                 }
@@ -697,7 +736,7 @@ public class mundoGuerra : MonoBehaviour
                     
 
                 }
-                objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.AZUL);
+                objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].setPropiedad(Objetivo.AZUL);
             }else if(contRojo > 0 && contAzul == 0){
 
                 foreach (GameObject item in torreVigia)
@@ -705,7 +744,46 @@ public class mundoGuerra : MonoBehaviour
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = rojo;
                 }
-                objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.ROJO);
+                objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].setPropiedad(Objetivo.ROJO);
+            }
+        }
+        
+    }
+    private void verificaPuenteAzulDerecho(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                    
+
+                }
+                objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].setPropiedad(Objetivo.ROJO);
             }
         }
         
@@ -752,7 +830,6 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = cExplorador.getIndexNPC();
-        Debug.Log(indice);
         if(pl.getLLegada()){
                     
             int i;

@@ -152,8 +152,8 @@ public class Explorador : MonoBehaviour
         }
 
         int index = Random.Range(0, lista.Count-1);
-
-        foreach (Coordenada cr in lisObj[index].getSlots())
+        Debug.Log(index);
+        foreach (Coordenada cr in lista[index].getSlots())
         {
             if(PosMundo[cr.getX(),cr.getY()] == 0){
 
