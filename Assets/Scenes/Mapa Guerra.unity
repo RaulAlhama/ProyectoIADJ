@@ -3021,7 +3021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &756702570
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5908,7 +5908,6 @@ MonoBehaviour:
   - {fileID: 567878503}
   puenteIzquierdo:
   - {fileID: 1263237991}
-  santuario: []
   prefabNPCAzul: {fileID: 7860291542884268978, guid: 052c87f4aa1f23440a42788d2d1a0462, type: 3}
   prefabNPCRojo: {fileID: 5044310171192284528, guid: 46d076c48369739449191052ba157870, type: 3}
   prefabPlano: {fileID: 954812085513583266, guid: e51173c7224c39143bc7d2ea90bd3146, type: 3}

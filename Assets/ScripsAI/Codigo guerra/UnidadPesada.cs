@@ -115,37 +115,99 @@ public class UnidadPesada : MonoBehaviour
 
         return limites;
     }
-    private bool enemigosEnVision(int[,] mundo, out int x, out int y){
+    private bool enemigosEnVision(GridFinal valmundo,int[,] mundo, out int x, out int y){
 
         bool enemigos = false;
+        bool arquero = false;
         int x1 = 0;
         int y1 = 0;
         for (int i = limVision[0]; i < limVision[1]; i++)
         {
             for (int j = limVision[2]; j < limVision[3]; j++)
             {
-                if (mundo[i,j] == GridFinal.NPCROJO)
+                if (valmundo.getValor(i,j) == GridFinal.NPCROJO)
                 {
+                    if (mundo[i,j] == ArrayUnidades.ARQUEROROJO)
+                    {
+                        arquero = true;
+                        x1 = i;
+                        y1 = j;
+                    }else if(!arquero)
+                    {
+                        x1 = i;
+                        y1 = j; 
+                    }
                     enemigos = true;
-                    x1 = i;
-                    y1 = j;
-                    
                 }
+            }
+        }
+        List<Coordenada> slots = new List<Coordenada>();
+        if(x1-1 >= MINVALOR && y1-1 >= MINVALOR && valmundo.Posible(x1-1,y1-1)){
+
+            Coordenada cr = new Coordenada(x1-1,y1-1);
+            slots.Add(cr);
+        }
+        if(y1-1 >= MINVALOR && valmundo.Posible(x1,y1-1) ){
+
+            Coordenada cr = new Coordenada(x1,y1-1);
+            slots.Add(cr);
+        }
+        if(x1+1 <= MAXVALOR && y1-1 >= MINVALOR && valmundo.Posible(x1+1,y1-1)){
+
+            Coordenada cr = new Coordenada(x1+1,y1-1);
+            slots.Add(cr);
+        }
+        if(x1-1 >= MINVALOR && valmundo.Posible(x1-1,y1)){
+
+            Coordenada cr = new Coordenada(x1-1,y1);
+            slots.Add(cr);
+        }
+        if(x1+1 <= MAXVALOR && valmundo.Posible(x1+1,y1)){
+
+            Coordenada cr = new Coordenada(x1+1,y1);
+            slots.Add(cr);
+        }
+        if(x1-1 >= MINVALOR && y1+1 <= MAXVALOR && valmundo.Posible(x1-1,y1+1)){
+
+            Coordenada cr = new Coordenada(x1-1,y1+1);
+            slots.Add(cr);
+        }
+        if( y1+1 <= MAXVALOR && valmundo.Posible(x1,y1+1)){
+
+            Coordenada cr = new Coordenada(x1,y1+1);
+            slots.Add(cr);
+        }
+        if( x1+1 <= MAXVALOR && y1+1 <= MAXVALOR && valmundo.Posible(x1+1,y1+1)){
+
+            Coordenada cr = new Coordenada(x1+1,y1+1);
+            slots.Add(cr);
+        }
+
+        double distancia = 999999;
+
+        foreach (Coordenada cr in slots)
+        {
+            double disAux = Mathf.Max(Mathf.Abs(posI-cr.getX()),Mathf.Abs(posJ-cr.getY()));
+            if (disAux < distancia)
+            {
+                distancia = disAux;
+                x1 = cr.getX();
+                y1 = cr.getY();
             }
         }
         x = x1;
         y = y1;
         return enemigos;
     }
-    public bool posicionObjetivo(Objetivo[] lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
+    public bool posicionObjetivo(List<Objetivo> lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = false;
         int menor = 99;
-        int index = 0;
+        int index = -1;
         int x1 = 0;
         int y1 = 0;
         double  distancia = 999999;
-        for (int k = 0; k < lisObj.Length; k++)
+        for (int k = 0; k < lisObj.Count; k++)
         {
             if(lisObj[k].getPropiedad() == Objetivo.NEUTRAL){
 
@@ -156,40 +218,57 @@ public class UnidadPesada : MonoBehaviour
                 }
             }
         }
-        
-        foreach (Coordenada cr in lisObj[index].getSlots())
+        if (index != -1)
         {
-            if(PosMundo[cr.getX(),cr.getY()] == 0){
+            foreach (Coordenada cr in lisObj[index].getSlots())
+            {
+                if(PosMundo[cr.getX(),cr.getY()] == 0){
 
-                double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
-                if (disAux < distancia)
-                {
-                    distancia = disAux;
-                    objetivo = true;
-                    x1 = cr.getX();
-                    y1 = cr.getY();
+                    double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
+                    if (disAux < distancia)
+                    {
+                        distancia = disAux;
+                        objetivo = true;
+                        x1 = cr.getX();
+                        y1 = cr.getY();
+                    }
                 }
             }
         }
         x = x1;
         y = y1;
-        Debug.Log("Pesada "+pj+": "+x+","+y);
+        return objetivo;
+    }
+    public bool posicionRuta(Ruta ruta, int[,] PosMundo,int i,int j,out int x, out int y){
+        
+        bool objetivo = true;
+
+        WayPoint aux = ruta.getAleatoreo();
+
+        x = aux.getX();
+        y = aux.getY();
+
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
+    public Vector3 getDecision(Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos, int[,] posNPCs, int i, int j){
 
         int x = i;
         int y = j;
         Vector3 target = mundo.getPosicionReal(x,y);
         
-        if(enemigosEnVision(mundo.getArray(),out x, out y)){
+        if(enemigosEnVision(mundo,posNPCs,out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
             com = UnidadPesada.ATACAR;
 
         }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = UnidadPesada.MOVERSE;
+        }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;

@@ -78,4 +78,84 @@ public class Ruta : MonoBehaviour
                 return null;
         }
     }
+    public WayPoint getAleatoreo(){
+
+        int st = UnityEngine.Random.Range(1, 2);
+        if (st == 1)
+        {
+            while(true){
+
+                int i = UnityEngine.Random.Range(0, caminoIzq.Length-1);
+                if (caminoIzq[i].getDisponible())
+                {
+                    return caminoIzq[i];
+                }
+            }   
+        }else{
+
+            while(true){
+
+                int i = UnityEngine.Random.Range(0, caminoDer.Length-1);
+                if (caminoDer[i].getDisponible())
+                {
+                    return caminoDer[i];
+                }
+            }
+        }
+    }
+    public bool getDisponible(string obj){
+
+        if (obj == WayPoint.TORRE_VIGIA || obj == WayPoint.PUENTE_IZQUIERDO)
+        {
+            foreach (WayPoint item in caminoIzq)
+            {
+                if (item.getNombre() == obj)
+                {
+                    return item.getDisponible();
+                }
+            }
+        }else{
+
+            foreach (WayPoint item in caminoDer)
+            {
+                if (item.getNombre() == obj)
+                {
+                    return item.getDisponible();
+                }
+            }
+        }
+        return false;
+    }
+    public void setDisponible(string obj){
+
+        bool band = false;
+
+        if (obj == WayPoint.ARMERIA)
+        {
+            band = true;
+        }
+        if (obj == WayPoint.TORRE_VIGIA || obj == WayPoint.PUENTE_IZQUIERDO)
+        {
+            foreach (WayPoint item in caminoIzq)
+            {
+                if (item.getNombre() == obj)
+                {
+                    item.setDisponible(true);
+                }
+            }
+        }else{
+
+            foreach (WayPoint item in caminoDer)
+            {
+                if (item.getNombre() == obj)
+                {
+                    item.setDisponible(true);
+                }
+                if(band && item.getNombre() == WayPoint.CON_ARMERIA){
+
+                    item.setDisponible(false);
+                }
+            }
+        }
+    }
 }

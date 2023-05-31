@@ -212,37 +212,46 @@ public class Archer
         y = y1;
         return aliado;
     }
-    public bool posicionObjetivo(Objetivo[] lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
+    public bool posicionObjetivo(List<Objetivo> lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = false;
-        int menor = 99;
-        int index = 0;
+        int mayor = -1;
         int x1 = 0;
         int y1 = 0;
         double  distancia = 999999;
-        for (int k = 0; k < lisObj.Length; k++)
-        {
-            if(lisObj[k].getPropiedad() == Objetivo.NEUTRAL){
+        List<Objetivo> posibles = new List<Objetivo>();
 
-                if (lisObj[k].getPrioridad() < menor)
+        for (int k = 0; k < lisObj.Count; k++)
+        {
+            if(lisObj[k].getPropiedad() == Objetivo.AZUL){
+
+                if (lisObj[k].getPrioridad() > mayor)
                 {
-                    menor = lisObj[k].getPrioridad();
-                    index = k;
+                    mayor = lisObj[k].getPrioridad();
+                    posibles.Clear();
+                    posibles.Add(lisObj[k]);
+                }else if (lisObj[k].getPrioridad() == mayor)
+                {
+                    posibles.Add(lisObj[k]);
                 }
             }
         }
-        
-        foreach (Coordenada cr in lisObj[index].getSlots())
+        if (posibles.Count > 0)
         {
-            if(PosMundo[cr.getX(),cr.getY()] == 0){
+            int index = UnityEngine.Random.Range(0, posibles.Count-1);
 
-                double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
-                if (disAux < distancia)
-                {
-                    distancia = disAux;
-                    objetivo = true;
-                    x1 = cr.getX();
-                    y1 = cr.getY();
+            foreach (Coordenada cr in posibles[index].getSlots())
+            {
+                if(PosMundo[cr.getX(),cr.getY()] == 0){
+
+                    double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
+                    if (disAux < distancia)
+                    {
+                        distancia = disAux;
+                        objetivo = true;
+                        x1 = cr.getX();
+                        y1 = cr.getY();
+                    }
                 }
             }
         }
@@ -251,7 +260,7 @@ public class Archer
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
+    public Vector3 getDecision(GridFinal mundo,List<Objetivo> listaObjetivos, int[,] posNPCs, int i, int j){
 
         int x = i;
         int y = j;
