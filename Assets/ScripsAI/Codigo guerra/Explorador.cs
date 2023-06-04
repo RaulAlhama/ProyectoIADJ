@@ -7,12 +7,9 @@ public class Explorador : MonoBehaviour
     // Start is called before the first frame update
     private int pj;
     private int rangoVision = 11;
-    private int rangoAtaque = 7;
-    private int centroAtaque;
     private int centroVision;
     private int indexSpawn;
     private int[,] mVision;
-    private int[] limAtaque;
     private int[] limVision;
     private const int MAXVALOR = 99;
     private const int MINVALOR = 0;
@@ -29,7 +26,6 @@ public class Explorador : MonoBehaviour
     public Explorador(int index){
 
         mVision = new int[rangoVision,rangoVision];
-        centroAtaque = (rangoAtaque - 1)/2;
         centroVision = (rangoVision - 1)/2;
         com = Explorador.QUIETO;
         pj = index;
@@ -40,44 +36,11 @@ public class Explorador : MonoBehaviour
     }
     public void setLimites(int i, int j){
 
-        limAtaque = setLimitesAtaque(i,j);
         limVision = setLimitesVision(i,j);
         posI = i;
         posJ = j;
 
 
-    }
-    private int[] setLimitesAtaque(int i, int j){
-
-        int limiteInferior = i - centroAtaque;
-        int limiteSuperior = i + centroAtaque;
-        int limiteIzquierdo = j - centroAtaque;
-        int limiteDerecho = j + centroAtaque;
-
-        int[] limites = new int[4];
-
-        if(limiteInferior < MINVALOR){
-
-            limiteInferior = MINVALOR;
-        }
-        if(limiteSuperior > MAXVALOR){
-
-            limiteSuperior = MAXVALOR;
-        }
-        if(limiteIzquierdo < MINVALOR){
-
-            limiteIzquierdo = MINVALOR;
-        }
-        if(limiteDerecho > MAXVALOR){
-
-            limiteDerecho = MAXVALOR;
-        }
-        limites[0] = limiteInferior; // i inicio
-        limites[1] = limiteSuperior; // i final
-        limites[2] = limiteIzquierdo; // j inicio
-        limites[3] = limiteDerecho; // j final
-
-        return limites;
     }
     private int[] setLimitesVision(int i, int j){
 
@@ -133,46 +96,86 @@ public class Explorador : MonoBehaviour
         y = y1;
         return enemigos;
     }
-    public bool posicionObjetivo(Objetivo[] lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
+    public bool posicionObjetivo(List<Objetivo> lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = false;
         int menor = 99;
         int x1 = 0;
         int y1 = 0;
         double  distancia = 999999;
-        List<Objetivo> lista = new List<Objetivo>();
+        List<Objetivo> listaN = new List<Objetivo>();
+        List<Objetivo> listaR = new List<Objetivo>();
 
         
-        for (int k = 0; k < lisObj.Length; k++)
+        for (int k = 0; k < lisObj.Count; k++)
         {
             if (lisObj[k].getPropiedad() == Objetivo.NEUTRAL)
             {
-                lista.Add(lisObj[k]);
+                listaN.Add(lisObj[k]);
+            }else if(lisObj[k].getPropiedad() == Objetivo.ROJO){
+                
+                listaR.Add(lisObj[k]);
             }
         }
-
-        int index = Random.Range(0, lista.Count-1);
-        Debug.Log(index);
-        foreach (Coordenada cr in lista[index].getSlots())
+        if (listaN.Count > 0)
         {
-            if(PosMundo[cr.getX(),cr.getY()] == 0){
+           int index = Random.Range(0, listaN.Count-1);
+            foreach (Coordenada cr in listaN[index].getSlots())
+            {
+                if(PosMundo[cr.getX(),cr.getY()] == 0){
 
-                double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
-                if (disAux < distancia)
-                {
-                    distancia = disAux;
-                    objetivo = true;
-                    x1 = cr.getX();
-                    y1 = cr.getY();
+                    double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
+                    if (disAux < distancia)
+                    {
+                        distancia = disAux;
+                        objetivo = true;
+                        x1 = cr.getX();
+                        y1 = cr.getY();
+                    }
                 }
-            }
+            } 
+        }else if(listaN.Count > 0)
+        {
+            int index = Random.Range(0, listaR.Count-1);
+            foreach (Coordenada cr in listaR[index].getSlots())
+            {
+                if(PosMundo[cr.getX(),cr.getY()] == 0){
+
+                    double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
+                    if (disAux < distancia)
+                    {
+                        distancia = disAux;
+                        objetivo = true;
+                        x1 = cr.getX();
+                        y1 = cr.getY();
+                    }
+                }
+            } 
+        }else{
+
+            int index = Random.Range(0, lisObj.Count-1);
+            foreach (Coordenada cr in lisObj[index].getSlots())
+            {
+                if(PosMundo[cr.getX(),cr.getY()] == 0){
+
+                    double disAux = Mathf.Max(Mathf.Abs(i-cr.getX()),Mathf.Abs(j-cr.getY()));
+                    if (disAux < distancia)
+                    {
+                        distancia = disAux;
+                        objetivo = true;
+                        x1 = cr.getX();
+                        y1 = cr.getY();
+                    }
+                }
+            } 
         }
+        
         x = x1;
         y = y1;
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
+    public Vector3 getDecision(GridFinal mundo,List<Objetivo> listaObjetivos, int[,] posNPCs, int i, int j){
 
         int x = i;
         int y = j;

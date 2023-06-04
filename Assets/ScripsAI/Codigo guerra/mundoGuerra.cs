@@ -15,6 +15,10 @@ public class mundoGuerra : MonoBehaviour
     private const int INDEX_ARMERIA = 1;
     private const int INDEX_PUENTE_IZQUIERDO_AZUL = 2;
     private const int INDEX_PUENTE_DERECHO_AZUL = 3;
+    private const int INDEX_SANTUARIO = 4;
+    private const int INDEX_ESCUDERIA = 5;
+    private const int INDEX_PUENTE_IZQUIERDO_ROJO = 6;
+    private const int INDEX_PUENTE_DERECHO_ROJO = 7;
     
 
 
@@ -29,9 +33,12 @@ public class mundoGuerra : MonoBehaviour
     public GameObject wallPrefab;
     public GameObject[] torreVigia;
     public GameObject[] armeria;
-    public GameObject[] puenteDerecho;
-    public GameObject[] puenteIzquierdo;
-    //public GameObject[] santuario;
+    public GameObject[] puenteDerechoAzul;
+    public GameObject[] puenteIzquierdoAzul;
+    public GameObject[] puenteDerechoRojo;
+    public GameObject[] puenteIzquierdoRojo;
+    public GameObject[] santuario;
+    public GameObject[] escuderia;
 
     private AgentNPC[] equipoRojo = new AgentNPC[6];
     private Agent[] npcVirtualRojo = new Agent[6];
@@ -44,7 +51,7 @@ public class mundoGuerra : MonoBehaviour
     public AgentNPC prefabNPCAzul;
     public AgentNPC prefabNPCRojo;
     private const int numNPC = 6;
-    private const int numObjetives = 4;
+    private const int numObjetives = 8;
     private Archer[] cArquero;
     private UnidadPesada[] cPesada;
     private Explorador cExplorador;
@@ -66,6 +73,8 @@ public class mundoGuerra : MonoBehaviour
     //objetivos del mundo
 
     private Objetivo[] objetivosMundo;
+    private List<Objetivo> objExplorerBlue;
+    private List<Objetivo> objExplorerRed;
     private List<Objetivo> objetivosTeamBlue;
     private List<Objetivo> objetivosTeamRed;
     
@@ -75,8 +84,14 @@ public class mundoGuerra : MonoBehaviour
     private Posicion[] teamRed = new Posicion[6];
 
     // waypoint explorador azul
+    private WayPoint[] puntosAzul = new WayPoint[10];
+    private WayPoint[] puntosAzul2 = new WayPoint[13];
+    private WayPoint[] puntosRojo = new WayPoint[10];
+    private WayPoint[] puntosRojo2 = new WayPoint[13];
     private Ruta rutaAzul;
     private Ruta rutaAzulPesada;
+    private Ruta rutaRoja;
+    private Ruta rutaRojaPesada;
 
     private TextMesh[,] grid;
 
@@ -88,6 +103,8 @@ public class mundoGuerra : MonoBehaviour
         objetivosMundo = new Objetivo[numObjetives];
         objetivosTeamBlue = new List<Objetivo>();
         objetivosTeamRed = new List<Objetivo>();
+        objExplorerBlue = new List<Objetivo>();
+        objExplorerRed = new List<Objetivo>();
         grFinal = new GridFinal(rows,cols,cellSize);
         grFinal.setDistancia(2);
 
@@ -117,103 +134,185 @@ public class mundoGuerra : MonoBehaviour
         }
         
         setWaypointsBlue();
+        setWaypointsRed();
+        setRutas();
         setTipos();
         setPosiciones();
         setTorreVigia();
         setArmeria();
         setPuenteIzqAzul();
         setPuenteDerAzul();
+        setPuenteDerRojo();
+        setPuenteIzqRojo();
+        setSantuario();
+        setEscuderia();
         //creaTexto();
         inicializarMinimapa();
      
     }
 
-    // Función que inicializa todas las casillas del minimapa a neutro, 
-    // recorriendo cada una de las casillas del grid y creando un plano del tamaño de una casilla
+    
     private void setWaypointsBlue(){
-
-        //way point base azul
-        WayPoint[] puntos = new WayPoint[10];
-        WayPoint[] puntos2 = new WayPoint[13];
         
         // way points lado azul izquierdo
 
         Posicion p1 = new Posicion(49,10);
-        puntos[0] = new WayPoint(true,p1);
+        puntosAzul[0] = new WayPoint(true,p1);
 
         Posicion p2 = new Posicion(41,10);
-        puntos[1] = new WayPoint(true,p2);
+        puntosAzul[1] = new WayPoint(true,p2);
 
         Posicion p3 = new Posicion(41,13);
-        puntos[2] = new WayPoint(true,p3);
+        puntosAzul[2] = new WayPoint(true,p3);
 
         Posicion p4 = new Posicion(29,13);
-        puntos[3] = new WayPoint(true,p4);
+        puntosAzul[3] = new WayPoint(true,p4);
 
         Posicion p5 = new Posicion(16,16);  // torre vigia
-        puntos[4] = new WayPoint(false,p5,WayPoint.TORRE_VIGIA);
+        puntosAzul[4] = new WayPoint(false,p5,WayPoint.TORRE_VIGIA);
 
         Posicion p6 = new Posicion(29,23);
-        puntos[5] = new WayPoint(true,p6);
+        puntosAzul[5] = new WayPoint(true,p6);
 
         Posicion p7 = new Posicion(32,23);
-        puntos[6] = new WayPoint(true,p7);
+        puntosAzul[6] = new WayPoint(true,p7);
 
         Posicion p8 = new Posicion(32,35);
-        puntos[7] = new WayPoint(true,p8);
+        puntosAzul[7] = new WayPoint(true,p8);
 
         Posicion p9 = new Posicion(14,35);
-        puntos[8] = new WayPoint(true,p9);
+        puntosAzul[8] = new WayPoint(true,p9);
 
-        Posicion p10 = new Posicion(11,46);  // puente izquierdo
-        puntos[9] = new WayPoint(false,p10,WayPoint.PUENTE_IZQUIERDO);
+        Posicion p10 = new Posicion(11,46);  // puente izquierdo 
+        puntosAzul[9] = new WayPoint(false,p10,WayPoint.PUENTE_IZQUIERDO_AZUL);
 
         // way points lado azul derecho
 
         Posicion p11 = new Posicion(48,22);  // armeria
-        puntos2[0] = new WayPoint(false,p11,WayPoint.ARMERIA);
-
-        Posicion p12 = new Posicion(58,11);  // deshabilitar si armeria habilitado
-        puntos2[1] = new WayPoint(true,p12,WayPoint.CON_ARMERIA);
+        puntosAzul2[0] = new WayPoint(false,p11,WayPoint.ARMERIA);
 
         Posicion p13 = new Posicion(53,13);  
-        puntos2[2] = new WayPoint(true,p13);
+        puntosAzul2[1] = new WayPoint(true,p13);
+
+        Posicion p12 = new Posicion(58,11);  // deshabilitar si armeria habilitado
+        puntosAzul2[2] = new WayPoint(true,p12,WayPoint.CON_ARMERIA);
 
         Posicion p14 = new Posicion(70,13); 
-        puntos2[3] = new WayPoint(true,p14); 
+        puntosAzul2[3] = new WayPoint(true,p14); 
 
         Posicion p15 = new Posicion(70,8);  
-        puntos2[4] = new WayPoint(true,p15);
+        puntosAzul2[4] = new WayPoint(true,p15);
 
         Posicion p16 = new Posicion(84,9);  
-        puntos2[5] = new WayPoint(true,p16);
+        puntosAzul2[5] = new WayPoint(true,p16);
 
         Posicion p17 = new Posicion(84,19);  
-        puntos2[6] = new WayPoint(true,p17);
+        puntosAzul2[6] = new WayPoint(true,p17);
 
         Posicion p18 = new Posicion(86,19);  
-        puntos2[7] = new WayPoint(true,p18);
+        puntosAzul2[7] = new WayPoint(true,p18);
 
         Posicion p19 = new Posicion(85,29); 
-        puntos2[8] = new WayPoint(true,p19);
+        puntosAzul2[8] = new WayPoint(true,p19);
 
         Posicion p20 = new Posicion(88,29);   
-        puntos2[9] = new WayPoint(true,p20);
+        puntosAzul2[9] = new WayPoint(true,p20);
 
         Posicion p21 = new Posicion(87,39);  
-        puntos2[10] = new WayPoint(true,p21);
+        puntosAzul2[10] = new WayPoint(true,p21);
 
         Posicion p22 = new Posicion(90,39); 
-        puntos2[11] = new WayPoint(true,p22);
+        puntosAzul2[11] = new WayPoint(true,p22);
 
         Posicion p23 = new Posicion(89,46);  // puente derecho 
-        puntos2[12] = new WayPoint(false,p23,WayPoint.PUENTE_DERECHO);
-
-        rutaAzul = new Ruta(puntos,puntos2);
-        rutaAzulPesada = new Ruta(puntos,puntos2);
-        
+        puntosAzul2[12] = new WayPoint(false,p23,WayPoint.PUENTE_DERECHO_AZUL);
 
     }
+    private void setWaypointsRed(){
+        
+        // way points lado rojo izquierdo
+
+        Posicion p1 = new Posicion(50,89);
+        puntosRojo[0] = new WayPoint(true,p1);
+
+        Posicion p2 = new Posicion(58,89);
+        puntosRojo[1] = new WayPoint(true,p2);
+
+        Posicion p3 = new Posicion(58,86);
+        puntosRojo[2] = new WayPoint(true,p3);
+
+        Posicion p4 = new Posicion(70,86);
+        puntosRojo[3] = new WayPoint(true,p4);
+
+        Posicion p5 = new Posicion(86,76);  // santuario
+        puntosRojo[4] = new WayPoint(false,p5,WayPoint.SANTUARIO);
+
+        Posicion p6 = new Posicion(70,76);
+        puntosRojo[5] = new WayPoint(true,p6);
+
+        Posicion p7 = new Posicion(67,76);
+        puntosRojo[6] = new WayPoint(true,p7);
+
+        Posicion p8 = new Posicion(68,65);
+        puntosRojo[7] = new WayPoint(true,p8);
+
+        Posicion p9 = new Posicion(87,64);
+        puntosRojo[8] = new WayPoint(true,p9);
+
+        Posicion p10 = new Posicion(87,53);  // puente izquierdo enemigo
+        puntosRojo[9] = new WayPoint(false,p10,WayPoint.PUENTE_IZQUIERDO_ROJO);
+
+        // way points lado rojo derecho
+
+        Posicion p11 = new Posicion(41,89);  
+        puntosRojo2[0] = new WayPoint(false,p11);
+
+        Posicion p12 = new Posicion(41,86);
+        puntosRojo2[1] = new WayPoint(true,p12);
+
+        Posicion p13 = new Posicion(41,75); // escuderia  
+        puntosRojo2[2] = new WayPoint(false,p13,WayPoint.ESCUDERIA);
+
+        Posicion p14 = new Posicion(30,87); 
+        puntosRojo2[3] = new WayPoint(true,p14); 
+
+        Posicion p15 = new Posicion(29,91);  
+        puntosRojo2[4] = new WayPoint(true,p15);
+
+        Posicion p16 = new Posicion(16,90);  
+        puntosRojo2[5] = new WayPoint(true,p16);
+
+        Posicion p17 = new Posicion(16,80);  
+        puntosRojo2[6] = new WayPoint(true,p17);
+
+        Posicion p18 = new Posicion(13,80);  
+        puntosRojo2[7] = new WayPoint(true,p18);
+
+        Posicion p19 = new Posicion(14,70); 
+        puntosRojo2[8] = new WayPoint(true,p19);
+
+        Posicion p20 = new Posicion(11,70);   
+        puntosRojo2[9] = new WayPoint(true,p20);
+
+        Posicion p21 = new Posicion(12,61);  
+        puntosRojo2[10] = new WayPoint(true,p21);
+
+        Posicion p22 = new Posicion(9,60); 
+        puntosRojo2[11] = new WayPoint(true,p22);
+
+        Posicion p23 = new Posicion(9,53);  // puente derecho enemigo
+        puntosRojo2[12] = new WayPoint(false,p23,WayPoint.PUENTE_DERECHO_ROJO);
+    }
+    
+    private void setRutas(){
+
+        rutaRoja = new Ruta(puntosRojo,puntosRojo2,puntosAzul2,puntosAzul,false);
+        rutaRojaPesada = new Ruta(puntosRojo,puntosRojo2,puntosAzul2,puntosAzul,false);
+        rutaAzul = new Ruta(puntosAzul,puntosAzul2,puntosRojo,puntosRojo2,true);
+        rutaAzulPesada = new Ruta(puntosAzul,puntosAzul2,puntosRojo2,puntosRojo,true);
+    }
+    // Función que inicializa todas las casillas del minimapa a neutro, 
+    // recorriendo cada una de las casillas del grid y creando un plano del tamaño de una casilla
     private void inicializarMinimapa(){
 
         Vector3 ajuste = new Vector3(6,-0.2f,6);
@@ -299,6 +398,52 @@ public class mundoGuerra : MonoBehaviour
 
         Objetivo vigia = new Objetivo(1,coordes,Objetivo.TORRE_VIGIA);
         objetivosMundo[INDEX_TORRE_VIGIA] = vigia;
+        objExplorerBlue.Add(objetivosMundo[INDEX_TORRE_VIGIA]);
+
+    }
+    private void setSantuario(){
+
+        Coordenada[] coordes = new Coordenada[16];
+        int k=0;
+        for(int i=74;i<79;i++){
+
+            coordes[k] = new Coordenada(86,i);
+            k++;
+            coordes[k] = new Coordenada(90,i);
+            k++;
+        }
+        for(int i=87;i<90;i++){
+
+            coordes[k] = new Coordenada(i,74);
+            k++;
+            coordes[k] = new Coordenada(i,78);
+            k++;
+        }
+
+        Objetivo santuario = new Objetivo(1,coordes,Objetivo.SANTUARIO);
+        objetivosMundo[INDEX_SANTUARIO] = santuario;
+        objExplorerRed.Add(objetivosMundo[INDEX_SANTUARIO]);
+
+    }
+    private void setEscuderia(){
+
+        Coordenada[] coordes = new Coordenada[8];
+        int k=0;
+        for(int i=55;i<58;i++){
+
+            coordes[k] = new Coordenada(23,i);
+            k++;
+            coordes[k] = new Coordenada(26,i);
+            k++;
+        }
+        coordes[k] = new Coordenada(24,57);
+        k++;
+        coordes[k] = new Coordenada(25,57);
+        
+
+        Objetivo escud = new Objetivo(2,coordes,Objetivo.ESCUDERIA);
+        objetivosMundo[INDEX_ESCUDERIA] = escud;
+        objExplorerRed.Add(objetivosMundo[INDEX_ESCUDERIA]);
 
     }
     private void setArmeria(){
@@ -324,6 +469,7 @@ public class mundoGuerra : MonoBehaviour
 
         Objetivo armeria = new Objetivo(2,coordes,Objetivo.ARMERIA);
         objetivosMundo[INDEX_ARMERIA] = armeria;
+        objExplorerBlue.Add(objetivosMundo[INDEX_ARMERIA]);
     }
     private void setPuenteIzqAzul(){
 
@@ -338,7 +484,9 @@ public class mundoGuerra : MonoBehaviour
             }
         }
         Objetivo puenteIzqAzul = new Objetivo(3,coordes,Objetivo.PUENTE_IZQUIERDO_AZUL);
+        //puenteIzqAzul.setPropiedad(Objetivo.AZUL);
         objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL] = puenteIzqAzul;
+        objExplorerBlue.Add(objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL]);
     }
     private void setPuenteDerAzul(){
 
@@ -353,7 +501,42 @@ public class mundoGuerra : MonoBehaviour
             }
         }
         Objetivo puenteDerAzul = new Objetivo(3,coordes,Objetivo.PUENTE_DERECHO_AZUL);
+        //puenteDerAzul.setPropiedad(Objetivo.AZUL);
         objetivosMundo[INDEX_PUENTE_DERECHO_AZUL] = puenteDerAzul;
+        objExplorerBlue.Add(objetivosMundo[INDEX_PUENTE_DERECHO_AZUL]);
+    }
+    private void setPuenteDerRojo(){
+
+        Coordenada[] coordes = new Coordenada[24];
+        int k=0;
+        for (int i = 7; i < 13; i++)
+        {
+            for (int j = 53; j < 57; j++)
+            {
+                coordes[k] = new Coordenada(i,j);
+                k++;
+            }
+        }
+        Objetivo puenteDerRojo = new Objetivo(3,coordes,Objetivo.PUENTE_DERECHO_ROJO);
+        objetivosMundo[INDEX_PUENTE_DERECHO_ROJO] = puenteDerRojo;
+        objExplorerRed.Add(objetivosMundo[INDEX_PUENTE_DERECHO_ROJO]);
+    }
+    private void setPuenteIzqRojo(){
+
+        Coordenada[] coordes = new Coordenada[18];
+        int k=0;
+        for (int i = 85; i < 91; i++)
+        {
+            for (int j = 53; j < 56; j++)
+            {
+                coordes[k] = new Coordenada(i,j);
+                k++;
+            }
+        }
+        Objetivo puenteIzqRojo = new Objetivo(3,coordes,Objetivo.PUENTE_IZQUIERDO_ROJO);
+        //puenteIzqRojo.setPropiedad(Objetivo.AZUL);
+        objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO] = puenteIzqRojo;
+        objExplorerRed.Add(objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO]);
     }
     private void setUnidades(AgentNPC npc, int eq){
 
@@ -534,7 +717,21 @@ public class mundoGuerra : MonoBehaviour
         grFinal.setValor((65),(40),GridFinal.ARMERIA);
         grFinal.setValor((65),(41),GridFinal.ARMERIA);
 
-        // Laberinto Azul
+        // Santuario
+        for (int i = 87; i < 90; i++)
+        {
+            for (int j = 75; j < 78; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.SANTUARIO);
+            }
+        }
+
+        // Escuderia
+        grFinal.setValor((24),(55),GridFinal.ESCUDERIA);
+        grFinal.setValor((25),(55),GridFinal.ESCUDERIA);
+        grFinal.setValor((24),(56),GridFinal.ESCUDERIA);
+        grFinal.setValor((25),(56),GridFinal.ESCUDERIA);
+        // Laberinto Azul y Rojo
         GameObject[] obstaculos = GameObject.FindGameObjectsWithTag("Obstaculo");
         grFinal.setObstaculos(obstaculos);
         
@@ -588,9 +785,9 @@ public class mundoGuerra : MonoBehaviour
         int cont = 0;
         grid = new TextMesh[rows, cols];
         
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 60; i++)
         {
-            for (int j = 0; j < 50; j++)
+            for (int j = 50; j < 100; j++)
             {
                 GameObject obj = new GameObject("Tile_" + i + "_" + j);
                 obj.transform.position = new Vector3((i * cellSize)+ cellSize/2, 0, (j * cellSize) + cellSize/2);
@@ -614,12 +811,16 @@ public class mundoGuerra : MonoBehaviour
 
     void Update(){
 
-        actualizarMinimapa();
+        //actualizarMinimapa();
         moverNPC();
         verificaTorreVigia();
         verificaArmeria();
         verificaPuenteAzulDerecho();
         verificaPuenteAzulIzquierdo();
+        verificaPuenteRojoDerecho();
+        verificaPuenteRojoIzquierdo();
+        verificaSantuario();
+        verificaEscuderia();
         if (Input.GetMouseButtonDown(1))
         {   
             foreach (Objetivo item in objetivosTeamBlue)
@@ -685,7 +886,7 @@ public class mundoGuerra : MonoBehaviour
             }
             else if (equipoAzul[i].getTipo() == AgentNPC.EXPLORADOR)
             {
-                movExplorer(equipoAzul[i]);
+                movExplorer(equipoAzul[i],objExplorerBlue);
             }
             else if (equipoAzul[i].getTipo() == AgentNPC.PATRULLA)
             {
@@ -837,14 +1038,10 @@ public class mundoGuerra : MonoBehaviour
                 }
                 objetivosMundo[INDEX_TORRE_VIGIA].setPropiedad(Objetivo.ROJO);
             }
-        }else if (objetivosMundo[INDEX_TORRE_VIGIA].getPropiedad() == Objetivo.AZUL)
-        {
-            if (!rutaAzul.getDisponible(WayPoint.TORRE_VIGIA))
-            {
-                rutaAzul.setDisponible(WayPoint.TORRE_VIGIA);
-            }
+        }else{
+
+            compruebaProipedadObjetivo(INDEX_TORRE_VIGIA,WayPoint.TORRE_VIGIA);
         }
-        
     }
     private void verificaPuenteAzulIzquierdo(){
 
@@ -875,7 +1072,7 @@ public class mundoGuerra : MonoBehaviour
             }
             if(contAzul > 0 && contRojo == 0){
 
-                foreach (GameObject item in puenteIzquierdo)
+                foreach (GameObject item in puenteIzquierdoAzul)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = azul;
@@ -884,20 +1081,17 @@ public class mundoGuerra : MonoBehaviour
                 objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].setPropiedad(Objetivo.AZUL);
             }else if(contRojo > 0 && contAzul == 0){
 
-                foreach (GameObject item in puenteIzquierdo)
+                foreach (GameObject item in puenteIzquierdoAzul)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = rojo;
                 }
                 objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].setPropiedad(Objetivo.ROJO);
             }
-        }else if (objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].getPropiedad() == Objetivo.AZUL)
-        {
-            if (!rutaAzul.getDisponible(WayPoint.PUENTE_IZQUIERDO))
-            {
-                rutaAzul.setDisponible(WayPoint.PUENTE_IZQUIERDO);
-            }
-        }
+        }else {
+
+            compruebaProipedadObjetivo(INDEX_PUENTE_IZQUIERDO_AZUL,WayPoint.PUENTE_IZQUIERDO_AZUL);
+        }  
         
     }
     private void verificaPuenteAzulDerecho(){
@@ -929,7 +1123,7 @@ public class mundoGuerra : MonoBehaviour
             }
             if(contAzul > 0 && contRojo == 0){
 
-                foreach (GameObject item in puenteDerecho)
+                foreach (GameObject item in puenteDerechoAzul)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = azul;
@@ -938,21 +1132,182 @@ public class mundoGuerra : MonoBehaviour
                 objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].setPropiedad(Objetivo.AZUL);
             }else if(contRojo > 0 && contAzul == 0){
 
-                foreach (GameObject item in puenteDerecho)
+                foreach (GameObject item in puenteDerechoAzul)
                 {
                     Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
                     renderer.material = rojo;
                 }
                 objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].setPropiedad(Objetivo.ROJO);
             }
-        }else if (objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].getPropiedad() == Objetivo.AZUL)
-        {
-            if (!rutaAzul.getDisponible(WayPoint.PUENTE_DERECHO))
-            {
-                rutaAzul.setDisponible(WayPoint.PUENTE_DERECHO);
-            }
+        }else {
+
+            compruebaProipedadObjetivo(INDEX_PUENTE_DERECHO_AZUL,WayPoint.PUENTE_DERECHO_AZUL);
         }
         
+    }
+    private void verificaPuenteRojoDerecho(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_PUENTE_DERECHO_ROJO].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_PUENTE_DERECHO_ROJO].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
+                            && !objetivosTeamRed.Contains(objetivosMundo[INDEX_PUENTE_DERECHO_ROJO]))
+                {
+                    objetivosTeamRed.Add(objetivosMundo[INDEX_PUENTE_DERECHO_ROJO]);
+                    
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
+                            && !objetivosTeamBlue.Contains(objetivosMundo[INDEX_PUENTE_DERECHO_ROJO]))
+                {
+                    objetivosTeamBlue.Add(objetivosMundo[INDEX_PUENTE_DERECHO_ROJO]);
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in puenteDerechoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+                objetivosMundo[INDEX_PUENTE_DERECHO_ROJO].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in puenteDerechoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_PUENTE_DERECHO_ROJO].setPropiedad(Objetivo.ROJO);
+            }
+        }else{
+
+            compruebaProipedadObjetivo(INDEX_PUENTE_DERECHO_ROJO,WayPoint.PUENTE_DERECHO_ROJO);
+        }
+        
+    }
+    private void verificaPuenteRojoIzquierdo(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
+                            && !objetivosTeamRed.Contains(objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO]))
+                {
+                    objetivosTeamRed.Add(objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO]);
+                    
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
+                            && !objetivosTeamBlue.Contains(objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO]))
+                {
+                    objetivosTeamBlue.Add(objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO]);
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in puenteIzquierdoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+                objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in puenteIzquierdoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO].setPropiedad(Objetivo.ROJO);
+            }
+        }else{
+
+            compruebaProipedadObjetivo(INDEX_PUENTE_IZQUIERDO_ROJO,WayPoint.PUENTE_IZQUIERDO_ROJO);
+        }
+        
+    }
+    private void compruebaProipedadObjetivo(int index,string objetivo){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[index].getPropiedad() == Objetivo.AZUL)
+        {
+            foreach (Coordenada coor in objetivosMundo[index].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                    && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                        contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }
+            }
+            if (contAzul == 0 && contRojo >= 2)
+            {
+                objetivosMundo[index].setPropiedad(Objetivo.ROJO);
+                rutaAzul.setDisponible(objetivo,false);
+                rutaAzulPesada.setDisponible(objetivo,false);
+                rutaRoja.setDisponible(objetivo,true);
+                rutaRojaPesada.setDisponible(objetivo,true);
+
+            }else if (!rutaAzul.getDisponible(objetivo))
+            {
+                rutaAzul.setDisponible(objetivo,true);
+                rutaAzulPesada.setDisponible(objetivo,true);
+                rutaRoja.setDisponible(objetivo,false);
+                rutaRojaPesada.setDisponible(objetivo,false);
+            }
+        }else if (objetivosMundo[index].getPropiedad() == Objetivo.ROJO)
+        {
+            foreach (Coordenada coor in objetivosMundo[index].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                    && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }
+            }
+            if (contRojo == 0 && contAzul >= 2)
+            {
+                objetivosMundo[index].setPropiedad(Objetivo.ROJO);
+                rutaAzul.setDisponible(objetivo,true);
+                rutaAzulPesada.setDisponible(objetivo,true);
+                rutaRoja.setDisponible(objetivo,false);
+                rutaRojaPesada.setDisponible(objetivo,false);
+
+            }else if (!rutaRoja.getDisponible(objetivo))
+            {
+                rutaAzul.setDisponible(objetivo,false);
+                rutaAzulPesada.setDisponible(objetivo,false);
+                rutaRoja.setDisponible(objetivo,true);
+                rutaRojaPesada.setDisponible(objetivo,true);
+            }
+        } 
     }
     private void verificaArmeria(){
 
@@ -998,17 +1353,114 @@ public class mundoGuerra : MonoBehaviour
                 }
                 objetivosMundo[INDEX_ARMERIA].setPropiedad(Objetivo.ROJO);
             }
-        }else if (objetivosMundo[INDEX_ARMERIA].getPropiedad() == Objetivo.AZUL)
+        }else{
+
+            compruebaProipedadObjetivo(INDEX_ARMERIA,WayPoint.ARMERIA);
+        }
+    }
+
+    private void verificaSantuario(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_SANTUARIO].getPropiedad() == Objetivo.NEUTRAL)
         {
-            if (!rutaAzul.getDisponible(WayPoint.ARMERIA))
+            foreach (Coordenada coor in objetivosMundo[INDEX_SANTUARIO].getSlots())
             {
-                rutaAzul.setDisponible(WayPoint.ARMERIA);
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
+                            && !objetivosTeamRed.Contains(objetivosMundo[INDEX_SANTUARIO]))
+                {
+                    objetivosTeamRed.Add(objetivosMundo[INDEX_SANTUARIO]);
+
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
+                            && !objetivosTeamBlue.Contains(objetivosMundo[INDEX_SANTUARIO]))
+                {
+                    objetivosTeamBlue.Add(objetivosMundo[INDEX_SANTUARIO]);
+                }
             }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in santuario)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+                objetivosMundo[INDEX_SANTUARIO].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in santuario)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_SANTUARIO].setPropiedad(Objetivo.ROJO);
+            }
+        }else{
+
+            compruebaProipedadObjetivo(INDEX_SANTUARIO,WayPoint.SANTUARIO);
         }
         
     }
+    private void verificaEscuderia(){
 
-    private void movExplorer(AgentNPC pl){
+        int contAzul = 0;
+        int contRojo = 0;
+        if (objetivosMundo[INDEX_ESCUDERIA].getPropiedad() == Objetivo.NEUTRAL)
+        {
+            foreach (Coordenada coor in objetivosMundo[INDEX_ESCUDERIA].getSlots())
+            {
+                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
+                {
+                    contAzul++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidades.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                {
+                    contRojo++;
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
+                            && !objetivosTeamRed.Contains(objetivosMundo[INDEX_ESCUDERIA]))
+                {
+                    objetivosTeamRed.Add(objetivosMundo[INDEX_ESCUDERIA]);
+
+                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                            && unidades.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
+                            && !objetivosTeamBlue.Contains(objetivosMundo[INDEX_ESCUDERIA]))
+                {
+                    objetivosTeamBlue.Add(objetivosMundo[INDEX_ESCUDERIA]);
+                }
+            }
+            if(contAzul > 0 && contRojo == 0){
+
+                foreach (GameObject item in escuderia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+                objetivosMundo[INDEX_ESCUDERIA].setPropiedad(Objetivo.AZUL);
+            }else if(contRojo > 0 && contAzul == 0){
+
+                foreach (GameObject item in escuderia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+                objetivosMundo[INDEX_ESCUDERIA].setPropiedad(Objetivo.ROJO);
+            }
+        }else{
+
+            compruebaProipedadObjetivo(INDEX_ESCUDERIA,WayPoint.ESCUDERIA);
+        }
+    }
+    private void movExplorer(AgentNPC pl,List<Objetivo> objs){
 
         int xDespues;
         int yDespues;
@@ -1023,7 +1475,7 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
             
             cExplorador.setLimites(i,j);
-            npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objetivosMundo,unidades.getArray(),i,j) + new Vector3(2,0,2);
+            npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objs,unidades.getArray(),i,j) + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);

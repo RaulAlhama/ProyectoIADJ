@@ -18,6 +18,7 @@ public class GridFinal
     public const int ARMERIA = 6;
     public const int SANTUARIO = 7;
     public const int VIGIA = 8;
+    public const int ESCUDERIA = 11;
     public const int ESTATUAAZUL = 9;
     public const int ESTATUAROJA = 10;
     private bool Man,Chev,Euc;
@@ -34,13 +35,13 @@ public class GridFinal
         for(int i = 0; i < gridArray.GetLength(0); i++){
             for(int j = 0; j < gridArray.GetLength(1); j++){
 
-                //Debug.DrawLine(getPosicionReal(i,j), getPosicionReal(i,j+1), Color.blue, 100f);
-                //Debug.DrawLine(getPosicionReal(i,j), getPosicionReal(i+1,j), Color.blue, 100f);
+                Debug.DrawLine(getPosicionReal(i,j), getPosicionReal(i,j+1), Color.blue, 100f);
+                Debug.DrawLine(getPosicionReal(i,j), getPosicionReal(i+1,j), Color.blue, 100f);
 
             }
         }
-        //Debug.DrawLine(getPosicionReal(0,largo), getPosicionReal(ancho,largo), Color.blue, 100f);
-        //Debug.DrawLine(getPosicionReal(ancho,0), getPosicionReal(ancho,largo), Color.blue, 100f);
+        Debug.DrawLine(getPosicionReal(0,largo), getPosicionReal(ancho,largo), Color.blue, 100f);
+        Debug.DrawLine(getPosicionReal(ancho,0), getPosicionReal(ancho,largo), Color.blue, 100f);
 
         
     }

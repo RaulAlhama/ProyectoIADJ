@@ -145,12 +145,13 @@ public class Patrulla : MonoBehaviour
         while(!objetivo){
 
             WayPoint aux = ruta.getSiguiente();
-            Debug.Log(aux.getNombre());
+            //Debug.Log(aux.getNombre());
             if (aux.getDisponible())
             {
                 objetivo = true;
                 x1 = aux.getX();
                 y1 = aux.getY();
+                Debug.Log(x1+","+y1);
             }
         }
         x = x1;

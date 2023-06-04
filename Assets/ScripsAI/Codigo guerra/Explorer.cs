@@ -8,13 +8,9 @@ public class Explorer
     // Start is called before the first frame update
     private AgentNPC pj;
     private int rangoVision = 15;
-    private int rangoAtaque = 2;
-    private int centroAtaque;
     private int centroVision;
     private int indexSpawn;
-    private int[,] mAtaque;
     private int[,] mVision;
-    private int[] limAtaque;
     private int[] limVision;
     private const int MAXVALOR = 99;
     private const int MINVALOR = 0;
@@ -23,56 +19,21 @@ public class Explorer
     private int lastCom;
 
     public const int MOVERSE = 20;
-    public const int ATACAR = 21;
     public const int SEGUIR = 22;
     public const int QUIETO = 23;
+    public const int HUIR = 24;
 
     public Explorer(){
 
-        mAtaque = new int[rangoAtaque,rangoAtaque];
         mVision = new int[rangoVision,rangoVision];
-        centroAtaque = (rangoAtaque - 1)/2;
         centroVision = (rangoVision - 1)/2;
         com = Explorer.QUIETO;
     }
     public void setLimites(int i, int j){
 
-        limAtaque = setLimitesAtaque(i,j);
         limVision = setLimitesVision(i,j);
 
 
-    }
-    private int[] setLimitesAtaque(int i, int j){
-
-        int limiteInferior = i - centroAtaque;
-        int limiteSuperior = i + centroAtaque;
-        int limiteIzquierdo = j - centroAtaque;
-        int limiteDerecho = j + centroAtaque;
-
-        int[] limites = new int[4];
-
-        if(limiteInferior < MINVALOR){
-
-            limiteInferior = MINVALOR;
-        }
-        if(limiteSuperior > MAXVALOR){
-
-            limiteSuperior = MAXVALOR;
-        }
-        if(limiteIzquierdo < MINVALOR){
-
-            limiteIzquierdo = MINVALOR;
-        }
-        if(limiteDerecho > MAXVALOR){
-
-            limiteDerecho = MAXVALOR;
-        }
-        limites[0] = limiteInferior; // i inicio
-        limites[1] = limiteSuperior; // i final
-        limites[2] = limiteIzquierdo; // j inicio
-        limites[3] = limiteDerecho; // j final
-
-        return limites;
     }
     private int[] setLimitesVision(int i, int j){
 
@@ -128,28 +89,7 @@ public class Explorer
         y = y1;
         return enemigos;
     }
-    private bool unidadPesadaEnVision(int[,] mundo, out int x,out int y){
-
-        bool aliado = false;
-        int x1 = 0;
-        int y1 = 0;
-        for (int i = limVision[0]; i < limVision[1]; i++)
-        {
-            for (int j = limVision[2]; j < limVision[3]; j++)
-            {
-                if (mundo[i,j] == ArrayUnidades.UNIDADPESADAAZUL)
-                {
-                    aliado = true;
-                    x1 = i;
-                    y1 = j;
-                }
-            }
-        }
-        x = x1;
-        y = y1;
-        return aliado;
-    }
-    public bool posicionObjetivo(Objetivo[] lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
+    public bool posicionObjetivo(List<Objetivo> lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = false;
         int menor = 99;
@@ -189,7 +129,7 @@ public class Explorer
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,Objetivo[] listaObjetivos, int[,] posNPCs, int i, int j){
+    public Vector3 getDecision(GridFinal mundo,List<Objetivo> listaObjetivos, int[,] posNPCs, int i, int j){
 
         int x = i;
         int y = j;
@@ -199,13 +139,8 @@ public class Explorer
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
-            com = Explorer.ATACAR;
+            com = Explorer.HUIR;
 
-        }else if(unidadPesadaEnVision(posNPCs,out x, out y)){
-
-            target = mundo.getPosicionReal(x,y);
-            lastCom = com;
-            com = Explorer.SEGUIR;
         }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
 
             target = mundo.getPosicionReal(x,y);

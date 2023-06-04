@@ -207,6 +207,7 @@ public class UnidadPesada : MonoBehaviour
         int x1 = 0;
         int y1 = 0;
         double  distancia = 999999;
+        
         for (int k = 0; k < lisObj.Count; k++)
         {
             if(lisObj[k].getPropiedad() == Objetivo.NEUTRAL){
