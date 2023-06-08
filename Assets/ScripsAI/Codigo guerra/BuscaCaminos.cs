@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuscaCaminos: MonoBehaviour
+public class BuscaCaminos
 {
     public AgentNPC pl;
     public PathFindingLRTA buscador;

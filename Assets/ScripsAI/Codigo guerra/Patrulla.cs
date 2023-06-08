@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Patrulla : MonoBehaviour
+public class Patrulla
 {
     // Start is called before the first frame update
      private int pj;

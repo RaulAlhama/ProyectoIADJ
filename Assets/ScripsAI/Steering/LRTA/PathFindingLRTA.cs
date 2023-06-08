@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PathFindingLRTA : MonoBehaviour
+public class PathFindingLRTA
 {
     // Start is called before the first frame update
     private GridFinal mundo;
