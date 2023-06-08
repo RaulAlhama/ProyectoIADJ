@@ -150,7 +150,7 @@ public class mundoGuerra : MonoBehaviour
         setPuenteIzqRojo();
         setSantuario();
         setEscuderia();
-        //creaTexto();
+        creaTexto();
         inicializarMinimapa();
      
     }
