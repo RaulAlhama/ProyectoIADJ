@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuscaCaminos_A: MonoBehaviour
+public class BuscaCaminos_A
 {
     public AgentNPC pl;
     public AEstrella buscador;

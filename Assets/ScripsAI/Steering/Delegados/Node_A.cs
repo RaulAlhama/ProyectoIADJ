@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Node_A : MonoBehaviour
+public class Node_A
 {
     public AEstrella.Coordenadas corde;
     public Node_A padre { get; set; }

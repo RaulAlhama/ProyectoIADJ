@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class AEstrella : MonoBehaviour
+public class AEstrella
 {
 
     private GridFinal mundo;
