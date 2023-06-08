@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explorador : MonoBehaviour
+public class Explorador
 {
     // Start is called before the first frame update
     private int pj;

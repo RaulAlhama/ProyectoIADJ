@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WayPoint : MonoBehaviour
+public class WayPoint
 {
     // Start is called before the first frame update
     private bool disponible;
