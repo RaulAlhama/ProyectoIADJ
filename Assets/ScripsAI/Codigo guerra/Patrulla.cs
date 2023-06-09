@@ -5,9 +5,18 @@ using UnityEngine;
 public class Patrulla : MonoBehaviour
 {
     // Start is called before the first frame update
-     private int pj;
+    private int pj;
+    private string equipo;
+    private float atackSpeed = 1f;
+    private int dañoBase = 2;
+    private GameObject referencia;
+    private AgentNPC npc;
+    private Coordenada spawn;
+    private int santuario = 1;
+    private int delay = 10;
+    private bool muerto = false;
     private int rangoVision = 11;
-    private int rangoAtaque = 7;
+    private int rangoAtaque = 3;
     private int centroAtaque;
     private int centroVision;
     private int indexSpawn;
@@ -18,17 +27,31 @@ public class Patrulla : MonoBehaviour
     private const int MAXVALOR = 99;
     private const int MINVALOR = 0;
 
+    private int vida = 80;
+    private GameObject[] barra_vida;
+
     private int com;
     private int lastCom;
     private int posI;
     private int posJ;
+    private int estado;
+
+    //Equipos
+    public const string ROJO = "FF0000";
+    public const string AZUL = "0000FF"; 
 
     public const int MOVERSE = 20;
     public const int ATACAR = 21;
     public const int SEGUIR = 22;
     public const int QUIETO = 23;
+    public const int RELOAD = 24;
 
-    public Patrulla(int index){
+    //Estado
+    public const int MUERTO = 11;
+    public const int VIVO = 12;
+    public const int SPAWNING = 13;
+
+    public Patrulla(int index,GameObject[] v,AgentNPC n,Coordenada c,string eq){
 
         mAtaque = new int[rangoAtaque,rangoAtaque];
         mVision = new int[rangoVision,rangoVision];
@@ -36,6 +59,116 @@ public class Patrulla : MonoBehaviour
         centroVision = (rangoVision - 1)/2;
         com = Patrulla.QUIETO;
         pj = index;
+        barra_vida = v;
+        npc = n;
+        spawn = c;
+        estado = VIVO;
+        equipo = eq;
+    }
+    public void setObjetoNPC(GameObject n){
+
+        referencia = n;
+    }
+    public int getDaño(int tipo){
+
+        switch (tipo)
+        {
+            case AgentNPC.ARQUERO:{
+
+                return dañoBase*2;
+            }
+            case AgentNPC.EXPLORADOR:{
+
+                return dañoBase*4;
+            }
+            case AgentNPC.PATRULLA:{
+
+                return dañoBase;
+            }
+            case AgentNPC.PESADA:{
+
+                return dañoBase*2;
+            }
+            default:
+            return dañoBase;
+        }
+    }
+    public float getAtackSpeed(){
+
+        return atackSpeed;
+    }
+    public int getVida(){
+
+        return vida;
+    }
+    public int getEstado(){
+
+        return estado;
+    }
+    public void setEstado(int val){
+
+        estado = val;
+    }
+    public bool getMuerto(){
+
+        return muerto;
+    }
+    private void actualizaBarraDeVida(){
+
+        if (vida <= 0)
+        {
+            barra_vida[0].SetActive(false);
+        }else if (vida <20)
+        {
+            barra_vida[1].SetActive(false);
+        }else if(vida < 40){
+
+            barra_vida[2].SetActive(false);
+        }else if(vida < 60){
+
+            barra_vida[3].SetActive(false);
+        }else if(vida < 80){
+
+            barra_vida[4].SetActive(false);
+        }
+    }
+    public void setVida(int val){
+
+        vida = vida - val;
+        actualizaBarraDeVida();
+        if (vida == 0)
+        {
+            npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
+            muerto = true;
+            estado = MUERTO;
+            referencia.SetActive(false);
+            com = QUIETO;
+        }
+    }
+    public int getDelay(){
+
+        return delay;
+    }
+    public void setNewDelay(int val){
+
+        delay+=10;
+    }
+    public void restablecerVida(){
+
+        vida = 80;
+        for (int i = 0; i < barra_vida.Length - santuario; i++)
+        {
+            barra_vida[i].SetActive(true);
+        }
+        muerto = false;
+        reaparecer();
+    }
+    private void reaparecer(){
+
+        npc.setLLegada(true);
+        referencia.SetActive(true);
+        estado = VIVO;
+
     }
     public int getIndexNPC(){
 
@@ -114,22 +247,110 @@ public class Patrulla : MonoBehaviour
 
         return limites;
     }
-    private bool enemigosEnVision(int[,] mundo, out int x, out int y){
+    private bool enemigosEnRango(int[,] mundo,out int x, out int y){
 
         bool enemigos = false;
         int x1 = 0;
         int y1 = 0;
-        for (int i = limVision[0]; i < limVision[1]; i++)
+        for (int i = limAtaque[0]; i <= limAtaque[1]; i++)
         {
-            for (int j = limVision[2]; j < limVision[3]; j++)
+            for (int j = limAtaque[2]; j <= limAtaque[3]; j++)
             {
-                if (mundo[i,j] == GridFinal.NPCROJO)
+                if (equipo == AZUL && (mundo[i,j] >= ArrayUnidades.ARQUEROROJO && mundo[i,j] <= ArrayUnidades.PATRULLAROJO))
                 {
                     enemigos = true;
                     x1 = i;
                     y1 = j;
                     
+                }else if(equipo == ROJO && (mundo[i,j] >= ArrayUnidades.ARQUEROAZUL && mundo[i,j] <= ArrayUnidades.PATRULLAAZUL)){
+
+                    enemigos = true;
+                    x1 = i;
+                    y1 = j;
                 }
+            }
+        }
+        x = x1;
+        y = y1;
+        return enemigos;
+    }
+    private bool enemigosEnVision(GridFinal valmundo,int[,] mundo, out int x, out int y){
+
+        bool enemigos = false;
+        int x1 = 0;
+        int y1 = 0;
+        for (int i = limVision[0]; i <= limVision[1]; i++)
+        {
+            for (int j = limVision[2]; j <= limVision[3]; j++)
+            {
+                if (equipo == AZUL && (mundo[i,j] >= ArrayUnidades.ARQUEROROJO && mundo[i,j] <= ArrayUnidades.PATRULLAROJO))
+                {
+                    x1 = i;
+                    y1 = j; 
+                    
+                    enemigos = true;
+                    
+                }else if(equipo == ROJO && (mundo[i,j] >= ArrayUnidades.ARQUEROAZUL && mundo[i,j] <= ArrayUnidades.PATRULLAAZUL)){
+
+                    x1 = i;
+                    y1 = j;
+                    
+                    enemigos = true;
+                }
+            }
+        }
+        List<Coordenada> slots = new List<Coordenada>();
+        if(x1-1 >= MINVALOR && y1-1 >= MINVALOR && valmundo.Posible(x1-1,y1-1)){
+
+            Coordenada cr = new Coordenada(x1-1,y1-1);
+            slots.Add(cr);
+        }
+        if(y1-1 >= MINVALOR && valmundo.Posible(x1,y1-1) ){
+
+            Coordenada cr = new Coordenada(x1,y1-1);
+            slots.Add(cr);
+        }
+        if(x1+1 <= MAXVALOR && y1-1 >= MINVALOR && valmundo.Posible(x1+1,y1-1)){
+
+            Coordenada cr = new Coordenada(x1+1,y1-1);
+            slots.Add(cr);
+        }
+        if(x1-1 >= MINVALOR && valmundo.Posible(x1-1,y1)){
+
+            Coordenada cr = new Coordenada(x1-1,y1);
+            slots.Add(cr);
+        }
+        if(x1+1 <= MAXVALOR && valmundo.Posible(x1+1,y1)){
+
+            Coordenada cr = new Coordenada(x1+1,y1);
+            slots.Add(cr);
+        }
+        if(x1-1 >= MINVALOR && y1+1 <= MAXVALOR && valmundo.Posible(x1-1,y1+1)){
+
+            Coordenada cr = new Coordenada(x1-1,y1+1);
+            slots.Add(cr);
+        }
+        if( y1+1 <= MAXVALOR && valmundo.Posible(x1,y1+1)){
+
+            Coordenada cr = new Coordenada(x1,y1+1);
+            slots.Add(cr);
+        }
+        if( x1+1 <= MAXVALOR && y1+1 <= MAXVALOR && valmundo.Posible(x1+1,y1+1)){
+
+            Coordenada cr = new Coordenada(x1+1,y1+1);
+            slots.Add(cr);
+        }
+
+        double distancia = 999999;
+
+        foreach (Coordenada cr in slots)
+        {
+            double disAux = Mathf.Max(Mathf.Abs(posI-cr.getX()),Mathf.Abs(posJ-cr.getY()));
+            if (disAux < distancia)
+            {
+                distancia = disAux;
+                x1 = cr.getX();
+                y1 = cr.getY();
             }
         }
         x = x1;
@@ -145,13 +366,12 @@ public class Patrulla : MonoBehaviour
         while(!objetivo){
 
             WayPoint aux = ruta.getSiguiente();
-            //Debug.Log(aux.getNombre());
+
             if (aux.getDisponible())
             {
                 objetivo = true;
                 x1 = aux.getX();
                 y1 = aux.getY();
-                Debug.Log(x1+","+y1);
             }
         }
         x = x1;
@@ -159,13 +379,24 @@ public class Patrulla : MonoBehaviour
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,Ruta ruta, int[,] posNPCs, int i, int j){
+    public Vector3 getDecision(GridFinal mundo,Ruta ruta,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){
 
         int x = i;
         int y = j;
+        int[,] enemigos;
+        int[,] aliados;
         Vector3 target = mundo.getPosicionReal(x,y);
+        if (equipo == AZUL)
+        {
+            aliados = azules;
+            enemigos = rojos;
+        }else{
+            
+            aliados = rojos;
+            enemigos = azules;
+        }
         
-        if(enemigosEnVision(mundo.getArray(),out x, out y)){
+        if(enemigosEnVision(mundo,enemigos,out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
@@ -180,6 +411,50 @@ public class Patrulla : MonoBehaviour
         //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
         
         return target;
+    }
+    
+    public int Atacar(GridFinal mundo,Posicion[] teamEnemy,ArrayUnidades unidades, out int tipo){
+
+        int x = 0;
+        int y = 0;
+
+        if(enemigosEnRango(unidades.getArray(),out x, out y)){
+
+            lastCom = com;
+            com = Patrulla.ATACAR;
+            int indice = -1;
+            int aux = -1;
+            for (int i = 0; i < teamEnemy.Length; i++)
+            {
+                
+                if (teamEnemy[i].getI() == x && teamEnemy[i].getJ() == y)
+                {
+                    aux = unidades.getValorUnidad(x,y);
+                    indice = i;
+                }
+            }
+            tipo = aux;
+            return indice;
+
+        }else{
+
+            if (!muerto)
+            {
+                com = QUIETO; 
+            }
+            
+            tipo = -1;
+            return -1;
+        }
+    }
+    
+    public void setComportamiento(int val){
+
+        com = val;
+    }
+    public int getComportamiento(){
+
+        return com;
     }
     public bool cambioCom(){
 
