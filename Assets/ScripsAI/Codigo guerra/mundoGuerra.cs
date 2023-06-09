@@ -65,8 +65,8 @@ public class mundoGuerra : MonoBehaviour
 
     private AgentNPC[] equipoAzul = new AgentNPC[numNPC];
     private Agent[] npcVirtualAzul = new Agent[numNPC];
-    private BuscaCaminos_A[] buscadoresAzul_A = new BuscaCaminos_A[numNPC];
-    private BuscaCaminos[] buscadoresRojo = new BuscaCaminos[numNPC];
+    private BuscaCaminos_A[] buscadoresAzul = new BuscaCaminos_A[numNPC];
+    private BuscaCaminos_A[] buscadoresRojo = new BuscaCaminos_A[numNPC];
 
 
     public AgentNPC prefabNPCAzul;
@@ -185,7 +185,7 @@ public class mundoGuerra : MonoBehaviour
             equipoAzul[i].virtualTarget = npcVirtualAzul[i];
             equipoAzul[i].setStatus(Agent.STOPPED);
 
-            buscadoresAzul_A[i] = new BuscaCaminos_A(grFinal,equipoAzul[i],npcVirtualAzul[i]);
+            buscadoresAzul[i] = new BuscaCaminos_A(grFinal,equipoAzul[i],npcVirtualAzul[i]);
             equipoAzul[i].Position = new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY());
             grFinal.getCoordenadas(equipoAzul[i].Position,out iAux,out jAux);
             teamBlue[i] = new Posicion(iAux,jAux);
@@ -195,7 +195,7 @@ public class mundoGuerra : MonoBehaviour
             npcVirtualRojo[i].name = "NPCVirtual" + equipoRojo[i];
             equipoRojo[i].virtualTarget = npcVirtualRojo[i];
             equipoRojo[i].setStatus(Agent.STOPPED);
-            buscadoresRojo[i] = new BuscaCaminos(grFinal,equipoRojo[i],npcVirtualRojo[i]);
+            buscadoresRojo[i] = new BuscaCaminos_A(grFinal,equipoRojo[i],npcVirtualRojo[i]);
 
             equipoRojo[i].Position = new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY());
             grFinal.getCoordenadas(equipoRojo[i].Position,out iAux,out jAux);
@@ -1498,7 +1498,9 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresAzul[indice].LRTA();
+            caminosAzul[indice] = buscadoresAzul[indice].A();
+
+            pl.setLLegada(false);
             
         }else if(pl.getLLegada() && cArquero[index].getComportamiento() == Archer.ATACAR){
             
@@ -1512,14 +1514,10 @@ public class mundoGuerra : MonoBehaviour
                 Invoke("ataqueArcher2Azul",cArquero[index].getAtackSpeed());
             }
             
-        
-
-            pl.setLLegada(false);
-            
         }else{
 
             //Debug.Log("Se comprueba por que nodo va");
-            buscadoresAzul_A[indice].comprobarCamino(caminosAzul[indice]);
+            buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
                 
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
@@ -1565,7 +1563,9 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresRojo[indice].LRTA();
+            caminosRojo[indice] = buscadoresRojo[indice].A();
+
+            pl.setLLegada(false);
             
         }else if(pl.getLLegada() && rArquero[index].getComportamiento() == Archer.ATACAR){
             
@@ -1582,7 +1582,7 @@ public class mundoGuerra : MonoBehaviour
         
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresRojo[indice].LRTA();
+            buscadoresRojo[indice].comprobarCamino(caminosRojo[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
         
@@ -1628,12 +1628,14 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresAzul[indice].LRTA();
+            caminosAzul[indice] = buscadoresAzul[indice].A();
+
+            pl.setLLegada(false);
 
             
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresAzul[indice].LRTA();
+            buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
     
@@ -1677,7 +1679,9 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresRojo[indice].LRTA();
+            caminosRojo[indice] = buscadoresRojo[indice].A();
+
+            pl.setLLegada(false);
             
         }else if(pl.getLLegada() && rPesada[index].getComportamiento() == UnidadPesada.ATACAR){
             
@@ -1693,7 +1697,7 @@ public class mundoGuerra : MonoBehaviour
 
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresRojo[indice].LRTA();
+            buscadoresRojo[indice].comprobarCamino(caminosRojo[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
@@ -2201,14 +2205,15 @@ public class mundoGuerra : MonoBehaviour
             npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
-            buscadoresAzul_A[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
-            buscadoresAzul_A[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul_A[indice].A();
+            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            caminosAzul[indice] = buscadoresAzul[indice].A();
 
             pl.setLLegada(false);
             
-        }else{              
-            buscadoresAzul_A[indice].comprobarCamino(caminosAzul[indice]);
+        }else{    
+
+            buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
@@ -2255,11 +2260,13 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresRojo[indice].LRTA();
+            caminosRojo[indice] = buscadoresRojo[indice].A();
+
+            pl.setLLegada(false);
             
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresRojo[indice].LRTA();
+            buscadoresRojo[indice].comprobarCamino(caminosRojo[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
@@ -2304,22 +2311,24 @@ public class mundoGuerra : MonoBehaviour
             npcVirtualAzul[indice].Position = cPatrulla.getDecision(grFinal,rutaAzul,objetivosTeamBlue,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
-            buscadoresAzul_A[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
-            buscadoresAzul_A[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul_A[indice].A();
+            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            caminosAzul[indice] = buscadoresAzul[indice].A();
+
+            pl.setLLegada(false);
 
            }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
             
             //funcion de ataque
             cPatrulla.setComportamiento(Patrulla.RELOAD);
             Invoke("ataquePatrullaAzul",cPatrulla.getAtackSpeed());
-            
-
-         pl.setLLegada(false);
-            
+        
         }else{
-            buscadoresAzul_A[indice].comprobarCamino(caminosAzul[indice]);
+
+            buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
         }
+
+
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
 
@@ -2365,7 +2374,9 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresRojo[indice].LRTA();
+            caminosRojo[indice] = buscadoresRojo[indice].A();
+
+            pl.setLLegada(false);
             
         }else if(pl.getLLegada() && rPatrulla.getComportamiento() == Patrulla.ATACAR){
             
@@ -2376,7 +2387,7 @@ public class mundoGuerra : MonoBehaviour
 
         }else if((pl.status == Agent.STOPPED)){
                             
-            buscadoresRojo[indice].LRTA();
+            buscadoresRojo[indice].comprobarCamino(caminosRojo[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
