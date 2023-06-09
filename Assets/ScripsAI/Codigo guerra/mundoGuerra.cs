@@ -65,7 +65,7 @@ public class mundoGuerra : MonoBehaviour
 
     private AgentNPC[] equipoAzul = new AgentNPC[numNPC];
     private Agent[] npcVirtualAzul = new Agent[numNPC];
-    private BuscaCaminos[] buscadoresAzul = new BuscaCaminos[numNPC];
+    private BuscaCaminos_A[] buscadoresAzul_A = new BuscaCaminos_A[numNPC];
     private BuscaCaminos[] buscadoresRojo = new BuscaCaminos[numNPC];
 
 
@@ -125,6 +125,10 @@ public class mundoGuerra : MonoBehaviour
     private bool todosInBlue = false;
     private bool todosInRed = false;
 
+    // Arrays de caminos
+    private List<Vector3>[] caminosAzul = new List<Vector3>[numNPC];
+    private List<Vector3>[] caminosRojo = new List<Vector3>[numNPC];
+
     private TextMesh[,] grid;
 
     void Start()
@@ -181,7 +185,7 @@ public class mundoGuerra : MonoBehaviour
             equipoAzul[i].virtualTarget = npcVirtualAzul[i];
             equipoAzul[i].setStatus(Agent.STOPPED);
 
-            buscadoresAzul[i] = new BuscaCaminos(grFinal,equipoAzul[i],npcVirtualAzul[i]);
+            buscadoresAzul_A[i] = new BuscaCaminos_A(grFinal,equipoAzul[i],npcVirtualAzul[i]);
             equipoAzul[i].Position = new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY());
             grFinal.getCoordenadas(equipoAzul[i].Position,out iAux,out jAux);
             teamBlue[i] = new Posicion(iAux,jAux);
@@ -1234,7 +1238,7 @@ public class mundoGuerra : MonoBehaviour
 
                 TextMesh textMesh = obj.AddComponent<TextMesh>();
                 textMesh.text = "" + grFinal.getValor(i,j) + "  " + i + "," + j;
-                //textMesh.text = i + "," + j;
+                textMesh.text = i + "," + j;
                 textMesh.fontSize = 100;
                 textMesh.characterSize = 0.1f;
                 textMesh.anchor = TextAnchor.MiddleCenter;
@@ -1509,9 +1513,14 @@ public class mundoGuerra : MonoBehaviour
             }
             
         
-        }else if((pl.status == Agent.STOPPED)){
-                            
-            buscadoresAzul[indice].LRTA();
+
+            pl.setLLegada(false);
+            
+        }else{
+
+            //Debug.Log("Se comprueba por que nodo va");
+            buscadoresAzul_A[indice].comprobarCamino(caminosAzul[indice]);
+                
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
         
@@ -1620,22 +1629,10 @@ public class mundoGuerra : MonoBehaviour
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
             buscadoresAzul[indice].LRTA();
-            
-            
-        }else if(pl.getLLegada() && cPesada[index].getComportamiento() == UnidadPesada.ATACAR){
-            
-            //funcion de ataque
-            cPesada[index].setComportamiento(UnidadPesada.RELOAD);
-            if (index == 0)
-            {
-                Invoke("ataquePesada1Azul",cPesada[index].getAtackSpeed());
-            }else{
 
-                Invoke("ataquePesada2Azul",cPesada[index].getAtackSpeed());
-            }
-
+            
         }else if((pl.status == Agent.STOPPED)){
-
+                            
             buscadoresAzul[indice].LRTA();
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
@@ -2192,7 +2189,7 @@ public class mundoGuerra : MonoBehaviour
         int yDespues;
         int indice = cExplorador.getIndexNPC();
         if(pl.getLLegada()){
-                    
+            
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2204,13 +2201,14 @@ public class mundoGuerra : MonoBehaviour
             npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
-            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
-            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresAzul[indice].LRTA();
+            buscadoresAzul_A[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul_A[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            caminosAzul[indice] = buscadoresAzul_A[indice].A();
+
+            pl.setLLegada(false);
             
-        }else if((pl.status == Agent.STOPPED)){
-                            
-            buscadoresAzul[indice].LRTA();
+        }else{              
+            buscadoresAzul_A[indice].comprobarCamino(caminosAzul[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
@@ -2306,20 +2304,21 @@ public class mundoGuerra : MonoBehaviour
             npcVirtualAzul[indice].Position = cPatrulla.getDecision(grFinal,rutaAzul,objetivosTeamBlue,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
-            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
-            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            buscadoresAzul[indice].LRTA();
-            
-        }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
+            buscadoresAzul_A[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+            buscadoresAzul_A[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+            caminosAzul[indice] = buscadoresAzul_A[indice].A();
+
+           }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
             
             //funcion de ataque
             cPatrulla.setComportamiento(Patrulla.RELOAD);
             Invoke("ataquePatrullaAzul",cPatrulla.getAtackSpeed());
             
 
-        }else if((pl.status == Agent.STOPPED)){
-                            
-            buscadoresAzul[indice].LRTA();
+         pl.setLLegada(false);
+            
+        }else{
+            buscadoresAzul_A[indice].comprobarCamino(caminosAzul[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 

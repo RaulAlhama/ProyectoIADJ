@@ -5,8 +5,8 @@ using UnityEngine;
 public class MoverCamara : MonoBehaviour
 {
 
-    private Vector3 limitesInferiores = new Vector3(42,42,0);
-    private Vector3 limitesSuperiores = new Vector3(415,62,365);
+    private Vector3 limitesInferiores = new Vector3(42,40,0);
+    private Vector3 limitesSuperiores = new Vector3(415,100,365);
     private Vector3 inicio = new Vector3(250,62,11);
 
     [SerializeField]

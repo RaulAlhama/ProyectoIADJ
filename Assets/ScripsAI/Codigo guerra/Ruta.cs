@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 
-public class Ruta : MonoBehaviour
+public class Ruta
 {
     private const int IZQUIERDA = 1;
     private const int DERECHA = 2;
