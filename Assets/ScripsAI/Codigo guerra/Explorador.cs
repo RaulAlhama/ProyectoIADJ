@@ -190,8 +190,9 @@ public class Explorador
                     
                 }else if(equipo == ROJO && (mundo[i,j] >= ArrayUnidades.ARQUEROAZUL && mundo[i,j] <= ArrayUnidades.PATRULLAAZUL)){
                     
-                    break;
                     enemigos = true;
+                    break;
+                    
                 }
             }
         }
@@ -200,7 +201,6 @@ public class Explorador
     public bool posicionObjetivo(List<Objetivo> lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = false;
-        int menor = 99;
         int x1 = 0;
         int y1 = 0;
         double  distancia = 999999;

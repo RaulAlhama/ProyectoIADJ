@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Archer : MonoBehaviour
+public class Archer
 {
     // Start is called before the first frame update
     private int pj;
@@ -540,7 +540,6 @@ public class Archer : MonoBehaviour
 
         x = aux.getX();
         y = aux.getY();
-        return false;
         return objetivo;
     }
     public Vector3 getDecision(Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){

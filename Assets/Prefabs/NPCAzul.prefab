@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1056866141774160118, guid: 46d076c48369739449191052ba157870, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3184185979205384590, guid: 46d076c48369739449191052ba157870, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5044310171192284528, guid: 46d076c48369739449191052ba157870, type: 3}
       propertyPath: _maxSpeed
       value: 10
@@ -34,6 +42,10 @@ PrefabInstance:
     - target: {fileID: 6597401927276680897, guid: 46d076c48369739449191052ba157870, type: 3}
       propertyPath: m_Name
       value: NPCAzul
+      objectReference: {fileID: 0}
+    - target: {fileID: 6597401927276680897, guid: 46d076c48369739449191052ba157870, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7690387910214310597, guid: 46d076c48369739449191052ba157870, type: 3}
       propertyPath: m_RootOrder
