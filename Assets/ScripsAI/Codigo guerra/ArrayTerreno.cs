@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrayTerreno : MonoBehaviour
+public class ArrayTerreno
 {
     private int[,] array;
     public const int SUELO = 0;

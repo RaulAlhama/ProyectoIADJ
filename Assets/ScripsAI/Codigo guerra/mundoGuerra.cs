@@ -1643,6 +1643,18 @@ public class mundoGuerra : MonoBehaviour
             pl.setLLegada(false);
 
             
+        }else if(pl.getLLegada() && cPesada[index].getComportamiento() == UnidadPesada.ATACAR){
+            
+            //funcion de ataque
+            cPesada[index].setComportamiento(UnidadPesada.RELOAD);
+            if (index == 0)
+            {
+                Invoke("ataquePesada1Azul",cPesada[index].getAtackSpeed());
+            }else{
+
+                Invoke("ataquePesada2Azul",cPesada[index].getAtackSpeed());
+            }
+
         }else if(!pl.getLLegada()){
                             
             buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
@@ -2349,7 +2361,7 @@ public class mundoGuerra : MonoBehaviour
 
             pl.setLLegada(false);
 
-           }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
+        }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
             
             //funcion de ataque
             cPatrulla.setComportamiento(Patrulla.RELOAD);
@@ -2862,13 +2874,13 @@ public class mundoGuerra : MonoBehaviour
                 }
                 case ArrayUnidades.EXPLORADORROJO:{
                     if (!rExplorador.getMuerto())
-                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.EXPLORADOR));
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
                     if (!rPatrulla.getMuerto())
-                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PATRULLA));
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -2919,13 +2931,13 @@ public class mundoGuerra : MonoBehaviour
                 }
                 case ArrayUnidades.EXPLORADORROJO:{
                     if (!rExplorador.getMuerto())
-                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.EXPLORADOR));
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
                     if (!rPatrulla.getMuerto())
-                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PATRULLA));
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -2975,13 +2987,13 @@ public class mundoGuerra : MonoBehaviour
                 }
                 case ArrayUnidades.EXPLORADOAZUL:{
                     if (!cExplorador.getMuerto())
-                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.EXPLORADOR));
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if (!cPatrulla.getMuerto())
-                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PATRULLA));
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -3032,13 +3044,13 @@ public class mundoGuerra : MonoBehaviour
                 }
                 case ArrayUnidades.EXPLORADOAZUL:{
                     if (!cExplorador.getMuerto())
-                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.EXPLORADOR));
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if (!cPatrulla.getMuerto())
-                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PATRULLA));
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -3088,13 +3100,13 @@ public class mundoGuerra : MonoBehaviour
                 }
                 case ArrayUnidades.EXPLORADOAZUL:{
                     if(!cExplorador.getMuerto())
-                        cExplorador.setVida(rPatrulla.getDaño(AgentNPC.PESADA));
+                        cExplorador.setVida(rPatrulla.getDaño(AgentNPC.EXPLORADOR));
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if(!cPatrulla.getMuerto())
-                        cPatrulla.setVida(rPatrulla.getDaño(AgentNPC.PESADA));
+                        cPatrulla.setVida(rPatrulla.getDaño(AgentNPC.PATRULLA));
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -3145,13 +3157,13 @@ public class mundoGuerra : MonoBehaviour
                 }
                 case ArrayUnidades.EXPLORADORROJO:{
                     if(!rExplorador.getMuerto())
-                        rExplorador.setVida(cPatrulla.getDaño(AgentNPC.PESADA));
+                        rExplorador.setVida(cPatrulla.getDaño(AgentNPC.EXPLORADOR));
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
                     if(!rPatrulla.getMuerto())
-                        rPatrulla.setVida(cPatrulla.getDaño(AgentNPC.PESADA));
+                        rPatrulla.setVida(cPatrulla.getDaño(AgentNPC.EXPLORADOR));
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Archer : MonoBehaviour
+public class Archer
 {
     // Start is called before the first frame update
     private int pj;

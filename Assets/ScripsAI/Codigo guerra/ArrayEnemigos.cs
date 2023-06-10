@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ArrayEnemigos : MonoBehaviour
+public class ArrayEnemigos
 {
     private int[,] array;
     private const int A_SALVO = 0;
