@@ -492,7 +492,7 @@ public class UnidadPesada
             com = UnidadPesada.MOVERSE;
         }
         //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
-        
+        //target = mundo.getPosicionReal(86,74);
         return target;
     }
     

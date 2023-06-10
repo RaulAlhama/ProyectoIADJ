@@ -28,12 +28,6 @@ public class AEstrella
 
     public void comprobarCamino(List<Vector3> caminosAzul){
 
-        if (caminosAzul.Count==1)
-        {
-            player.setLLegada(true);
-            return;
-        }
-
         int i;
         int j;
         mundo.getCoordenadas(player.Position,out i,out j);
@@ -47,32 +41,24 @@ public class AEstrella
         mundo.getCoordenadas(caminosAzul[0],out x,out y);
 
         Vector3 aux = caminosAzul[0];
-            
+        //Debug.Log("Actual: "+puntoActual.x+","+puntoActual.y+"  coorde: "+x+","+y);
         //Debug.Log("puntoActual.x = " + puntoActual.x + " caminosAzul[0].x = " + x + " puntoActual.y = " + puntoActual.y + " caminosAzul[0].y = " + y);
         if(puntoActual.x == x && puntoActual.y == y){
             float dis = (aux-player.Position).magnitude;
+            
             //Debug.Log("dis = " + dis);
             if(dis < DIS_MINIMA)
             {
                 caminosAzul.RemoveAt(0);
+                //Debug.Log(caminosAzul.Count);
+                if (caminosAzul.Count==0)
+                {
+                    player.setLLegada(true);
+                    return;
+                }
                 aux = caminosAzul[0]; 
                 npcVirtual.transform.position = aux;
                 player.setTarget(npcVirtual);
-
-                string str="Punto del camino alcanzado: ";
-                foreach (Vector3 v in caminosAzul)
-                    str = str + v + " ";
-                //Debug.Log(str);
-
-                str="Punto del camino alcanzado: ";
-                foreach (Vector3 v in caminosAzul)
-                {
-                    int a;
-                    int b;
-                    mundo.getCoordenadas(v, out a, out b);
-                    str = str + "(" + a + "," + b + ") ";
-                }
-                Debug.Log(str);
                 
                 return;
             } 
@@ -106,7 +92,7 @@ public class AEstrella
 
         if ((puntoActual.x == puntoObjetivo.x) && (puntoActual.y == puntoObjetivo.y)){
             List<Vector3> res = new List<Vector3>();
-            res.Add(Vector3.zero);
+            res.Add(player.Position);
             return res;
         }
 
@@ -119,15 +105,10 @@ public class AEstrella
 
         // Añadimos a la lista de nodos sin expandir el nodo inicial
         abierta.Add(nodoActual);
-        
-        string str = "";
-        foreach (Node_A nodo in abierta)
-            str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ")";
+    
         //Debug.Log("Lista abierta: " + str);
 
-        str = "";
-        foreach (Node_A nodo in cerrada)
-            str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ")";
+
         //Debug.Log("Lista cerrada: " + str);
 
         int z = 0;
@@ -150,20 +131,21 @@ public class AEstrella
                     nodoActual = nodoActual.padre;
                 }
                 //Debug.Log("Longitud del camino: " + res.Count);
-                str = "Fin de la ejecución: ";
+               /* str = "Fin de la ejecución: ";
                 foreach (Node_A nodo in res)
                     str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ")";
-                Debug.Log(str);
+                Debug.Log(str);*/
 
                 foreach (Node_A nodo in res){
                     Vector3 vec_aux = mundo.getPosicionReal(nodo.corde.x,nodo.corde.y) + new Vector3(2,0,2); // 1,0,1
                     vec.Add(vec_aux);
                 }
-
+                
+                /*
                 str="Vectores finales: ";
                 foreach (Vector3 v in vec)
                     str = str + v + " ";
-                //Debug.Log(str);
+                //Debug.Log(str);*/
 
                 Vector3 aux = vec[0]; 
                 npcVirtual.transform.position = aux;
@@ -180,9 +162,6 @@ public class AEstrella
 
             // Actualizamos los pesos de los nodos vecinos y cambiamos el puntoActual
            
-            str = "";
-            foreach (Node_A nodo in vecinos)
-                str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ") ("+ nodo.g + "+" + nodo.h + ") ---";
             //Debug.Log("Nodos vecinos: " + str);
         
 
@@ -210,22 +189,12 @@ public class AEstrella
                 nodo.padre = nodoActual;
                 abierta.Add(nodo);
             } 
-
-            str = "";
-            foreach (Node_A nodo in abierta)
-                str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ")";
-            //Debug.Log("Lista abierta: " + str);
-
-            str = "";
-            foreach (Node_A nodo in cerrada)
-                str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ")";
-            //Debug.Log("Lista cerrada: " + str);
-
             z++;
         }
 
         List<Vector3> zero = new List<Vector3>();
-        zero.Add(new Vector3(0f,0f,0f));
+        //zero.Add(new Vector3(0f,0f,0f));
+        zero.Add(player.Position);
         return zero;
 
     }

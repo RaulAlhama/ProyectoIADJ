@@ -471,7 +471,6 @@ public class Archer : MonoBehaviour
         
         x = x1;
         y = y1;
-
         return aliado;
     }
     public bool posicionObjetivo(List<Objetivo> lisObj, int[,] PosMundo,int i,int j,out int x, out int y){
@@ -530,11 +529,21 @@ public class Archer : MonoBehaviour
         }
         x = x1;
         y = y1;
-
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){
+    public bool posicionRuta(Ruta ruta, int[,] PosMundo,int i,int j,out int x, out int y){
+        
+        bool objetivo = true;
+
+        WayPoint aux = ruta.getAleatoreo();
+
+        x = aux.getX();
+        y = aux.getY();
+        return false;
+        return objetivo;
+    }
+    public Vector3 getDecision(Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){
 
         int x = i;
         int y = j;
@@ -545,10 +554,12 @@ public class Archer : MonoBehaviour
         {
             aliados = azules;
             enemigos = rojos;
+            
         }else{
             
             aliados = rojos;
             enemigos = azules;
+            
         }
         
         
@@ -569,6 +580,11 @@ public class Archer : MonoBehaviour
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
             com = Archer.MOVERSE;
+        }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = UnidadPesada.MOVERSE;
         }
         //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
         
