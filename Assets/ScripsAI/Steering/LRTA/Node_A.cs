@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// Clase que representa un nodo del algoritmo A*
 public class Node_A
 {
     public AEstrella.Coordenadas corde;
@@ -14,19 +15,8 @@ public class Node_A
     public Node_A(AEstrella.Coordenadas actual, Node_A pa, int iObjetivo, int jObjetivo){
         corde = actual;
         padre = pa;
-        //h =  Math.Abs(corde.x - iObjetivo) + Math.Abs(corde.y - jObjetivo);  // Calcular distancia
         h = 0.0f;
-
-        /*
-        if (padre is null){
-            g = 0.0f;
-        }
-        else{
-            g = Math.Abs(corde.x - pa.corde.x) + Math.Abs(corde.y - pa.corde.y); ;
-        }*/
-
         g = 0.0f;
         f = 0.0f;
-        //f = g + h;
     }
 }

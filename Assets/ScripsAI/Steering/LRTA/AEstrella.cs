@@ -26,8 +26,11 @@ public class AEstrella
 
     }
 
+
+    // Función que comprueba si se ha alcanzado el siguiente nodo del camino
     public void comprobarCamino(List<Vector3> caminosAzul){
 
+        // Obtenemos las coordenadas del punto actual
         int i;
         int j;
         mundo.getCoordenadas(player.Position,out i,out j);
@@ -35,27 +38,30 @@ public class AEstrella
          
         puntoActual.x = i;
         puntoActual.y = j;
-                          
+
+        // Obtenemos las coordenadas del siguiente nodo                          
         int x;
         int y;
         mundo.getCoordenadas(caminosAzul[0],out x,out y);
 
         Vector3 aux = caminosAzul[0];
-        //Debug.Log("Actual: "+puntoActual.x+","+puntoActual.y+"  coorde: "+x+","+y);
-        //Debug.Log("puntoActual.x = " + puntoActual.x + " caminosAzul[0].x = " + x + " puntoActual.y = " + puntoActual.y + " caminosAzul[0].y = " + y);
+
+        // Si hemos llegado a la casilla del nodo actual, calculamos la distancia que le queda para llegar al centro de la casilla
         if(puntoActual.x == x && puntoActual.y == y){
             float dis = (aux-player.Position).magnitude;
             
-            //Debug.Log("dis = " + dis);
+            // Si le queda menos de la distancia mínima, elegimos el siguiente nodo
             if(dis < DIS_MINIMA)
             {
+                // Se elimina el nodo que acabamos de alcanzar
                 caminosAzul.RemoveAt(0);
-                //Debug.Log(caminosAzul.Count);
+                // Si no quedan nodos en la lista, se establece la llegada del player a true
                 if (caminosAzul.Count==0)
                 {
                     player.setLLegada(true);
                     return;
                 }
+                // En caso contrario, se actualiza el nodo actual y se le asigna un npc virtual al player
                 aux = caminosAzul[0]; 
                 npcVirtual.transform.position = aux;
                 player.setTarget(npcVirtual);
@@ -67,6 +73,7 @@ public class AEstrella
 
     }
 
+    // Función que calcula el camino
     public List<Vector3> aestrella(){
 
         // Lista de nodos vecinos
@@ -74,6 +81,7 @@ public class AEstrella
         // Lista de nodos visitados
         List<Node_A> cerrada = new List<Node_A>();
 
+        // Se calcula el punto actual del player
         int i;
         int j;
 
@@ -83,13 +91,13 @@ public class AEstrella
         puntoActual.x = i;
         puntoActual.y = j;
 
+        // Se calcula las coordenadas del objetivo
         Coordenadas puntoObjetivo = new Coordenadas();
 
-        //iObjetivo = 34;
-        //jObjetivo = 15;
         puntoObjetivo.x = iObjetivo;
         puntoObjetivo.y = jObjetivo;
 
+        // Si hemos llegado al objetivo, le indicamos al player que no se mueva
         if ((puntoActual.x == puntoObjetivo.x) && (puntoActual.y == puntoObjetivo.y)){
             List<Vector3> res = new List<Vector3>();
             res.Add(player.Position);
@@ -106,23 +114,16 @@ public class AEstrella
         // Añadimos a la lista de nodos sin expandir el nodo inicial
         abierta.Add(nodoActual);
     
-        //Debug.Log("Lista abierta: " + str);
-
-
-        //Debug.Log("Lista cerrada: " + str);
-
-        int z = 0;
         // Mientras que no esté vacía la lista de nodos sin expandir seguimos
         while (abierta.Count > 0){
 
             // Escogemos de la lista de nodos abiertos el de menor valor f
             nodoActual = menorF(abierta);
+            // Eliminamos el nodo elegido de la lista abierta y lo añadimos a la lista cerrada
             eliminarNodo(nodoActual, abierta);
             cerrada.Add(nodoActual);
-
-            //Debug.Log("(" + z + ") Nodo actual: (" + nodoActual.corde.x + "," + nodoActual.corde.y + ")" + " - Nodo objetivo: (" +  nodoObjetivo.corde.x + "," +  nodoObjetivo.corde.y + ")");
             
-            // Si se trata del nodo final, acabamos la función
+            // Si se trata del nodo final, acabamos la función y creamos una lista de vectores con los nodos del camino
             if ((nodoActual.corde.x == nodoObjetivo.corde.x) && (nodoActual.corde.y == nodoObjetivo.corde.y)){
                 List<Node_A> res = new List<Node_A>();
                 List<Vector3> vec = new List<Vector3>();
@@ -130,23 +131,13 @@ public class AEstrella
                     res.Insert(0, nodoActual);
                     nodoActual = nodoActual.padre;
                 }
-                //Debug.Log("Longitud del camino: " + res.Count);
-               /* str = "Fin de la ejecución: ";
-                foreach (Node_A nodo in res)
-                    str = str + "   " + " (" + nodo.corde.x + "," + nodo.corde.y + ")";
-                Debug.Log(str);*/
 
                 foreach (Node_A nodo in res){
                     Vector3 vec_aux = mundo.getPosicionReal(nodo.corde.x,nodo.corde.y) + new Vector3(2,0,2); // 1,0,1
                     vec.Add(vec_aux);
                 }
-                
-                /*
-                str="Vectores finales: ";
-                foreach (Vector3 v in vec)
-                    str = str + v + " ";
-                //Debug.Log(str);*/
 
+                // Le asignamos el primer vector de la lista como npc virtual
                 Vector3 aux = vec[0]; 
                 npcVirtual.transform.position = aux;
                 player.setTarget(npcVirtual);
@@ -157,61 +148,57 @@ public class AEstrella
             // Generamos la lista de vecinos del nodo actual 
             List<Node_A> vecinos = generaEspacioLocal(nodoActual);
 
-            // Actualizamos los pesos de los nodos vecinos
-            //puntoActual = actualizaPesos(puntos, puntoActual, abierta, cerrada);
-
-            // Actualizamos los pesos de los nodos vecinos y cambiamos el puntoActual
-           
-            //Debug.Log("Nodos vecinos: " + str);
-        
-
+            // Recorremos los nodos vecinos
             foreach (Node_A nodo in vecinos){
                 
-                //Debug.Log("Turno del nodo: " + " (" + nodo.corde.x + "," + nodo.corde.y + ")");
-
+                // Si el nodo vecino no está en la lista cerrada, pasamos a la siguiente iteración
                 if (nodoEsta(nodo, cerrada)){
-                    //Debug.Log("Entra en el primer if");
                     continue;
                 }
                 
-                //nodo.g = nodoActual.g + Math.Abs(nodo.corde.x - nodoActual.corde.x) + Math.Abs(nodo.corde.y - nodoActual.corde.y);
+                // Calculamos los pesos del nodo vecino
                 nodo.g = nodoActual.g + Math.Sqrt(Math.Pow(nodo.corde.x-nodoActual.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoActual.corde.y,2));
-                //nodo.h = Math.Abs(nodo.corde.x - nodoObjetivo.corde.x) + Math.Abs(nodo.corde.y - nodoObjetivo.corde.y);
                 nodo.h = Math.Sqrt(Math.Pow(nodo.corde.x-nodoObjetivo.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoObjetivo.corde.y,2));
                 nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y);
 
-                //Debug.Log(" (" + nodo.corde.x + "," + nodo.corde.y + ") ("+ nodo.g + "+" + nodo.h + ")");
-
+                // Si el peso del nodo vecino es mayor que su contraparte de la lista abierta, pasamos a la siguiente iteración
                 if (mayorG(nodo, abierta)){
                         continue;
                 }
 
+                // Establecemos como padre del nodo vecino el nodo actual
                 nodo.padre = nodoActual;
+                // Añadimos el nodo vecino a la lista de nodos abiertos
                 abierta.Add(nodo);
             } 
-            z++;
+
         }
 
         List<Vector3> zero = new List<Vector3>();
-        //zero.Add(new Vector3(0f,0f,0f));
         zero.Add(player.Position);
         return zero;
 
     }
 
+    // Función que establece la posición del npcvirtual
     public void setPosicionNpcVirtual(Vector3 pos){
 
         npcVirtual.transform.position = pos;
     }
+
+    // Función que establece la orientación del npcvirtual
     public void setOrientacionNpcVirtual(float or){
 
         npcVirtual.Orientation = or;
     }
+
+    // Función que establece el valor del grafo de movimiento
     public void setGrafoMovimiento(double[,] grm){
 
         grafoMovimiento = grm;
     }
 
+    // Función que establece las coordenadas del objetivo y su npcvirtual
     public void setObjetivos(int i,int j,Agent npcVr){
 
         iObjetivo = i;
@@ -219,6 +206,7 @@ public class AEstrella
         npcVirtual = npcVr;
     }
 
+    // Función que devuelve el nodo de menor f de una lista
     public Node_A menorF(List<Node_A> nodos){
 
         double menor = Double.PositiveInfinity;
@@ -235,6 +223,7 @@ public class AEstrella
         return result;
     }
 
+    // Función que devuelve si se encuentra un nodo en una lista
     public bool nodoEsta(Node_A nodo, List<Node_A> nodos){
         foreach (Node_A n in nodos){
             if ((n.corde.x == nodo.corde.x) && (n.corde.y == nodo.corde.y))
@@ -243,11 +232,11 @@ public class AEstrella
         return false;
     }
 
+    // Función que comprueba si un nodo tiene un valor de g mayor que su aparcición en una lista
     public bool mayorG(Node_A nodo, List<Node_A> nodos){
         foreach (Node_A n in nodos){
             if ((n.corde.x == nodo.corde.x) && (n.corde.y == nodo.corde.y))
             {
-                //Debug.Log("comparacion de g: " + nodo.g + " y " + n.g);
                 if (nodo.g > n.g)
                     return true;
                 else
@@ -257,6 +246,7 @@ public class AEstrella
         return false;
     }
 
+    // Función que elimina un nodo de una lista
     public static void eliminarNodo(Node_A nodo, List<Node_A> list)
     {
         for (int i = list.Count - 1; i >= 0; i--)
@@ -269,26 +259,16 @@ public class AEstrella
     }
 
 
-
+    // Función que genera una lista con los nodos adyacentes al nodo introducido por parámetro
     private List<Node_A> generaEspacioLocal(Node_A nodoActual){
 
         int i = nodoActual.corde.x;
         int j = nodoActual.corde.y;
         List<Node_A> nodos = new List<Node_A>();
         
-        /*
-        if(grafoMovimiento[i,j] != infinito){ // centro
 
-            Coordenadas nPunto = new Coordenadas();
-            nPunto.x = i;
-            nPunto.y = j;
-            Node_A nA = new Node_A(nPunto, nodoActual, iObjetivo, jObjetivo);
-            nodos.Add(nA);
-            if(grafoMovimiento[i,j] != 0)
-                grafoMovimiento[i,j] = Double.PositiveInfinity;
-
-        }*/
-        if((i-1 >= 0)  && grafoMovimiento[i-1,j] != infinito){ // izquierda
+        // Creamos el nodo de la izquierda y lo añadimos a la lista de nodos vecinos
+        if((i-1 >= 0)  && grafoMovimiento[i-1,j] != infinito){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i-1;
@@ -299,7 +279,8 @@ public class AEstrella
                 grafoMovimiento[i-1,j] = Double.PositiveInfinity;
 
         }
-        if((i-1 >= 0 && j+1 < 100) && grafoMovimiento[i-1,j+1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ // arriba-izquierda
+        // Creamos el nodo de arriba-izquierda y lo añadimos a la lista de nodos vecinos
+        if((i-1 >= 0 && j+1 < 100) && grafoMovimiento[i-1,j+1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i-1;
@@ -311,7 +292,8 @@ public class AEstrella
                 grafoMovimiento[i-1,j+1] = Double.PositiveInfinity;
 
         }
-        if((i+1 < 100 && j+1 < 100) && grafoMovimiento[i+1,j+1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ // arriba-derecha
+        // Creamos el nodo de arriba-derecha y lo añadimos a la lista de nodos vecinos
+        if((i+1 < 100 && j+1 < 100) && grafoMovimiento[i+1,j+1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j+1] == infinito)){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i+1;
@@ -323,7 +305,8 @@ public class AEstrella
                 grafoMovimiento[i+1,j+1] = Double.PositiveInfinity;
 
         }
-        if((i-1 >= 0 && j-1 >= 0) && grafoMovimiento[i-1,j-1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ // abajo-izquierda
+        // Creamos el nodo de abajo-izquierda y lo añadimos a la lista de nodos vecinos
+        if((i-1 >= 0 && j-1 >= 0) && grafoMovimiento[i-1,j-1] != infinito && !(grafoMovimiento[i-1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i-1;
@@ -335,7 +318,8 @@ public class AEstrella
                 grafoMovimiento[i-1,j-1] = Double.PositiveInfinity;
 
         }
-        if((j-1 >= 0 && i+1 < 100) && grafoMovimiento[i+1,j-1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ // abajo-derecha
+        // Creamos el nodo de abajo-derecha y lo añadimos a la lista de nodos vecinos
+        if((j-1 >= 0 && i+1 < 100) && grafoMovimiento[i+1,j-1] != infinito && !(grafoMovimiento[i+1,j] == infinito && grafoMovimiento[i,j-1] == infinito)){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i+1;
@@ -347,7 +331,8 @@ public class AEstrella
                 grafoMovimiento[i+1,j-1] = Double.PositiveInfinity;
 
         }
-        if((j+1 < 100) &&grafoMovimiento[i,j+1] != infinito){ // arriba
+        // Creamos el nodo de arriba y lo añadimos a la lista de nodos vecinos
+        if((j+1 < 100) &&grafoMovimiento[i,j+1] != infinito){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i;
@@ -358,7 +343,8 @@ public class AEstrella
                 grafoMovimiento[i,j+1] = Double.PositiveInfinity;
 
         }
-        if((i+1 < 100) && grafoMovimiento[i+1,j] != infinito){ // derecha
+         // Creamos el nodo de derecha y lo añadimos a la lista de nodos vecinos
+        if((i+1 < 100) && grafoMovimiento[i+1,j] != infinito){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i+1;
@@ -369,7 +355,8 @@ public class AEstrella
                 grafoMovimiento[i+1,j] = Double.PositiveInfinity;
 
         }
-        if((j-1 >= 0) && grafoMovimiento[i,j-1] != infinito){ // abajo
+         // Creamos el nodo de abajo y lo añadimos a la lista de nodos vecinos
+        if((j-1 >= 0) && grafoMovimiento[i,j-1] != infinito){ 
 
             Coordenadas nPunto = new Coordenadas();
             nPunto.x = i;
@@ -380,20 +367,22 @@ public class AEstrella
                 grafoMovimiento[i,j-1] = Double.PositiveInfinity;
 
         }
+        // Devolvemos la lista de nodos vecinos
         return nodos;
     }
 
+    // Función que calcula el peso añadido debido al tipo de terreno
     private float ApplyTerreno(int i, int j)
     {
 
+        // Calculamos el vector posición correspondiente a las coordenadas introducidas por parámetro
         Vector3 posicion = mundo.getPosicionReal(i,j) + new Vector3(2,0,2);
 
-        // Tracemos un rayo hacia abajo desde la posición del objeto
+        // Trazamos un rayo hacia abajo desde la posición del objeto
         RaycastHit hit;
         if (Physics.Raycast(posicion+Vector3.up, Vector3.down, out hit, 2f))
         {
             // Si el rayo colisiona con un objeto en la capa "groundLayerMask", podemos determinar el tipo de suelo
-        
             switch(hit.collider.gameObject.tag) 
             {
                 case "Cesped":
@@ -412,33 +401,4 @@ public class AEstrella
 
     }
 
-    /*
-    private Node_A actualizaPesos(List<Node_A> nodos, Node_A puntoActual, List<Node_A> abierta, List<Node_A> cerrada){
-
-        foreach (Node_A nodo in nodos){
-
-            nuevo_coste = nodo.f + (Math.Abs(nodo.corde.x - puntoActual.corde.x) + Math.Abs(nodo.corde.y - puntoActual.corde.y));
-            if (abierta.Contains(nodo)){
-                if (nodo.g <= nuevo_coste){
-                    continue;
-                }
-            }
-            else if (cerrada.Contains(nodo)){
-                if (nodo.g <= nuevo_coste){
-                    cerrada.Remove(nodo);
-                    abierta.Add(nodo);
-                }
-            }
-            else{
-                abierta.Add(nodo);
-                nodo.h =  Math.Abs(nodo.corde.x - iObjetivo) + Math.Abs(nodo.corde.y - jObjetivo);
-            }
-
-            nodo.g = nuevo_coste;
-            puntoActual = nodo.padre;
-        } 
-
-        cerrada.Add(puntoActual);      
-
-    }*/
 }
