@@ -24,6 +24,7 @@ public class AgentNPC : Agent
     private bool objetivo=true;
     private int tipo;
 
+
     public bool getLLegada(){
 
         return objetivo;
@@ -36,16 +37,32 @@ public class AgentNPC : Agent
     public void setTipo(int t){
 
         tipo = t;
+        if (tipo == ARQUERO){
+            this.GetComponentInChildren<Renderer>().material.color = Color.green;
+        }
+        else if (tipo == PESADA){
+            this.GetComponentInChildren<Renderer>().material.color = Color.cyan;
+        }
+        else if (tipo == EXPLORADOR){
+            this.GetComponentInChildren<Renderer>().material.color = Color.magenta;
+        }
+         else {
+            this.GetComponentInChildren<Renderer>().material.color = Color.yellow;
+        }
+
     }
     public int getTipo(){
 
         return tipo;
     }
 
+    public void setColor(){
+    
+    }
+
     void Awake()
     {
         this.steer = new Steering();
-
         // Construye una lista con todos las componenen del tipo SteeringBehaviour.
         // La llamaremos listSteerings
         // Usa GetComponents<>()

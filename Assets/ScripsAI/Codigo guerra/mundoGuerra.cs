@@ -217,7 +217,7 @@ public class mundoGuerra : MonoBehaviour
         setPuenteIzqRojo();
         setSantuario();
         setEscuderia();
-        creaTexto();
+        //creaTexto();
         inicializarMinimapa();
         
      
@@ -843,6 +843,7 @@ public class mundoGuerra : MonoBehaviour
         equipoAzul[INDEXEXPLORADOR].MaxSpeed = 20;
         equipoAzul[INDEXEXPLORADOR].MaxAngularAcc = 90;
         equipoAzul[INDEXEXPLORADOR].MaxAcceleration = 20;
+        //equipoAzul[INDEXEXPLORADOR].setColor();
         
         cExplorador = new Explorador(INDEXEXPLORADOR,vidaExploradorAzul,equipoAzul[INDEXEXPLORADOR],spawnAzul[INDEXEXPLORADOR],Explorador.AZUL);
 
