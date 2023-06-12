@@ -132,16 +132,14 @@ public class mundoGuerra : MonoBehaviour
 
     private TextMesh[,] grid;
 
-<<<<<<< Updated upstream
     // Selección de personajes
     AgentNPC selectAgent;
-=======
+    
     //Modo Debug
 
     protected bool modoDebug = false;
     private List<GameObject> listaWayPoints = new List<GameObject>();
     public GameObject prefabWayPoint;
->>>>>>> Stashed changes
 
     void Start()
     {
