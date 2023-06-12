@@ -131,6 +131,9 @@ public class mundoGuerra : MonoBehaviour
 
     private TextMesh[,] grid;
 
+    // Selección de personajes
+    AgentNPC selectAgent;
+
     void Start()
     {
         cArquero = new Archer[2];
@@ -1065,14 +1068,32 @@ public class mundoGuerra : MonoBehaviour
         
         if (Input.GetMouseButtonDown(1))
         {   
-            if (!cArquero[0].getMuerto())
-            {
-                cArquero[0].setVida(2);
-                Debug.Log(cArquero[0].getDelay());
-            }
-            
-           
+            if (selectAgent != null){
 
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    GameObject obj = hit.collider.gameObject;
+                    int iObjetivo;
+                    int jObjetivo;
+                    grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
+
+                    int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+
+                    if (indice != -1)
+                    {
+                        buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+                        buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+                        caminosAzul[indice] = buscadoresAzul[indice].A();
+
+                        selectAgent.setLLegada(false);
+                        selectAgent.quitarMarcador();
+                    }
+                    
+                }
+            }
+           
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -1129,7 +1150,7 @@ public class mundoGuerra : MonoBehaviour
             GameObject npcObject = hit.collider.gameObject;
             if (npcObject.CompareTag("NPC"))
             {
-                AgentNPC selectAgent = npcObject.GetComponent<AgentNPC>();
+                selectAgent = npcObject.GetComponent<AgentNPC>();
                 foreach(AgentNPC pl in equipoAzul)
                 {
                     if(!pl.Equals(selectAgent))
@@ -1139,7 +1160,13 @@ public class mundoGuerra : MonoBehaviour
                         pl.activarMarcador();
                     }
                 }
-            } 
+            }
+            else
+            {
+                if (selectAgent != null){
+                    selectAgent.quitarMarcador();
+                }
+            }
         }
     }
 
@@ -2034,7 +2061,6 @@ public class mundoGuerra : MonoBehaviour
             pl.setLLegada(false);
             
         }else if(!pl.getLLegada()){    
-
             buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
@@ -2089,8 +2115,9 @@ public class mundoGuerra : MonoBehaviour
             pl.setLLegada(false);
             
         }else if(!pl.getLLegada()){
-                            
+            
             buscadoresRojo[indice].comprobarCamino(caminosRojo[indice]);
+            
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
