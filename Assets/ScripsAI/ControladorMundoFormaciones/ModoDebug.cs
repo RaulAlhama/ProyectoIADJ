@@ -21,7 +21,7 @@ public class ModoDebug : MonoBehaviour
 
             AgentNPC[] agentes = FindObjectsOfType<AgentNPC>();
 
-            foreach (Agent agente in agentes)
+            foreach (AgentNPC agente in agentes)
             {
 
                 Vector3 from = agente.Position; // Origen de la línea
@@ -66,15 +66,6 @@ public class ModoDebug : MonoBehaviour
                 Gizmos.DrawWireSphere(agente.Position, agente.RadioExterior);
 
             }
-
-            Gizmos.color = Color.black;
-            Collider[] colliders = FindObjectsOfType<Collider>();
-
-            foreach (Collider collider in colliders)
-            {
-                Gizmos.DrawWireCube(collider.transform.position, collider.bounds.size);
-            }
-
 
         }
 
