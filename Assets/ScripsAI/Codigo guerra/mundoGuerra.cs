@@ -413,6 +413,7 @@ public class mundoGuerra : MonoBehaviour
                 plane.layer = 8;
                 // Le asignamos el material de casilla neutra
                 plane.GetComponent<Renderer>().material = materialNeutro;
+                plane.GetComponent<Renderer>().enabled = false;
 
                 contx++;
             }
@@ -444,11 +445,13 @@ public class mundoGuerra : MonoBehaviour
                         if (objetivosMundo[z].getPropiedad() == Objetivo.AZUL)
                         {
                             casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().material = materialEquipoAzul;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().enabled = true;
                             casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].layer = 7;
                         }
                         else
                         {
                             casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().material = materialEquipoRojo;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().enabled = true;
                             casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].layer = 7;
                         }
                     }
@@ -1329,6 +1332,7 @@ public class mundoGuerra : MonoBehaviour
             
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+            casilla.GetComponent<Renderer>().enabled = true;
             casilla.layer = 7; 
         }  
     }
@@ -1394,6 +1398,7 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoRojo;  
+            casilla.GetComponent<Renderer>().enabled = true;
             casilla.layer = 7;
         }  
     }
@@ -1447,6 +1452,7 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoAzul; 
+            casilla.GetComponent<Renderer>().enabled = true;
             casilla.layer = 7;
         } 
     }
@@ -1510,6 +1516,7 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoRojo; 
+            casilla.GetComponent<Renderer>().enabled = true;
             casilla.layer = 7;
         }  
     }
@@ -2053,6 +2060,7 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoAzul; 
+            casilla.GetComponent<Renderer>().enabled = true;
             casilla.layer = 7; 
         }  
     }
@@ -2107,6 +2115,7 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoRojo;  
+            casilla.GetComponent<Renderer>().enabled = true;
             casilla.layer = 7;
         }  
     }
@@ -2168,6 +2177,7 @@ public class mundoGuerra : MonoBehaviour
             int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().material = materialEquipoAzul;  
+            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().enabled = true;
             casillas_minimapa[xcasilla,ycasilla].layer = 7;
         }  
     }
@@ -2229,6 +2239,7 @@ public class mundoGuerra : MonoBehaviour
             int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().material = materialEquipoRojo; 
+            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().enabled = true;
             casillas_minimapa[xcasilla,ycasilla].layer = 7; 
         }  
     }
