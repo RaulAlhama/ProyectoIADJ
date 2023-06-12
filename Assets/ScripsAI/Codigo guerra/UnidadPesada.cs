@@ -27,7 +27,7 @@ public class UnidadPesada
     private int[] limVision;
     private const int MAXVALOR = 99;
     private const int MINVALOR = 0;
-    private int vida = 80;
+    private int vida = 120;
     private GameObject[] barra_vida;
 
     private int com;
@@ -539,6 +539,20 @@ public class UnidadPesada
 
         return com;
     }
+
+    public string getComportamientoString(){
+
+        if(com == MOVERSE)
+            return "MOVERSE";
+        else if(com == ATACAR)
+            return "ATACAR";
+        else if(com == SEGUIR)
+            return "SEGUIR";
+        else if(com == QUIETO)
+            return "QUIETO";
+        else return "RELOAD";
+    }
+
     public bool cambioCom(){
 
         if(lastCom == com){

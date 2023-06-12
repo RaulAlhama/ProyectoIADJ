@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class mundoGuerra : MonoBehaviour
 {
@@ -134,12 +135,14 @@ public class mundoGuerra : MonoBehaviour
 
     // Selección de personajes
     AgentNPC selectAgent;
-    
+
     //Modo Debug
 
     protected bool modoDebug = false;
     private List<GameObject> listaWayPoints = new List<GameObject>();
     public GameObject prefabWayPoint;
+    [SerializeField]
+    private Text debugNombre, debugComportamiento, debugOjetivo, debugVida;
 
     void Start()
     {
@@ -1265,8 +1268,40 @@ public class mundoGuerra : MonoBehaviour
                     if(!pl.Equals(selectAgent))
                     {
                         pl.quitarMarcador();
+                        //debugNombre.text = "Unidad: ";
+                        
                     }else{
                         pl.activarMarcador();
+                        debugNombre.text = "Unidad: " + selectAgent.name;
+                        int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+                        if(indice == INDEXEXPLORADOR){
+                            debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
+                            debugVida.text = "Vida: " + cExplorador.getVida();
+                            //debugOjetivo.text = "Objetivo " + cExplorador.getDecision();
+                        } 
+                        else if(indice == INDEXARCHER1){
+                            debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
+                            debugVida.text = "Vida: " + cArquero[0].getVida();
+                        }
+                        else if(indice == INDEXARCHER2){
+                            debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
+                            debugVida.text = "Vida: " + cArquero[1].getVida();
+                        }
+
+                        else if(indice == INDEXPESADA1){
+                            debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
+                            debugVida.text = "Vida: " + cPesada[0].getVida();
+                        } 
+                        else if(indice == INDEXPESADA2){
+                            debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
+                            debugVida.text = "Vida: " + cPesada[1].getVida();
+                        }
+
+                        else {
+                            debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
+                            debugVida.text = "Vida: " + cPatrulla.getVida();
+                        }
+                        
                     }
                 }
             }

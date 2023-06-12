@@ -338,4 +338,12 @@ public class Explorador
             return true;
         }
     }
+
+    public string getComportamientoString(){
+        if(com == MOVERSE){
+            return "MOVERSE";
+        } else if(com == QUIETO)
+            return "QUIETO";
+        else return "UIR";
+    }
 }
