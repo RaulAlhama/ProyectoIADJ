@@ -1102,6 +1102,8 @@ public class mundoGuerra : MonoBehaviour
         }
         
     }
+
+    private bool isAzul = false;
     void Update(){
 
         if (Input.GetKeyDown(KeyCode.H)){
@@ -1111,9 +1113,81 @@ public class mundoGuerra : MonoBehaviour
             } else{
                 eliminarWayPoints();
             }
-                
-            
         }
+
+        if(modoDebug){
+            if(selectAgent != null){
+                debugNombre.text = "Unidad: " + selectAgent.name;
+                if(isAzul){
+                    int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+                    if(indice == INDEXEXPLORADOR){
+                        debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
+                        debugVida.text = "Vida: " + cExplorador.getVida();
+
+                    } 
+                    else if(indice == INDEXARCHER1){
+                        debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
+                        debugVida.text = "Vida: " + cArquero[0].getVida();
+                    }
+                    else if(indice == INDEXARCHER2){
+                        debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
+                        debugVida.text = "Vida: " + cArquero[1].getVida();
+                    }
+
+                    else if(indice == INDEXPESADA1){
+                        debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
+                        debugVida.text = "Vida: " + cPesada[0].getVida();
+                    } 
+                    else if(indice == INDEXPESADA2){
+                        debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
+                        debugVida.text = "Vida: " + cPesada[1].getVida();
+                    }
+
+                    else {
+                        debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
+                        debugVida.text = "Vida: " + cPatrulla.getVida();
+                    }
+                    debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
+                } else{
+                    int indice = System.Array.IndexOf(equipoRojo, selectAgent);
+                     if(indice == INDEXEXPLORADOR){
+                        debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
+                        debugVida.text = "Vida: " + rExplorador.getVida();
+
+                    } 
+                    else if(indice == INDEXARCHER1){
+                        debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
+                        debugVida.text = "Vida: " + rArquero[0].getVida();
+                    }
+                    else if(indice == INDEXARCHER2){
+                        debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
+                        debugVida.text = "Vida: " + rArquero[1].getVida();
+                    }
+
+                    else if(indice == INDEXPESADA1){
+                        debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
+                        debugVida.text = "Vida: " + rPesada[0].getVida();
+                    } 
+                    else if(indice == INDEXPESADA2){
+                        debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
+                        debugVida.text = "Vida: " + cPesada[1].getVida();
+                    }
+
+                    else {
+                        debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
+                        debugVida.text = "Vida: " + cPatrulla.getVida();
+                    }
+                    debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
+                }
+            } else{
+                debugNombre.text = "Unidad: ";
+                debugComportamiento.text = "Comportamiento: ";
+                debugVida.text = "Vida: ";
+                debugOjetivo.text = "Objetivo: ";
+            }
+                    
+        }
+                
 
         moverNPC();
         if (!verificando)
@@ -1261,8 +1335,9 @@ public class mundoGuerra : MonoBehaviour
         {
             GameObject npcObject = hit.collider.gameObject;
             if (npcObject.CompareTag("NPC"))
-            {
+            {        
                 selectAgent = npcObject.GetComponent<AgentNPC>();
+                isAzul = false;
                 foreach(AgentNPC pl in equipoAzul)
                 {
                     if(!pl.Equals(selectAgent))
@@ -1272,43 +1347,21 @@ public class mundoGuerra : MonoBehaviour
                         
                     }else{
                         pl.activarMarcador();
-                        debugNombre.text = "Unidad: " + selectAgent.name;
-                        int indice = System.Array.IndexOf(equipoAzul, selectAgent);
-                        if(indice == INDEXEXPLORADOR){
-                            debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
-                            debugVida.text = "Vida: " + cExplorador.getVida();
-                            //debugOjetivo.text = "Objetivo " + cExplorador.getDecision();
-                        } 
-                        else if(indice == INDEXARCHER1){
-                            debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
-                            debugVida.text = "Vida: " + cArquero[0].getVida();
-                        }
-                        else if(indice == INDEXARCHER2){
-                            debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
-                            debugVida.text = "Vida: " + cArquero[1].getVida();
-                        }
-
-                        else if(indice == INDEXPESADA1){
-                            debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
-                            debugVida.text = "Vida: " + cPesada[0].getVida();
-                        } 
-                        else if(indice == INDEXPESADA2){
-                            debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
-                            debugVida.text = "Vida: " + cPesada[1].getVida();
-                        }
-
-                        else {
-                            debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
-                            debugVida.text = "Vida: " + cPatrulla.getVida();
-                        }
                         
                     }
                 }
+                foreach(AgentNPC pl in equipoAzul){
+                if(pl.Equals(selectAgent))
+                    isAzul = true;
+                }
+
+                
+
             }
-            else
-            {
+            else{
                 if (selectAgent != null){
                     selectAgent.quitarMarcador();
+                    //selectAgent = null;
                 }
             }
         }
