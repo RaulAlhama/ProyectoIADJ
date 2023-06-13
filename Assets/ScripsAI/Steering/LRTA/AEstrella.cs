@@ -23,7 +23,6 @@ public class AEstrella
     public AEstrella(GridFinal wld, AgentNPC pl){
         mundo = wld;
         player = pl;
-
     }
 
 
@@ -74,7 +73,7 @@ public class AEstrella
     }
 
     // Función que calcula el camino
-    public List<Vector3> aestrella(){
+    public List<Vector3> aestrella(int[,] peligro){
 
         // Lista de nodos vecinos
         List<Node_A> abierta = new List<Node_A>();
@@ -159,7 +158,7 @@ public class AEstrella
                 // Calculamos los pesos del nodo vecino
                 nodo.g = nodoActual.g + Math.Sqrt(Math.Pow(nodo.corde.x-nodoActual.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoActual.corde.y,2));
                 nodo.h = Math.Sqrt(Math.Pow(nodo.corde.x-nodoObjetivo.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoObjetivo.corde.y,2));
-                nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y);
+                nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y) + peligro[nodo.corde.x,nodo.corde.y];
 
                 // Si el peso del nodo vecino es mayor que su contraparte de la lista abierta, pasamos a la siguiente iteración
                 if (mayorG(nodo, abierta)){

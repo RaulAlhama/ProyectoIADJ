@@ -93,9 +93,16 @@ public class mundoGuerra : MonoBehaviour
     public Material materialEquipoRojo;
     public Material materialEquipoAzul;
     public Material materialNeutro; 
-    public Material materialPeleado;
+    public Material materialPeligroBajoAzul;
+    public Material materialPeligroAltoAzul;
+    public Material materialPeligroBajoRojo;
+    public Material materialPeligroAltoRojo;
     private GameObject[,] casillas_minimapa = new GameObject[34, 34];
+    private GameObject[,] casillas_minimapa_tactico = new GameObject[34, 34];
     private GameObject minimapa;
+    private GameObject minimapa_tactico;
+    public Camera camara_minimapa;
+    private LayerMask layerOriginal;
 
     // informacion
     
@@ -148,17 +155,22 @@ public class mundoGuerra : MonoBehaviour
 
     // Selección de personajes
     AgentNPC selectAgent;
+     public GameObject punteroPrefab;
 
     //Modo Debug
 
     protected bool modoDebug = false;
     private List<GameObject> listaWayPoints = new List<GameObject>();
+    private List<GameObject> listaObjetivos = new List<GameObject>();
     public GameObject prefabWayPoint;
+    public GameObject prefabObjetivo;
     [SerializeField]
     private Text debugNombre, debugComportamiento, debugOjetivo, debugVida;
 
     void Start()
     {
+        layerOriginal = camara_minimapa.cullingMask;
+
         cArquero = new Archer[2];
         cPesada = new UnidadPesada[2];
         rArquero = new Archer[2];
@@ -245,7 +257,7 @@ public class mundoGuerra : MonoBehaviour
         setEscuderia();
         //creaTexto();
         inicializarMinimapa();
-        
+        inicializarMinimapaTactico();
      
     }
 
@@ -415,7 +427,7 @@ public class mundoGuerra : MonoBehaviour
     private void inicializarMinimapa(){
 
         //Vector3 ajuste = new Vector3(6,-0.2f,6);
-        Vector3 ajuste = new Vector3(6,1f,6);
+        Vector3 ajuste = new Vector3(6,0.2f,6);
         minimapa = new GameObject("minimapa");
         int contx=0;
         int conty=0;
@@ -437,9 +449,98 @@ public class mundoGuerra : MonoBehaviour
                 plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
                 // Lo colocamos en la layer de no minimapa para que no se vea
                 plane.layer = 8;
-                // Le asignamos el material de casilla neutra
-                plane.GetComponent<Renderer>().material = materialNeutro;
                 plane.GetComponent<Renderer>().enabled = false;
+
+                contx++;
+            }
+
+            conty++;
+        }
+
+    }
+
+    private void inicializarMinimapaTactico(){
+
+        //Vector3 ajuste = new Vector3(6,-0.2f,6);
+        Vector3 ajuste = new Vector3(6,0.2f,6);
+        minimapa_tactico = new GameObject("minimapa_tactico");
+        int contx=0;
+        int conty=0;
+
+        // Recorremos todas las casillas del grid
+        for (int j = 0; j < cols; j+=3){
+
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
+
+                // Creamos un objeto plano 
+                GameObject plane = Instantiate(prefabPlano, minimapa_tactico.transform);
+                plane.name = "minimap_tactico_" + contx + "_" + conty;
+                // Lo guardamos en el array de casillas
+                casillas_minimapa_tactico[contx,conty] = plane;
+                // Establecemos su tamaño y posición
+                plane.transform.localScale = new Vector3(cellSize/3.33f, 1f, cellSize/3.33f);
+                plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 8;
+                plane.GetComponent<Renderer>().enabled = false;
+                // Obtenemos los arrays de enemigos
+                int[,] enemigosAzul = enemigosTeamBlue.getArray();
+                int[,] enemigosRojo = enemigosTeamRed.getArray();
+
+                contx++;
+            }
+
+            conty++;
+        }
+
+    }
+
+    private void actualizarMinimapaTactico(){
+
+        Vector3 ajuste = new Vector3(6,0.2f,6);
+        int contx=0;
+        int conty=0;
+
+        // Recorremos todas las casillas del grid
+        for (int j = 0; j < cols; j+=3){
+
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
+
+                // Lo guardamos en el array de casillas
+                GameObject plane = casillas_minimapa_tactico[contx,conty];
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 9;
+                plane.GetComponent<Renderer>().enabled = true;
+                // Obtenemos los arrays de enemigos
+                int[,] enemigosAzul = enemigosTeamBlue.getArray();
+                int[,] enemigosRojo = enemigosTeamRed.getArray();
+                // Le asignamos el material correspondiente a su equipo
+
+                if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
+        
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
+
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                    plane.GetComponent<Renderer>().material = materialEquipoRojo;
+
+                if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
+
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
+
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                    plane.GetComponent<Renderer>().material = materialEquipoAzul;
+
+                if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
+                    plane.GetComponent<Renderer>().material = materialNeutro;
+
 
                 contx++;
             }
@@ -1177,25 +1278,32 @@ public class mundoGuerra : MonoBehaviour
         {
             actualizandoMapaTactico = true;
             Invoke("actualizaMapaTacticoDeEnemigos",0.5f);
+            Invoke("actualizarMinimapaTactico",5.0f);
         }
+
+        
         
     }
 
     private bool isAzul = false;
     void Update(){
 
-        if (!victoria)
-        {
+        if(!victoria){
+            
             if (Input.GetKeyDown(KeyCode.H)){
                 modoDebug = !modoDebug;
                 if(modoDebug){
+                    camara_minimapa.cullingMask = (1 << 9);
+                    actualizarMinimapaTactico();
                     crearWayPoints();
                 } else{
+                    camara_minimapa.cullingMask = layerOriginal;
                     eliminarWayPoints();
                 }
             }
 
             if(modoDebug){
+
                 if(selectAgent != null){
                     debugNombre.text = "Unidad: " + selectAgent.name;
                     if(isAzul){
@@ -1204,151 +1312,168 @@ public class mundoGuerra : MonoBehaviour
                             debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
                             debugVida.text = "Vida: " + cExplorador.getVida();
 
-                        } 
-                        else if(indice == INDEXARCHER1){
-                            debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
-                            debugVida.text = "Vida: " + cArquero[0].getVida();
-                        }
-                        else if(indice == INDEXARCHER2){
-                            debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
-                            debugVida.text = "Vida: " + cArquero[1].getVida();
-                        }
+                            } 
+                            else if(indice == INDEXARCHER1){
+                                debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
+                                debugVida.text = "Vida: " + cArquero[0].getVida();
+                            }
+                            else if(indice == INDEXARCHER2){
+                                debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
+                                debugVida.text = "Vida: " + cArquero[1].getVida();
+                            }
 
-                        else if(indice == INDEXPESADA1){
-                            debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
-                            debugVida.text = "Vida: " + cPesada[0].getVida();
-                        } 
-                        else if(indice == INDEXPESADA2){
-                            debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
-                            debugVida.text = "Vida: " + cPesada[1].getVida();
-                        }
+                            else if(indice == INDEXPESADA1){
+                                debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
+                                debugVida.text = "Vida: " + cPesada[0].getVida();
+                            } 
+                            else if(indice == INDEXPESADA2){
+                                debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
+                                debugVida.text = "Vida: " + cPesada[1].getVida();
+                            }
 
-                        else {
-                            debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
-                            debugVida.text = "Vida: " + cPatrulla.getVida();
+                            else {
+                                debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
+                                debugVida.text = "Vida: " + cPatrulla.getVida();
+                            }
+                            debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
+                        } else{
+                            int indice = System.Array.IndexOf(equipoRojo, selectAgent);
+                            if(indice == INDEXEXPLORADOR){
+                                debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
+                                debugVida.text = "Vida: " + rExplorador.getVida();
+
+                            } 
+                            else if(indice == INDEXARCHER1){
+                                debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
+                                debugVida.text = "Vida: " + rArquero[0].getVida();
+                            }
+                            else if(indice == INDEXARCHER2){
+                                debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
+                                debugVida.text = "Vida: " + rArquero[1].getVida();
+                            }
+
+                            else if(indice == INDEXPESADA1){
+                                debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
+                                debugVida.text = "Vida: " + rPesada[0].getVida();
+                            } 
+                            else if(indice == INDEXPESADA2){
+                                debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
+                                debugVida.text = "Vida: " + cPesada[1].getVida();
+                            }
+
+                            else {
+                                debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
+                                debugVida.text = "Vida: " + cPatrulla.getVida();
+                            }
+                            debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
                         }
-                        debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
                     } else{
-                        int indice = System.Array.IndexOf(equipoRojo, selectAgent);
-                        if(indice == INDEXEXPLORADOR){
-                            debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
-                            debugVida.text = "Vida: " + rExplorador.getVida();
-
-                        } 
-                        else if(indice == INDEXARCHER1){
-                            debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
-                            debugVida.text = "Vida: " + rArquero[0].getVida();
-                        }
-                        else if(indice == INDEXARCHER2){
-                            debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
-                            debugVida.text = "Vida: " + rArquero[1].getVida();
-                        }
-
-                        else if(indice == INDEXPESADA1){
-                            debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
-                            debugVida.text = "Vida: " + rPesada[0].getVida();
-                        } 
-                        else if(indice == INDEXPESADA2){
-                            debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
-                            debugVida.text = "Vida: " + cPesada[1].getVida();
-                        }
-
-                        else {
-                            debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
-                            debugVida.text = "Vida: " + cPatrulla.getVida();
-                        }
-                        debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
+                        debugNombre.text = "Unidad: ";
+                        debugComportamiento.text = "Comportamiento: ";
+                        debugVida.text = "Vida: ";
+                        debugOjetivo.text = "Objetivo: ";
                     }
-                } else{
-                    debugNombre.text = "Unidad: ";
-                    debugComportamiento.text = "Comportamiento: ";
-                    debugVida.text = "Vida: ";
-                    debugOjetivo.text = "Objetivo: ";
+                            
                 }
                         
-            }
-                    
 
-            moverNPC();
-            if (!verificando)
-            {
-                Invoke("verificacion",1);
-                verificando = true;
-            }
-            
-            if (Input.GetMouseButtonDown(1))
-            {   
-                if (selectAgent != null){
+                moverNPC();
+                if (!verificando)
+                {
+                    Invoke("verificacion",1);
+                    verificando = true;
+                }
+                
+                if (Input.GetMouseButtonDown(1))
+                {   
+                    if (selectAgent != null){
 
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit))
                     {
+                        if(isAzul){
+                            punteroPrefab.transform.position =  hit.point; //Se la asignamos también al puntero
+                            GameObject puntero = Instantiate(punteroPrefab);// creamos el puntero
+                            Destroy(puntero, 0.5f);
+                        }
+                        
+
                         GameObject obj = hit.collider.gameObject;
                         int iObjetivo;
                         int jObjetivo;
+
                         grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
 
-                        int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+                            int indice = System.Array.IndexOf(equipoAzul, selectAgent);
 
                         if (indice != -1)
                         {
                             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
                             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-                            caminosAzul[indice] = buscadoresAzul[indice].A();
+                            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
-                            selectAgent.setLLegada(false);
-                            selectAgent.quitarMarcador();
+                                selectAgent.setLLegada(false);
+                                selectAgent.quitarMarcador();
+                            }
+                            
                         }
-                        
                     }
+                
                 }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    seleccionarNPC();
+                }
+                if(Input.GetKeyDown(KeyCode.R)){
+
+                    Debug.Log("Ofensiva Roja");
+                    modoOfensivoRojo = true;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = false;
+                }else if(Input.GetKeyDown(KeyCode.B)){
+
+                    Debug.Log("Ofensiva Azul");
+                    modoOfensivoAzul = true;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = false;
+                }else if(Input.GetKeyDown(KeyCode.T)){
+
+                    Debug.Log("Defensiva Roja");
+                    modoOfensivoRojo = false;
+                    modoDefensivoRojo = true;
+                    modoNeutroRojo = false;
+                }else if(Input.GetKeyDown(KeyCode.N)){
+
+                    Debug.Log("Defensiva Azul");
+                    modoOfensivoAzul = false;
+                    modoDefensivoAzul = true;
+                    modoNeutroAzul = false;
+                }else if(Input.GetKeyDown(KeyCode.Y)){
+
+                    Debug.Log("Neutral Roja");
+                    modoOfensivoRojo = false;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = true;
+                }else if(Input.GetKeyDown(KeyCode.M)){
+
+                    Debug.Log("Neutral Azul");
+                    modoOfensivoAzul = false;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = true;
+                }else if(Input.GetKeyDown(KeyCode.G)){
             
-            }
-            if (Input.GetMouseButtonDown(0))
-            {
-                seleccionarNPC();
-            }
-            if(Input.GetKeyDown(KeyCode.R)){
+                    Debug.Log("¡¡¡ Modo Guerra Total !!!");
+                    modoOfensivoAzul = true;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = false;
+                    modoOfensivoRojo = true;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = false;
+                }
 
-                Debug.Log("Ofensiva Roja");
-                modoOfensivoRojo = true;
-                modoDefensivoRojo = false;
-                modoNeutroRojo = false;
-            }else if(Input.GetKeyDown(KeyCode.B)){
+        }else if (victoriaAzul){
 
-                Debug.Log("Ofensiva Azul");
-                modoOfensivoAzul = true;
-                modoDefensivoAzul = false;
-                modoNeutroAzul = false;
-            }else if(Input.GetKeyDown(KeyCode.T)){
-
-                Debug.Log("Defensiva Roja");
-                modoOfensivoRojo = false;
-                modoDefensivoRojo = true;
-                modoNeutroRojo = false;
-            }else if(Input.GetKeyDown(KeyCode.N)){
-
-                Debug.Log("Defensiva Azul");
-                modoOfensivoAzul = false;
-                modoDefensivoAzul = true;
-                modoNeutroAzul = false;
-            }else if(Input.GetKeyDown(KeyCode.Y)){
-
-                Debug.Log("Neutral Roja");
-                modoOfensivoRojo = false;
-                modoDefensivoRojo = false;
-                modoNeutroRojo = true;
-            }else if(Input.GetKeyDown(KeyCode.M)){
-
-                Debug.Log("Neutral Azul");
-                modoOfensivoAzul = false;
-                modoDefensivoAzul = false;
-                modoNeutroAzul = true;
-            }
-        }else if (victoriaAzul)
-        {
-            
             vicAzul.SetActive(true);
             
         }else if (victoriaRoja)
@@ -1484,9 +1609,12 @@ public class mundoGuerra : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
+            foreach (GameObject objective in listaObjetivos){
+                Destroy(objective);
+            }
             GameObject npcObject = hit.collider.gameObject;
             if (npcObject.CompareTag("NPC"))
-            {        
+            {       
                 selectAgent = npcObject.GetComponent<AgentNPC>();
                 isAzul = false;
                 foreach(AgentNPC pl in equipoAzul)
@@ -1512,7 +1640,7 @@ public class mundoGuerra : MonoBehaviour
             else{
                 if (selectAgent != null){
                     selectAgent.quitarMarcador();
-                    //selectAgent = null;
+                    selectAgent = null;
                 }
             }
         }
@@ -1870,13 +1998,28 @@ public class mundoGuerra : MonoBehaviour
         }
     }
     private void movArcher(AgentNPC pl, int index){
-        
         int xDespues;
         int yDespues;
         int indice = cArquero[index].getIndexNPC();
-
+        //-------DEBUG------------
+        if(modoDebug){
+             if(selectAgent != null && selectAgent.name == "Arquero Azul 1" && indice == 1){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }  else if(selectAgent != null && selectAgent.name == "Arquero Azul 2" && indice == 2){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
+        }
         if(pl.getLLegada() && !(cArquero[index].getComportamiento() == Archer.ATACAR || cArquero[index].getComportamiento() == Archer.RELOAD)){
-            
+        
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -1891,9 +2034,10 @@ public class mundoGuerra : MonoBehaviour
                                                                          + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
 
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
             
@@ -1944,9 +2088,25 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = rArquero[index].getIndexNPC();
+        //-------DEBUG------------
+         if(modoDebug){
+             if(selectAgent != null && selectAgent.name == "Arquero Rojo 1" && indice == 1){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }  else if(selectAgent != null && selectAgent.name == "Arquero Rojo 2" && indice == 2){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
+        }
 
         if(pl.getLLegada() && !(rArquero[index].getComportamiento() == Archer.ATACAR || rArquero[index].getComportamiento() == Archer.RELOAD)){
-                    
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -1963,7 +2123,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
@@ -2013,10 +2173,25 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = cPesada[index].getIndexNPC();
+        //-------DEBUG------------
+        if(modoDebug){
+             if(selectAgent != null && selectAgent.name == "Unidad Pesada Azul 1" && indice == 3){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }  else if(selectAgent != null && selectAgent.name == "Unidad Pesada Azul 2" && indice == 4){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
+        }
         
         if(pl.getLLegada() && !(cPesada[index].getComportamiento() == UnidadPesada.ATACAR || cPesada[index].getComportamiento() == UnidadPesada.RELOAD)){
-
-                
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2034,7 +2209,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
 
@@ -2083,9 +2258,25 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = rPesada[index].getIndexNPC();
-        
+        //-------DEBUG------------
+               if(modoDebug){
+             if(selectAgent != null && selectAgent.name == "Unidad Pesada Rojo 1" && indice == 3){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }  else if(selectAgent != null && selectAgent.name == "Unidad Pesada Rojo 2" && indice == 4){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
+        }
+        //----------------------
         if(pl.getLLegada() && !(rPesada[index].getComportamiento() == UnidadPesada.ATACAR || rPesada[index].getComportamiento() == UnidadPesada.RELOAD)){
-             
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2103,7 +2294,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
@@ -2764,12 +2955,24 @@ public class mundoGuerra : MonoBehaviour
         }
     }
     private void movExplorer(AgentNPC pl,List<Objetivo> objs){
-
         int xDespues;
         int yDespues;
         int indice = cExplorador.getIndexNPC();
-        if(pl.getLLegada()){
-            
+
+        //-------DEBUG------------
+        if(modoDebug){
+            if(selectAgent != null && selectAgent.name == "Explorador Azul"){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }        
+        }
+        //----------------------
+        if(pl.getLLegada()){   
+
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2779,11 +2982,12 @@ public class mundoGuerra : MonoBehaviour
             
             cExplorador.setLimites(i,j);
             npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
             
@@ -2822,8 +3026,20 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = rExplorador.getIndexNPC();
+        //-------DEBUG------------
+        if(modoDebug){
+            if(selectAgent != null && selectAgent.name == "Explorador Rojo"){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }        
+        }
+        //----------------------
+
         if(pl.getLLegada()){
-                    
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2837,7 +3053,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
@@ -2878,8 +3094,20 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = cPatrulla.getIndexNPC();
+        //-------DEBUG------------
+        if(modoDebug){
+            if(selectAgent != null && selectAgent.name == "Patrulla Azul"){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }        
+        }
+        //----------------------
+
         if(pl.getLLegada() && !(cPatrulla.getComportamiento() == Patrulla.ATACAR || cPatrulla.getComportamiento() == Patrulla.RELOAD)){
-                    
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2896,7 +3124,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
 
@@ -2944,8 +3172,21 @@ public class mundoGuerra : MonoBehaviour
         int xDespues;
         int yDespues;
         int indice = rPatrulla.getIndexNPC();
-        if(pl.getLLegada() && !(rPatrulla.getComportamiento() == Patrulla.ATACAR || rPatrulla.getComportamiento() == Patrulla.RELOAD)){
-                    
+
+        //-------DEBUG------------
+        if(modoDebug){
+            if(selectAgent != null && selectAgent.name == "Patrullla Rojo"){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+                
+            }        
+        }
+        //----------------------
+
+        if(pl.getLLegada() && !(rPatrulla.getComportamiento() == Patrulla.ATACAR || rPatrulla.getComportamiento() == Patrulla.RELOAD)){ 
             int i;
             int j;
             grFinal.getCoordenadas(pl.Position,out i, out j);
@@ -2962,7 +3203,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
