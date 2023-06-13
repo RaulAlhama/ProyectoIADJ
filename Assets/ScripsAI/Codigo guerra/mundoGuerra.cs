@@ -167,8 +167,11 @@ public class mundoGuerra : MonoBehaviour
     private List<GameObject> listaObjetivos = new List<GameObject>();
     public GameObject prefabWayPoint;
     public GameObject prefabObjetivo;
+    private Vector3 objetivoFinalExAzul, objetivoFinalExRojo, objetivoFinalPatAzul, objetivoFinalPatRojo;
+    private Vector3 objetivoFinalArAzul1, objetivoFinalArAzul2, objetivoFinalArRojo1, objetivoFinalArRojo2;
+    private Vector3 objetivoFinalPeAzul1, objetivoFinalPeAzul2, objetivoFinalPeRojo1, objetivoFinalPeRojo2;
     [SerializeField]
-    private Text debugNombre, debugComportamiento, debugOjetivo, debugVida;
+    private Text debugNombre, debugComportamiento, debugOjetivo, debugVida, debugObjetivoFinal;
 
     void Start()
     {
@@ -1316,29 +1319,35 @@ public class mundoGuerra : MonoBehaviour
                         if(indice == INDEXEXPLORADOR){
                             debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
                             debugVida.text = "Vida: " + cExplorador.getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalExAzul;
 
                         } 
                         else if(indice == INDEXARCHER1){
                             debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
                             debugVida.text = "Vida: " + cArquero[0].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalArAzul1;
                         }
                         else if(indice == INDEXARCHER2){
                             debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
                             debugVida.text = "Vida: " + cArquero[1].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalArAzul2;
                         }
 
                         else if(indice == INDEXPESADA1){
                             debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
                             debugVida.text = "Vida: " + cPesada[0].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalPeAzul1;
                         } 
                         else if(indice == INDEXPESADA2){
                             debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
                             debugVida.text = "Vida: " + cPesada[1].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalPeAzul2;
                         }
 
                         else {
                             debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
                             debugVida.text = "Vida: " + cPatrulla.getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalPatAzul;
                         }
                         debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
                     } else{
@@ -1346,29 +1355,35 @@ public class mundoGuerra : MonoBehaviour
                         if(indice == INDEXEXPLORADOR){
                             debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
                             debugVida.text = "Vida: " + rExplorador.getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalExRojo;
 
                         } 
                         else if(indice == INDEXARCHER1){
                             debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
                             debugVida.text = "Vida: " + rArquero[0].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalArRojo1;
                         }
                         else if(indice == INDEXARCHER2){
                             debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
                             debugVida.text = "Vida: " + rArquero[1].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalArRojo2;
                         }
 
                         else if(indice == INDEXPESADA1){
                             debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
                             debugVida.text = "Vida: " + rPesada[0].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalPeRojo1;
                         } 
                         else if(indice == INDEXPESADA2){
                             debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
                             debugVida.text = "Vida: " + cPesada[1].getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalPeRojo2;
                         }
 
                         else {
                             debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
                             debugVida.text = "Vida: " + cPatrulla.getVida();
+                            debugObjetivoFinal.text = "Objetivo Final: " + objetivoFinalPatRojo;
                         }
                         debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
                     }
@@ -1377,6 +1392,7 @@ public class mundoGuerra : MonoBehaviour
                     debugComportamiento.text = "Comportamiento: ";
                     debugVida.text = "Vida: ";
                     debugOjetivo.text = "Objetivo: ";
+                    debugObjetivoFinal.text = "Objetivo Final: ";
                 }
                         
             }
@@ -2063,6 +2079,17 @@ public class mundoGuerra : MonoBehaviour
                                                                         unidadesAzul.getArray(),unidadesRojo.getArray(),
                                                                         i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul)
                                                                          + new Vector3(2,0,2);
+            if(indice == 1){
+                objetivoFinalArAzul1 = cArquero[index].getDecision(enemigosTeamBlue,rutaAzulPesada,grFinal,objetivosTeamBlue,
+                                                                        unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                        i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul)
+                                                                         + new Vector3(2,0,2);
+            } else{
+                objetivoFinalArAzul2 = cArquero[index].getDecision(enemigosTeamBlue,rutaAzulPesada,grFinal,objetivosTeamBlue,
+                                                                        unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                        i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul)
+                                                                         + new Vector3(2,0,2);
+            }
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
 
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
@@ -2150,8 +2177,18 @@ public class mundoGuerra : MonoBehaviour
                                                                         unidadesAzul.getArray(),unidadesRojo.getArray(),i,j,
                                                                         modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo)
                                                                          + new Vector3(2,0,2);
-            grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);
-                    
+            if(indice == 1){
+                objetivoFinalArRojo1 = rArquero[index].getDecision(enemigosTeamRed,rutaRojaPesada, grFinal,objetivosTeamRed,
+                                                                        unidadesAzul.getArray(),unidadesRojo.getArray(),i,j,
+                                                                        modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo)
+                                                                         + new Vector3(2,0,2);
+            } else {
+                objetivoFinalArRojo2 = rArquero[index].getDecision(enemigosTeamRed,rutaRojaPesada, grFinal,objetivosTeamRed,
+                                                                        unidadesAzul.getArray(),unidadesRojo.getArray(),i,j,
+                                                                        modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo)
+                                                                         + new Vector3(2,0,2);
+            }
+            grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);  
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
             caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray(), pathTactico);
@@ -2236,6 +2273,19 @@ public class mundoGuerra : MonoBehaviour
                                                                         unidadesRojo.getArray(),i,j,
                                                                         modoNeutroAzul,modoOfensivoAzul,
                                                                         modoDefensivoAzul) + new Vector3(2,0,2);
+            if(indice == 3){
+                objetivoFinalPeAzul1 = cPesada[index].getDecision(enemigosTeamBlue,rutaAzulPesada,
+                                                                        grFinal,objetivosTeamBlue,unidadesAzul.getArray(),
+                                                                        unidadesRojo.getArray(),i,j,
+                                                                        modoNeutroAzul,modoOfensivoAzul,
+                                                                        modoDefensivoAzul) + new Vector3(2,0,2);
+            } else {
+                objetivoFinalPeAzul2 = cPesada[index].getDecision(enemigosTeamBlue,rutaAzulPesada,
+                                                                        grFinal,objetivosTeamBlue,unidadesAzul.getArray(),
+                                                                        unidadesRojo.getArray(),i,j,
+                                                                        modoNeutroAzul,modoOfensivoAzul,
+                                                                        modoDefensivoAzul) + new Vector3(2,0,2);
+            }
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
@@ -2321,6 +2371,20 @@ public class mundoGuerra : MonoBehaviour
                                                                         unidadesRojo.getArray(),i,j,modoNeutroRojo,
                                                                         modoOfensivoRojo,modoDefensivoRojo) 
                                                                         + new Vector3(2,0,2);
+            
+            if(index == 3){
+                objetivoFinalPeRojo1 = rPesada[index].getDecision(enemigosTeamRed,rutaRojaPesada,grFinal,
+                                                                        objetivosTeamRed,unidadesAzul.getArray(),
+                                                                        unidadesRojo.getArray(),i,j,modoNeutroRojo,
+                                                                        modoOfensivoRojo,modoDefensivoRojo) 
+                                                                        + new Vector3(2,0,2);
+            } else{
+                objetivoFinalPeRojo2 = rPesada[index].getDecision(enemigosTeamRed,rutaRojaPesada,grFinal,
+                                                                        objetivosTeamRed,unidadesAzul.getArray(),
+                                                                        unidadesRojo.getArray(),i,j,modoNeutroRojo,
+                                                                        modoOfensivoRojo,modoDefensivoRojo) 
+                                                                        + new Vector3(2,0,2);
+            }
             grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
@@ -3013,7 +3077,7 @@ public class mundoGuerra : MonoBehaviour
             
             cExplorador.setLimites(i,j);
             npcVirtualAzul[indice].Position = cExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
-
+            objetivoFinalExAzul = cExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2); //Debug
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
@@ -3080,6 +3144,7 @@ public class mundoGuerra : MonoBehaviour
             
             rExplorador.setLimites(i,j);
             npcVirtualRojo[indice].Position = rExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+            objetivoFinalExRojo = rExplorador.getDecision(grFinal,objs,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2); //Debug
             grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
@@ -3148,6 +3213,10 @@ public class mundoGuerra : MonoBehaviour
             
             cPatrulla.setLimites(i,j);
             npcVirtualAzul[indice].Position = cPatrulla.getDecision(grFinal,rutaAzul,enemigosTeamBlue,
+                                                                    unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                    i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul) 
+                                                                    + new Vector3(2,0,2);
+            objetivoFinalPatAzul = cPatrulla.getDecision(grFinal,rutaAzul,enemigosTeamBlue,
                                                                     unidadesAzul.getArray(),unidadesRojo.getArray(),
                                                                     i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul) 
                                                                     + new Vector3(2,0,2);
@@ -3227,6 +3296,10 @@ public class mundoGuerra : MonoBehaviour
             
             rPatrulla.setLimites(i,j);
             npcVirtualRojo[indice].Position = rPatrulla.getDecision(grFinal,rutaRoja,enemigosTeamRed,
+                                                                    unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                    i,j,modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo) 
+                                                                    + new Vector3(2,0,2);
+            objetivoFinalPatAzul = rPatrulla.getDecision(grFinal,rutaRoja,enemigosTeamRed,
                                                                     unidadesAzul.getArray(),unidadesRojo.getArray(),
                                                                     i,j,modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo) 
                                                                     + new Vector3(2,0,2);

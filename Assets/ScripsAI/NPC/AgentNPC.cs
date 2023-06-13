@@ -162,11 +162,11 @@ public class AgentNPC : Agent
             switch(hit.collider.gameObject.tag) 
             {
                 case "Cesped":
-                    return 1.5f;
+                    return 1f;
                 case "Tierra":
                     return 0.75f;
                 default:
-                    return 1f;
+                    return 1.5f;
             }
 
         }
