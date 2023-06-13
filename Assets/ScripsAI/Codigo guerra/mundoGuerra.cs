@@ -143,6 +143,7 @@ public class mundoGuerra : MonoBehaviour
 
     // Selección de personajes
     AgentNPC selectAgent;
+     public GameObject punteroPrefab;
 
     //Modo Debug
 
@@ -1279,9 +1280,17 @@ public class mundoGuerra : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit))
                 {
+                    if(isAzul){
+                        punteroPrefab.transform.position =  hit.point; //Se la asignamos también al puntero
+                        GameObject puntero = Instantiate(punteroPrefab);// creamos el puntero
+                        Destroy(puntero, 0.5f);
+                    }
+                    
+
                     GameObject obj = hit.collider.gameObject;
                     int iObjetivo;
                     int jObjetivo;
+
                     grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
 
                     int indice = System.Array.IndexOf(equipoAzul, selectAgent);
@@ -1840,14 +1849,20 @@ public class mundoGuerra : MonoBehaviour
         int indice = cArquero[index].getIndexNPC();
         //-------DEBUG------------
         if(modoDebug){
-             if(selectAgent != null && (selectAgent.name == "Arquero Azul 1" || selectAgent.name == "Arquero Azul 2")){
+             if(selectAgent != null && selectAgent.name == "Arquero Azul 1" && indice == 1){
                 foreach (GameObject obj in listaObjetivos)
                     Destroy(obj);
                 GameObject objective = Instantiate(prefabObjetivo);
                 objective.transform.position = npcVirtualAzul[indice].Position;
                 listaObjetivos.Add(objective);
                 
-            }        
+            }  else if(selectAgent != null && selectAgent.name == "Arquero Azul 2" && indice == 2){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
         }
         if(pl.getLLegada() && !(cArquero[index].getComportamiento() == Archer.ATACAR || cArquero[index].getComportamiento() == Archer.RELOAD)){
         
@@ -1920,15 +1935,21 @@ public class mundoGuerra : MonoBehaviour
         int yDespues;
         int indice = rArquero[index].getIndexNPC();
         //-------DEBUG------------
-        if(modoDebug){
-             if(selectAgent != null && (selectAgent.name == "Arquero Rojo 1" || selectAgent.name == "Arquero Rojo 2")){
+         if(modoDebug){
+             if(selectAgent != null && selectAgent.name == "Arquero Rojo 1" && indice == 1){
                 foreach (GameObject obj in listaObjetivos)
                     Destroy(obj);
                 GameObject objective = Instantiate(prefabObjetivo);
                 objective.transform.position = npcVirtualRojo[indice].Position;
                 listaObjetivos.Add(objective);
                 
-            }        
+            }  else if(selectAgent != null && selectAgent.name == "Arquero Rojo 2" && indice == 2){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
         }
 
         if(pl.getLLegada() && !(rArquero[index].getComportamiento() == Archer.ATACAR || rArquero[index].getComportamiento() == Archer.RELOAD)){
@@ -2000,14 +2021,20 @@ public class mundoGuerra : MonoBehaviour
         int indice = cPesada[index].getIndexNPC();
         //-------DEBUG------------
         if(modoDebug){
-             if(selectAgent != null && (selectAgent.name == "Unidad Pesada Azul 1" || selectAgent.name == "Unidad Pesada Azul 2")){
+             if(selectAgent != null && selectAgent.name == "Unidad Pesada Azul 1" && indice == 3){
                 foreach (GameObject obj in listaObjetivos)
                     Destroy(obj);
                 GameObject objective = Instantiate(prefabObjetivo);
                 objective.transform.position = npcVirtualAzul[indice].Position;
                 listaObjetivos.Add(objective);
                 
-            }        
+            }  else if(selectAgent != null && selectAgent.name == "Unidad Pesada Azul 2" && indice == 4){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualAzul[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
         }
         
         if(pl.getLLegada() && !(cPesada[index].getComportamiento() == UnidadPesada.ATACAR || cPesada[index].getComportamiento() == UnidadPesada.RELOAD)){
@@ -2078,15 +2105,21 @@ public class mundoGuerra : MonoBehaviour
         int yDespues;
         int indice = rPesada[index].getIndexNPC();
         //-------DEBUG------------
-        if(modoDebug){
-             if(selectAgent != null && (selectAgent.name == "Unidad Pesada Rojo 1" || selectAgent.name == "Unidad Pesada Rojo 2")){
+               if(modoDebug){
+             if(selectAgent != null && selectAgent.name == "Unidad Pesada Rojo 1" && indice == 3){
                 foreach (GameObject obj in listaObjetivos)
                     Destroy(obj);
                 GameObject objective = Instantiate(prefabObjetivo);
                 objective.transform.position = npcVirtualRojo[indice].Position;
                 listaObjetivos.Add(objective);
                 
-            }        
+            }  else if(selectAgent != null && selectAgent.name == "Unidad Pesada Rojo 2" && indice == 4){
+                foreach (GameObject obj in listaObjetivos)
+                    Destroy(obj);
+                GameObject objective = Instantiate(prefabObjetivo);
+                objective.transform.position = npcVirtualRojo[indice].Position;
+                listaObjetivos.Add(objective);
+            }      
         }
         //----------------------
         if(pl.getLLegada() && !(rPesada[index].getComportamiento() == UnidadPesada.ATACAR || rPesada[index].getComportamiento() == UnidadPesada.RELOAD)){

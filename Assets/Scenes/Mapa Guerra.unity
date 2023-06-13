@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11983,6 +11983,7 @@ MonoBehaviour:
   materialEquipoAzul: {fileID: 2100000, guid: 2053efcfaa636054ea5466e84d613598, type: 2}
   materialNeutro: {fileID: 2100000, guid: de88ca48ec64d0c4e864cec778650a3b, type: 2}
   materialPeleado: {fileID: 2100000, guid: b154b8a01509d2e488595245e4da5ef0, type: 2}
+  punteroPrefab: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
   prefabWayPoint: {fileID: 199993411397246720, guid: af22655a1f5c380478c8ee7e9344bcae, type: 3}
   prefabObjetivo: {fileID: 199993411397246720, guid: 31e20f46892f5cc489cc31cc3b9634a6, type: 3}
   debugNombre: {fileID: 2086657737}

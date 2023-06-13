@@ -203,7 +203,6 @@ public class Explorador
                     
                 }else if(equipo == ROJO && (mundo[i,j] >= ArrayUnidades.ARQUEROAZUL && mundo[i,j] <= ArrayUnidades.PATRULLAAZUL)){
                     
-                    break;
                     enemigos = true;
                     break;
                 }
