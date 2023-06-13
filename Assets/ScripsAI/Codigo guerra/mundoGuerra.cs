@@ -90,9 +90,18 @@ public class mundoGuerra : MonoBehaviour
     public Material materialEquipoRojo;
     public Material materialEquipoAzul;
     public Material materialNeutro; 
-    public Material materialPeleado;
+    public Material materialPeligroBajoAzul;
+    public Material materialPeligroAltoAzul;
+    public Material materialPeligroBajoRojo;
+    public Material materialPeligroAltoRojo;
     private GameObject[,] casillas_minimapa = new GameObject[34, 34];
+    private GameObject[,] casillas_minimapa_tactico = new GameObject[34, 34];
     private GameObject minimapa;
+    private GameObject minimapa_tactico;
+    public Camera camara_minimapa;
+    private LayerMask layerOriginal;
+    public float timer = 0f;
+    public float interval = 5.0f;
 
     // informacion
     
@@ -157,6 +166,8 @@ public class mundoGuerra : MonoBehaviour
 
     void Start()
     {
+        layerOriginal = camara_minimapa.cullingMask;
+
         cArquero = new Archer[2];
         cPesada = new UnidadPesada[2];
         rArquero = new Archer[2];
@@ -243,7 +254,7 @@ public class mundoGuerra : MonoBehaviour
         setEscuderia();
         //creaTexto();
         inicializarMinimapa();
-        
+        inicializarMinimapaTactico();
      
     }
 
@@ -413,7 +424,7 @@ public class mundoGuerra : MonoBehaviour
     private void inicializarMinimapa(){
 
         //Vector3 ajuste = new Vector3(6,-0.2f,6);
-        Vector3 ajuste = new Vector3(6,1f,6);
+        Vector3 ajuste = new Vector3(6,0.2f,6);
         minimapa = new GameObject("minimapa");
         int contx=0;
         int conty=0;
@@ -435,8 +446,6 @@ public class mundoGuerra : MonoBehaviour
                 plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
                 // Lo colocamos en la layer de no minimapa para que no se vea
                 plane.layer = 8;
-                // Le asignamos el material de casilla neutra
-                plane.GetComponent<Renderer>().material = materialNeutro;
                 plane.GetComponent<Renderer>().enabled = false;
 
                 contx++;
@@ -444,6 +453,114 @@ public class mundoGuerra : MonoBehaviour
 
             conty++;
         }
+
+    }
+
+    private void inicializarMinimapaTactico(){
+
+        //Vector3 ajuste = new Vector3(6,-0.2f,6);
+        Vector3 ajuste = new Vector3(6,0.2f,6);
+        minimapa_tactico = new GameObject("minimapa_tactico");
+        int contx=0;
+        int conty=0;
+
+        // Recorremos todas las casillas del grid
+        for (int j = 0; j < cols; j+=3){
+
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
+
+                // Creamos un objeto plano 
+                GameObject plane = Instantiate(prefabPlano, minimapa_tactico.transform);
+                plane.name = "minimap_tactico_" + contx + "_" + conty;
+                // Lo guardamos en el array de casillas
+                casillas_minimapa_tactico[contx,conty] = plane;
+                // Establecemos su tamaño y posición
+                plane.transform.localScale = new Vector3(cellSize/3.33f, 1f, cellSize/3.33f);
+                plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 8;
+                plane.GetComponent<Renderer>().enabled = false;
+                // Obtenemos los arrays de enemigos
+                int[,] enemigosAzul = enemigosTeamBlue.getArray();
+                int[,] enemigosRojo = enemigosTeamRed.getArray();
+
+                contx++;
+            }
+
+            conty++;
+        }
+
+    }
+
+    private void actualizarMinimapaTactico(){
+
+        Vector3 ajuste = new Vector3(6,0.2f,6);
+        int contx=0;
+        int conty=0;
+        Debug.Log("Inicio del minimapa tactico");
+
+        // Recorremos todas las casillas del grid
+        for (int j = 0; j < cols; j+=3){
+
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
+
+                // Lo guardamos en el array de casillas
+                GameObject plane = casillas_minimapa_tactico[contx,conty];
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 9;
+                plane.GetComponent<Renderer>().enabled = true;
+                // Obtenemos los arrays de enemigos
+                int[,] enemigosAzul = enemigosTeamBlue.getArray();
+                int[,] enemigosRojo = enemigosTeamRed.getArray();
+                // Le asignamos el material correspondiente a su equipo
+
+                if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                {
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
+                    Debug.Log("La casilla (" + i + "," + j + ") es baja para el equipo azul");
+                }
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                {
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
+                    Debug.Log("La casilla (" + i + "," + j + ") es alta para el equipo azul");
+                }
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                {
+                    plane.GetComponent<Renderer>().material = materialEquipoRojo;
+                    Debug.Log("La casilla (" + i + "," + j + ") es media para el equipo azul");
+                }
+                
+                if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                {
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
+                    Debug.Log("La casilla (" + i + "," + j + ") es baja para el equipo rojo");
+                }
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                {
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
+                    Debug.Log("La casilla (" + i + "," + j + ") es alta para el equipo rojo");
+                }
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                {
+                    plane.GetComponent<Renderer>().material = materialEquipoAzul;
+                    Debug.Log("La casilla (" + i + "," + j + ") es media para el equipo rojo");
+                }
+                if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
+                {
+                    plane.GetComponent<Renderer>().material = materialNeutro;
+                    Debug.Log("La casilla (" + i + "," + j + ") es neutra para ambos");
+                }
+
+                contx++;
+            }
+
+            conty++;
+        }
+        Debug.Log("Fin del minimapa tactico");
 
     }
 
@@ -1185,13 +1302,33 @@ public class mundoGuerra : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H)){
             modoDebug = !modoDebug;
             if(modoDebug){
+                camara_minimapa.cullingMask = (1 << 9);
+                actualizarMinimapaTactico();
+                Debug.Log("solo se ejcuta una vez");
                 crearWayPoints();
             } else{
+                camara_minimapa.cullingMask = layerOriginal;
                 eliminarWayPoints();
             }
         }
 
+        
+
         if(modoDebug){
+            
+            timer += Time.deltaTime;
+
+            // Verificar si ha transcurrido el intervalo de tiempo
+            if (timer >= interval)
+            {
+                // Llamar a la función que deseas activar
+                actualizarMinimapaTactico();
+
+                // Reiniciar el temporizador
+                timer = 0f;
+            }
+
+
             if(selectAgent != null){
                 debugNombre.text = "Unidad: " + selectAgent.name;
                 if(isAzul){

@@ -159,7 +159,7 @@ public class AEstrella
                 // Calculamos los pesos del nodo vecino
                 nodo.g = nodoActual.g + Math.Sqrt(Math.Pow(nodo.corde.x-nodoActual.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoActual.corde.y,2));
                 nodo.h = Math.Sqrt(Math.Pow(nodo.corde.x-nodoObjetivo.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoObjetivo.corde.y,2));
-                nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y);
+                nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y) + ApllyEnemigos(nodo.corde.x, nodo.corde.y);
 
                 // Si el peso del nodo vecino es mayor que su contraparte de la lista abierta, pasamos a la siguiente iteración
                 if (mayorG(nodo, abierta)){
@@ -399,6 +399,11 @@ public class AEstrella
 
         return 0.0f;
 
+    }
+
+    private float ApllyEnemigos(int i, int j)
+    {
+        return 0.0f;
     }
 
 }

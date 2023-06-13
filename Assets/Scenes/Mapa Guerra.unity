@@ -11982,7 +11982,13 @@ MonoBehaviour:
   materialEquipoRojo: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
   materialEquipoAzul: {fileID: 2100000, guid: 2053efcfaa636054ea5466e84d613598, type: 2}
   materialNeutro: {fileID: 2100000, guid: de88ca48ec64d0c4e864cec778650a3b, type: 2}
-  materialPeleado: {fileID: 2100000, guid: b154b8a01509d2e488595245e4da5ef0, type: 2}
+  materialPeligroBajoAzul: {fileID: 2100000, guid: 113aece538c03ef4598774870ce26345, type: 2}
+  materialPeligroAltoAzul: {fileID: 2100000, guid: 89aae2e9f3306a2479f4b709f6258763, type: 2}
+  materialPeligroBajoRojo: {fileID: 2100000, guid: 6845679897d37534f8c4448319081a25, type: 2}
+  materialPeligroAltoRojo: {fileID: 2100000, guid: 16d14653807baf6499bd5178aaf78267, type: 2}
+  camara_minimapa: {fileID: 1346848676}
+  timer: 0
+  interval: 5
   punteroPrefab: {fileID: 199993411397246720, guid: bad70133ad9f05d4f94a0fbbce7afe83, type: 3}
   prefabWayPoint: {fileID: 199993411397246720, guid: af22655a1f5c380478c8ee7e9344bcae, type: 3}
   prefabObjetivo: {fileID: 199993411397246720, guid: 31e20f46892f5cc489cc31cc3b9634a6, type: 3}
