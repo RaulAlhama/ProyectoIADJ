@@ -126,7 +126,15 @@ public class mundoGuerra : MonoBehaviour
 
     private bool todosInBlue = false;
     private bool todosInRed = false;
+    private bool modoDefensivoAzul = false;
+    private bool modoDefensivoRojo = false;
+    private bool modoOfensivoAzul = false;
+    private bool modoOfensivoRojo = false;
+    private bool modoNeutroAzul = true;
+    private bool modoNeutroRojo = true;
 
+
+    private bool actualizandoMapaTactico = false;
     // Arrays de caminos
     private List<Vector3>[] caminosAzul = new List<Vector3>[numNPC];
     private List<Vector3>[] caminosRojo = new List<Vector3>[numNPC];
@@ -232,6 +240,7 @@ public class mundoGuerra : MonoBehaviour
         setPuenteIzqRojo();
         setSantuario();
         setEscuderia();
+        //creaTexto();
         inicializarMinimapa();
         
      
@@ -619,6 +628,7 @@ public class mundoGuerra : MonoBehaviour
             }
         }
         Objetivo puenteDerRojo = new Objetivo(3,coordes,Objetivo.PUENTE_DERECHO_ROJO);
+        //puenteDerRojo.setPropiedad(Objetivo.AZUL);
         objetivosMundo[INDEX_PUENTE_DERECHO_ROJO] = puenteDerRojo;
         objExplorerRed.Add(objetivosMundo[INDEX_PUENTE_DERECHO_ROJO]);
     }
@@ -848,6 +858,81 @@ public class mundoGuerra : MonoBehaviour
         grFinal.setValor((25),(55),GridFinal.ESCUDERIA);
         grFinal.setValor((24),(56),GridFinal.ESCUDERIA);
         grFinal.setValor((25),(56),GridFinal.ESCUDERIA);
+        
+
+        // Rio
+
+        for (int i = 15; i < 24; i++)
+        {
+            for (int j = 48; j < 52; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+        grFinal.setValor((7),(48),GridFinal.OBSTACULO);
+        grFinal.setValor((8),(48),GridFinal.OBSTACULO);
+        grFinal.setValor((13),(51),GridFinal.OBSTACULO);
+        grFinal.setValor((14),(51),GridFinal.OBSTACULO);
+        grFinal.setValor((21),(47),GridFinal.OBSTACULO);
+        grFinal.setValor((22),(47),GridFinal.OBSTACULO);
+        grFinal.setValor((23),(47),GridFinal.OBSTACULO);
+        grFinal.setValor((41),(47),GridFinal.OBSTACULO);
+        grFinal.setValor((42),(47),GridFinal.OBSTACULO);
+        grFinal.setValor((43),(47),GridFinal.OBSTACULO);
+        grFinal.setValor((61),(52),GridFinal.OBSTACULO);
+        grFinal.setValor((62),(52),GridFinal.OBSTACULO);
+        grFinal.setValor((63),(52),GridFinal.OBSTACULO);
+        grFinal.setValor((81),(52),GridFinal.OBSTACULO);
+        grFinal.setValor((82),(52),GridFinal.OBSTACULO);
+        grFinal.setValor((83),(52),GridFinal.OBSTACULO);
+        grFinal.setValor((85),(48),GridFinal.OBSTACULO);
+        grFinal.setValor((86),(48),GridFinal.OBSTACULO);
+        grFinal.setValor((91),(51),GridFinal.OBSTACULO);
+        grFinal.setValor((92),(51),GridFinal.OBSTACULO);
+
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 48; j < 52; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+        for (int i = 21; i < 44; i++)
+        {
+            for (int j = 43; j < 47; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+        for (int i = 41; i < 64; i++)
+        {
+            for (int j = 48; j < 52; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+        for (int i = 61; i < 84; i++)
+        {
+            for (int j = 53; j < 57; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+        for (int i = 81; i < 85; i++)
+        {
+            for (int j = 48; j < 52; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+        for (int i = 93; i < 100; i++)
+        {
+            for (int j = 48; j < 52; j++)
+            {
+                grFinal.setValor((i),(j),GridFinal.OBSTACULO);
+            }
+        }
+
         // Laberinto Azul y Rojo
         GameObject[] obstaculos = GameObject.FindGameObjectsWithTag("Obstaculo");
         grFinal.setObstaculos(obstaculos);
@@ -1023,7 +1108,7 @@ public class mundoGuerra : MonoBehaviour
         int cont = 0;
         grid = new TextMesh[rows, cols];
         
-        for (int i = 0; i < 100; i++)
+        for (int i = 50; i < 100; i++)
         {
             for (int j = 0; j < 50; j++)
             {
@@ -1033,7 +1118,7 @@ public class mundoGuerra : MonoBehaviour
 
                 TextMesh textMesh = obj.AddComponent<TextMesh>();
                 textMesh.text = "" + grFinal.getValor(i,j) + "  " + i + "," + j;
-                textMesh.text = i + "," + j;
+                //textMesh.text = i + "," + j;
                 textMesh.fontSize = 100;
                 textMesh.characterSize = 0.1f;
                 textMesh.anchor = TextAnchor.MiddleCenter;
@@ -1083,24 +1168,12 @@ public class mundoGuerra : MonoBehaviour
         }
             
     }
-
     void FixedUpdate(){
 
-        enemigosTeamBlue.resetArea();
-        for (int i = 1; i < equipoRojo.Length; i++)
+        if (!actualizandoMapaTactico)
         {
-            int x;
-            int y;
-            grFinal.getCoordenadas(equipoRojo[i].Position,out x,out y);
-            enemigosTeamBlue.setPeligro(x,y);
-        }
-        enemigosTeamRed.resetArea();
-        for (int i = 1; i < equipoAzul.Length; i++)
-        {
-            int x;
-            int y;
-            grFinal.getCoordenadas(equipoAzul[i].Position,out x,out y);
-            enemigosTeamRed.setPeligro(x,y);
+            actualizandoMapaTactico = true;
+            Invoke("actualizaMapaTacticoDeEnemigos",0.5f);
         }
         
     }
@@ -1231,6 +1304,43 @@ public class mundoGuerra : MonoBehaviour
         {
             seleccionarNPC();
         }
+        if(Input.GetKeyDown(KeyCode.R)){
+
+            Debug.Log("Ofensiva Roja");
+            modoOfensivoRojo = true;
+            modoDefensivoRojo = false;
+            modoNeutroRojo = false;
+        }else if(Input.GetKeyDown(KeyCode.B)){
+
+            Debug.Log("Ofensiva Azul");
+            modoOfensivoAzul = true;
+            modoDefensivoAzul = false;
+            modoNeutroAzul = false;
+        }else if(Input.GetKeyDown(KeyCode.T)){
+
+            Debug.Log("Defensiva Roja");
+            modoOfensivoRojo = false;
+            modoDefensivoRojo = true;
+            modoNeutroRojo = false;
+        }else if(Input.GetKeyDown(KeyCode.N)){
+
+            Debug.Log("Defensiva Azul");
+            modoOfensivoAzul = false;
+            modoDefensivoAzul = true;
+            modoNeutroAzul = false;
+        }else if(Input.GetKeyDown(KeyCode.Y)){
+
+            Debug.Log("Neutral Roja");
+            modoOfensivoRojo = false;
+            modoDefensivoRojo = false;
+            modoNeutroRojo = true;
+        }else if(Input.GetKeyDown(KeyCode.M)){
+
+            Debug.Log("Neutral Azul");
+            modoOfensivoAzul = false;
+            modoDefensivoAzul = false;
+            modoNeutroAzul = true;
+        }
 
     }
 
@@ -1300,6 +1410,7 @@ public class mundoGuerra : MonoBehaviour
         verificaSantuario();
         verificaEscuderia();
         actualizaObjetivos();
+        actualizarMinimapa();
         verificando = false;
     }
     private void actualizaObjetivos(){
@@ -1372,6 +1483,232 @@ public class mundoGuerra : MonoBehaviour
         }
     }
 
+    private void recuperaVidaNPC(){
+
+        for (int i = 0; i < numNPC; i++)
+        {
+            switch (i)
+            {
+                case INDEXARCHER1:{
+
+                    if (cArquero[0].getVida() < Archer.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY()),out x,out y);
+                        if (teamBlue[i].getI() == x && teamBlue[i].getJ() == y)
+                        {
+                            cArquero[0].recuperaVida();
+                        }
+                    }
+                    if (rArquero[0].getVida() < Archer.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY()),out x,out y);
+                        if (teamRed[i].getI() == x && teamRed[i].getJ() == y)
+                        {
+                            rArquero[0].recuperaVida();
+                        }
+                    }
+                    break;
+                }
+                case INDEXARCHER2:{
+
+                    if (cArquero[1].getVida() < Archer.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY()),out x,out y);
+                        if (teamBlue[i].getI() == x && teamBlue[i].getJ() == y)
+                        {
+                            cArquero[1].recuperaVida();
+                        }
+                    }
+                    if (rArquero[1].getVida() < Archer.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY()),out x,out y);
+                        if (teamRed[i].getI() == x && teamRed[i].getJ() == y)
+                        {
+                            rArquero[1].recuperaVida();
+                        }
+                    }
+                    break;
+                }
+                case INDEXPESADA1:{
+
+                    if (cPesada[0].getVida() < UnidadPesada.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY()),out x,out y);
+                        if (teamBlue[i].getI() == x && teamBlue[i].getJ() == y)
+                        {
+                            cPesada[0].recuperaVida();
+                        }
+                    }
+                    if (rPesada[0].getVida() < UnidadPesada.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY()),out x,out y);
+                        if (teamRed[i].getI() == x && teamRed[i].getJ() == y)
+                        {
+                            rPesada[0].recuperaVida();
+                        }
+                    }
+                    break;
+                }
+                case INDEXPESADA2:{
+
+                    if (cPesada[1].getVida() < UnidadPesada.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY()),out x,out y);
+                        if (teamBlue[i].getI() == x && teamBlue[i].getJ() == y)
+                        {
+                            cPesada[1].recuperaVida();
+                        }
+                    }
+                    if (rPesada[1].getVida() < UnidadPesada.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY()),out x,out y);
+                        if (teamRed[i].getI() == x && teamRed[i].getJ() == y)
+                        {
+                            rPesada[1].recuperaVida();
+                        }
+                    }
+                    break;
+                }
+                case INDEXEXPLORADOR:{
+
+                    if (cExplorador.getVida() < Explorador.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY()),out x,out y);
+                        if (teamBlue[i].getI() == x && teamBlue[i].getJ() == y)
+                        {
+                            cExplorador.recuperaVida();
+                        }
+                    }
+                    if (rExplorador.getVida() < Explorador.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY()),out x,out y);
+                        if (teamRed[i].getI() == x && teamRed[i].getJ() == y)
+                        {
+                            rExplorador.recuperaVida();
+                        }
+                    }
+                    break;
+                }
+                case INDEXVIGILANTE:{
+
+                    if (cPatrulla.getVida() < Explorador.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnAzul[i].getX(),0,spawnAzul[i].getY()),out x,out y);
+                        if (teamBlue[i].getI() == x && teamBlue[i].getJ() == y)
+                        {
+                            cPatrulla.recuperaVida();
+                        }
+                    }
+                    if (rPatrulla.getVida() < Explorador.VIDA_MAXIMA)
+                    {   
+                        int x;
+                        int y;
+                        grFinal.getCoordenadas(new Vector3(spawnRojo[i].getX(),0,spawnRojo[i].getY()),out x,out y);
+                        if (teamRed[i].getI() == x && teamRed[i].getJ() == y)
+                        {
+                            rPatrulla.recuperaVida();
+                        }
+                    }
+                    break;
+                }
+                default:
+                break;
+            }
+        }
+    }
+    private void actualizaMapaTacticoDeEnemigos(){
+
+        enemigosTeamBlue.resetArea();
+        for (int i = 1; i < equipoRojo.Length; i++)
+        {
+            int x;
+            int y;
+            grFinal.getCoordenadas(equipoRojo[i].Position,out x,out y);
+            enemigosTeamBlue.setPeligro(x,y);
+        }
+        enemigosTeamRed.resetArea();
+        for (int i = 1; i < equipoAzul.Length; i++)
+        {
+            int x;
+            int y;
+            grFinal.getCoordenadas(equipoAzul[i].Position,out x,out y);
+            enemigosTeamRed.setPeligro(x,y);
+        }
+        recuperaVidaNPC();
+        actualizaPosicionesDeEquipos();
+        actualizandoMapaTactico = false;
+
+    }
+    private void actualizaPosicionesDeEquipos(){
+
+        for (int i = 0; i < teamBlue.Length; i++)
+        {
+            switch (i)
+            {
+                case INDEXARCHER1:{
+
+                    unidadesAzul.setUnidad(teamBlue[i].getI(),teamBlue[i].getJ(), ArrayUnidades.ARQUEROAZUL);
+                    unidadesRojo.setUnidad(teamRed[i].getI(),teamRed[i].getJ(), ArrayUnidades.ARQUEROROJO);
+                    break;
+                }
+                case INDEXARCHER2:{
+
+                    unidadesAzul.setUnidad(teamBlue[i].getI(),teamBlue[i].getJ(), ArrayUnidades.ARQUEROAZUL);
+                    unidadesRojo.setUnidad(teamRed[i].getI(),teamRed[i].getJ(), ArrayUnidades.ARQUEROROJO);
+                    break;
+                }
+                case INDEXPESADA1:{
+
+                    unidadesAzul.setUnidad(teamBlue[i].getI(),teamBlue[i].getJ(), ArrayUnidades.UNIDADPESADAAZUL);
+                    unidadesRojo.setUnidad(teamRed[i].getI(),teamRed[i].getJ(), ArrayUnidades.UNIDADPESADAROJO);
+                    break;
+                }
+                case INDEXPESADA2:{
+
+                    unidadesAzul.setUnidad(teamBlue[i].getI(),teamBlue[i].getJ(), ArrayUnidades.UNIDADPESADAAZUL);
+                    unidadesRojo.setUnidad(teamRed[i].getI(),teamRed[i].getJ(), ArrayUnidades.UNIDADPESADAROJO);
+                    break;
+                }
+                case INDEXEXPLORADOR:{
+
+                    unidadesAzul.setUnidad(teamBlue[i].getI(),teamBlue[i].getJ(), ArrayUnidades.EXPLORADOAZUL);
+                    unidadesRojo.setUnidad(teamRed[i].getI(),teamRed[i].getJ(), ArrayUnidades.EXPLORADORROJO);
+                    break;
+                }
+                case INDEXVIGILANTE:{
+
+                    unidadesAzul.setUnidad(teamBlue[i].getI(),teamBlue[i].getJ(), ArrayUnidades.PATRULLAAZUL);
+                    unidadesRojo.setUnidad(teamRed[i].getI(),teamRed[i].getJ(), ArrayUnidades.PATRULLAROJO);
+                    break;
+                }
+                default:
+                break;
+            }
+            
+        }
+    }
     private void moverNPC(){
         
         for(int i=0;i<numNPC;i++)
@@ -1388,7 +1725,7 @@ public class mundoGuerra : MonoBehaviour
 
                     }else if(!cArquero[0].getMuerto()){
 
-                       movArcher(equipoAzul[i],0);
+                        movArcher(equipoAzul[i],0);
                     }
                     if (rArquero[0].getMuerto() && rArquero[0].getEstado() == Archer.MUERTO)
                     {
@@ -1522,7 +1859,11 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
             
             cArquero[index].setLimites(i,j);
-            npcVirtualAzul[indice].Position = cArquero[index].getDecision(rutaAzulPesada,grFinal,objetivosTeamBlue,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+            npcVirtualAzul[indice].Position = cArquero[index].getDecision(enemigosTeamBlue,rutaAzulPesada,grFinal,objetivosTeamBlue,
+                                                                        unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                        i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul)
+                                                                         + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
 
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
@@ -1534,7 +1875,6 @@ public class mundoGuerra : MonoBehaviour
         }else if(pl.getLLegada() && cArquero[index].getComportamiento() == Archer.ATACAR){
             
             //funcion de ataque
-            Debug.Log("aqui");
             cArquero[index].setComportamiento(Archer.RELOAD);
             if (index == 0)
             {
@@ -1600,7 +1940,10 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
             
             rArquero[index].setLimites(i,j);
-            npcVirtualRojo[indice].Position = rArquero[index].getDecision(rutaRojaPesada, grFinal,objetivosTeamRed,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+            npcVirtualRojo[indice].Position = rArquero[index].getDecision(enemigosTeamRed,rutaRojaPesada, grFinal,objetivosTeamRed,
+                                                                        unidadesAzul.getArray(),unidadesRojo.getArray(),i,j,
+                                                                        modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo)
+                                                                         + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
@@ -1676,7 +2019,11 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
                     
             cPesada[index].setLimites(i,j);
-            npcVirtualAzul[indice].Position = cPesada[index].getDecision(rutaAzulPesada,grFinal,objetivosTeamBlue,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+            npcVirtualAzul[indice].Position = cPesada[index].getDecision(enemigosTeamBlue,rutaAzulPesada,
+                                                                        grFinal,objetivosTeamBlue,unidadesAzul.getArray(),
+                                                                        unidadesRojo.getArray(),i,j,
+                                                                        modoNeutroAzul,modoOfensivoAzul,
+                                                                        modoDefensivoAzul) + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
@@ -1686,6 +2033,18 @@ public class mundoGuerra : MonoBehaviour
             pl.setLLegada(false);
 
             
+        }else if(pl.getLLegada() && cPesada[index].getComportamiento() == UnidadPesada.ATACAR){
+            
+            //funcion de ataque
+            cPesada[index].setComportamiento(UnidadPesada.RELOAD);
+            if (index == 0)
+            {
+                Invoke("ataquePesada1Azul",cPesada[index].getAtackSpeed());
+            }else{
+
+                Invoke("ataquePesada2Azul",cPesada[index].getAtackSpeed());
+            }
+
         }else if(!pl.getLLegada()){
                             
             buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
@@ -1739,7 +2098,11 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
                     
             rPesada[index].setLimites(i,j);
-            npcVirtualRojo[indice].Position = rPesada[index].getDecision(rutaRojaPesada,grFinal,objetivosTeamRed,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+            npcVirtualRojo[indice].Position = rPesada[index].getDecision(enemigosTeamRed,rutaRojaPesada,grFinal,
+                                                                        objetivosTeamRed,unidadesAzul.getArray(),
+                                                                        unidadesRojo.getArray(),i,j,modoNeutroRojo,
+                                                                        modoOfensivoRojo,modoDefensivoRojo) 
+                                                                        + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
@@ -1835,6 +2198,22 @@ public class mundoGuerra : MonoBehaviour
         }else{
 
             compruebaProipedadObjetivo(INDEX_TORRE_VIGIA,WayPoint.TORRE_VIGIA);
+            if (objetivosMundo[INDEX_TORRE_VIGIA].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in torreVigia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
     }
     private void verificaPuenteAzulIzquierdo(){
@@ -1885,6 +2264,22 @@ public class mundoGuerra : MonoBehaviour
         }else {
 
             compruebaProipedadObjetivo(INDEX_PUENTE_IZQUIERDO_AZUL,WayPoint.PUENTE_IZQUIERDO_AZUL);
+            if (objetivosMundo[INDEX_PUENTE_IZQUIERDO_AZUL].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in puenteIzquierdoAzul)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in puenteIzquierdoAzul)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }  
         
     }
@@ -1936,6 +2331,22 @@ public class mundoGuerra : MonoBehaviour
         }else {
 
             compruebaProipedadObjetivo(INDEX_PUENTE_DERECHO_AZUL,WayPoint.PUENTE_DERECHO_AZUL);
+            if (objetivosMundo[INDEX_PUENTE_DERECHO_AZUL].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in puenteDerechoAzul)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in puenteDerechoAzul)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
         
     }
@@ -1987,6 +2398,22 @@ public class mundoGuerra : MonoBehaviour
         }else{
 
             compruebaProipedadObjetivo(INDEX_PUENTE_DERECHO_ROJO,WayPoint.PUENTE_DERECHO_ROJO);
+            if (objetivosMundo[INDEX_PUENTE_DERECHO_ROJO].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in puenteDerechoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in puenteDerechoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
         
     }
@@ -2038,6 +2465,22 @@ public class mundoGuerra : MonoBehaviour
         }else{
 
             compruebaProipedadObjetivo(INDEX_PUENTE_IZQUIERDO_ROJO,WayPoint.PUENTE_IZQUIERDO_ROJO);
+            if (objetivosMundo[INDEX_PUENTE_IZQUIERDO_ROJO].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in puenteIzquierdoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in puenteIzquierdoRojo)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
         
     }
@@ -2049,24 +2492,20 @@ public class mundoGuerra : MonoBehaviour
         {
             foreach (Coordenada coor in objetivosMundo[index].getSlots())
             {
-                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                if (unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) >= ArrayUnidades.ARQUEROAZUL 
                     && unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
                 {
                         contAzul++;
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                }else if (unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) < ArrayUnidades.ARQUEROAZUL  
+                            && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO
+                            && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.LIBRE)
                 {
                     contRojo++;
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO 
-                            && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
-                            && !objetivosTeamRed.Contains(objetivosMundo[INDEX_TORRE_VIGIA]))
+                }else if (unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
+                            && !objetivosTeamRed.Contains(objetivosMundo[index]))
                 {
-                    objetivosTeamRed.Add(objetivosMundo[INDEX_TORRE_VIGIA]);
+                    objetivosTeamRed.Add(objetivosMundo[index]);
 
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
-                            && unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
-                            && !objetivosTeamBlue.Contains(objetivosMundo[INDEX_TORRE_VIGIA]))
-                {
-                    objetivosTeamBlue.Add(objetivosMundo[INDEX_TORRE_VIGIA]);
                 }
             }
             if (contAzul == 0 && contRojo >= 2)
@@ -2077,10 +2516,14 @@ public class mundoGuerra : MonoBehaviour
                 rutaRoja.setDisponible(objetivo,true);
                 rutaRojaPesada.setDisponible(objetivo,true);
 
-            }else if (!rutaAzul.getDisponible(objetivo))
+            }
+            if (!rutaAzul.getDisponible(objetivo))
             {
                 rutaAzul.setDisponible(objetivo,true);
-                rutaAzulPesada.setDisponible(objetivo,true);
+                rutaAzulPesada.setDisponible(objetivo,true);        
+            }
+            if(rutaRoja.getDisponible(objetivo)){
+
                 rutaRoja.setDisponible(objetivo,false);
                 rutaRojaPesada.setDisponible(objetivo,false);
             }
@@ -2088,40 +2531,40 @@ public class mundoGuerra : MonoBehaviour
         {
             foreach (Coordenada coor in objetivosMundo[index].getSlots())
             {
-                if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
+                if (unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) >= ArrayUnidades.ARQUEROAZUL
                     && unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADOAZUL)
                 {
                     contAzul++;
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO)
+                }else if (unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) < ArrayUnidades.ARQUEROAZUL 
+                            && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.EXPLORADORROJO
+                            && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) != ArrayUnidades.LIBRE)
                 {
                     contRojo++;
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCROJO 
-                            && unidadesRojo.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADORROJO
-                            && !objetivosTeamRed.Contains(objetivosMundo[INDEX_TORRE_VIGIA]))
+                }else if (unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
+                            && !objetivosTeamBlue.Contains(objetivosMundo[index]))
                 {
-                    objetivosTeamRed.Add(objetivosMundo[INDEX_TORRE_VIGIA]);
-
-                }else if (grFinal.getValor(coor.getX(),coor.getY()) == GridFinal.NPCAZUL 
-                            && unidadesAzul.getValorUnidad(coor.getX(),coor.getY()) == ArrayUnidades.EXPLORADOAZUL
-                            && !objetivosTeamBlue.Contains(objetivosMundo[INDEX_TORRE_VIGIA]))
-                {
-                    objetivosTeamBlue.Add(objetivosMundo[INDEX_TORRE_VIGIA]);
+                    objetivosTeamBlue.Add(objetivosMundo[index]);
                 }
             }
             if (contRojo == 0 && contAzul >= 2)
             {
-                objetivosMundo[index].setPropiedad(Objetivo.ROJO);
+                objetivosMundo[index].setPropiedad(Objetivo.AZUL);
                 rutaAzul.setDisponible(objetivo,true);
                 rutaAzulPesada.setDisponible(objetivo,true);
                 rutaRoja.setDisponible(objetivo,false);
                 rutaRojaPesada.setDisponible(objetivo,false);
 
-            }else if (!rutaRoja.getDisponible(objetivo))
+            }
+            if (!rutaRoja.getDisponible(objetivo))
+            {
+                
+                rutaRoja.setDisponible(objetivo,true);
+                rutaRojaPesada.setDisponible(objetivo,true);
+
+            }if (rutaAzul.getDisponible(objetivo))
             {
                 rutaAzul.setDisponible(objetivo,false);
                 rutaAzulPesada.setDisponible(objetivo,false);
-                rutaRoja.setDisponible(objetivo,true);
-                rutaRojaPesada.setDisponible(objetivo,true);
             }
         } 
     }
@@ -2172,6 +2615,22 @@ public class mundoGuerra : MonoBehaviour
         }else{
 
             compruebaProipedadObjetivo(INDEX_ARMERIA,WayPoint.ARMERIA);
+            if (objetivosMundo[INDEX_ARMERIA].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in armeria)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in armeria)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
     }
 
@@ -2223,6 +2682,22 @@ public class mundoGuerra : MonoBehaviour
         }else{
 
             compruebaProipedadObjetivo(INDEX_SANTUARIO,WayPoint.SANTUARIO);
+            if (objetivosMundo[INDEX_SANTUARIO].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in santuario)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in santuario)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
         
     }
@@ -2274,6 +2749,22 @@ public class mundoGuerra : MonoBehaviour
         }else{
 
             compruebaProipedadObjetivo(INDEX_ESCUDERIA,WayPoint.ESCUDERIA);
+            if (objetivosMundo[INDEX_ESCUDERIA].getPropiedad() == Objetivo.ROJO)
+            {
+                foreach (GameObject item in escuderia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = rojo;
+                }
+            }else{
+
+                foreach (GameObject item in escuderia)
+                {
+                    Renderer renderer = item.GetComponent<Renderer>(); // Obtén el componente Renderer
+                    renderer.material = azul;
+
+                }
+            }
         }
     }
     private void movExplorer(AgentNPC pl,List<Objetivo> objs){
@@ -2438,15 +2929,19 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
             
             cPatrulla.setLimites(i,j);
-            npcVirtualAzul[indice].Position = cPatrulla.getDecision(grFinal,rutaAzul,objetivosTeamBlue,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
-            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);             
+            npcVirtualAzul[indice].Position = cPatrulla.getDecision(grFinal,rutaAzul,enemigosTeamBlue,
+                                                                    unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                    i,j,modoNeutroAzul,modoOfensivoAzul,modoDefensivoAzul) 
+                                                                    + new Vector3(2,0,2);
+            grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
+                    
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
             caminosAzul[indice] = buscadoresAzul[indice].A();
 
             pl.setLLegada(false);
 
-           }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
+        }else if(pl.getLLegada() && cPatrulla.getComportamiento() == Patrulla.ATACAR){
             
             //funcion de ataque
             cPatrulla.setComportamiento(Patrulla.RELOAD);
@@ -2513,7 +3008,10 @@ public class mundoGuerra : MonoBehaviour
             int jObjetivo = j;
             
             rPatrulla.setLimites(i,j);
-            npcVirtualRojo[indice].Position = rPatrulla.getDecision(grFinal,rutaRoja,objetivosTeamRed,unidadesAzul.getArray(),unidadesRojo.getArray(),i,j) + new Vector3(2,0,2);
+            npcVirtualRojo[indice].Position = rPatrulla.getDecision(grFinal,rutaRoja,enemigosTeamRed,
+                                                                    unidadesAzul.getArray(),unidadesRojo.getArray(),
+                                                                    i,j,modoNeutroRojo,modoOfensivoRojo,modoDefensivoRojo) 
+                                                                    + new Vector3(2,0,2);
             grFinal.getCoordenadas(npcVirtualRojo[indice].Position,out iObjetivo,out jObjetivo);
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
@@ -2732,11 +3230,15 @@ public class mundoGuerra : MonoBehaviour
                         //arquero rojo enemigo
                         if (!rArquero[0].getMuerto())
                             rArquero[0].setVida(cArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         
                         if (!rArquero[1].getMuerto())
                             rArquero[1].setVida(cArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
@@ -2744,12 +3246,16 @@ public class mundoGuerra : MonoBehaviour
                     
                     if (!rExplorador.getMuerto())
                         rExplorador.setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
 
                     if (!rPatrulla.getMuerto())
                         rPatrulla.setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -2758,14 +3264,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada roja enemiga
                         if (!rPesada[0].getMuerto())
                             rPesada[0].setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         if (!rPesada[0].getMuerto())
                             rPesada[1].setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
                 default:
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                 break;
             }
             if (!cArquero[index].getMuerto())
@@ -2792,11 +3303,15 @@ public class mundoGuerra : MonoBehaviour
                         //arquero rojo enemigo
                         if (!rArquero[0].getMuerto())
                             rArquero[0].setVida(cArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         
                         if (!rArquero[1].getMuerto())
                             rArquero[1].setVida(cArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
@@ -2804,12 +3319,16 @@ public class mundoGuerra : MonoBehaviour
                     
                     if (!rExplorador.getMuerto())
                         rExplorador.setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
 
                     if (!rPatrulla.getMuerto())
                         rPatrulla.setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -2818,14 +3337,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada roja enemiga
                         if (!rPesada[0].getMuerto())
                             rPesada[0].setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         if (!rPesada[0].getMuerto())
                             rPesada[1].setVida(cArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
                 default:
+                            cArquero[index].setComportamiento(Archer.QUIETO);
                 break;
             }
             if (!cArquero[index].getMuerto())
@@ -2852,10 +3376,14 @@ public class mundoGuerra : MonoBehaviour
                         //arquero rojo enemigo
                         if (!cArquero[0].getMuerto())
                             cArquero[0].setVida(rArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         if (!cArquero[1].getMuerto())
                             cArquero[1].setVida(rArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
@@ -2863,11 +3391,15 @@ public class mundoGuerra : MonoBehaviour
                     
                     if (!cExplorador.getMuerto())
                         cExplorador.setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if (!cPatrulla.getMuerto())
                         cPatrulla.setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -2876,14 +3408,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if (!cPesada[0].getMuerto())
                             cPesada[0].setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         if (!cPesada[0].getMuerto())
                             cPesada[1].setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
                 default:
+                        rArquero[index].setComportamiento(Archer.QUIETO);
                 break;
             }
             if (!rArquero[index].getMuerto())
@@ -2909,10 +3446,14 @@ public class mundoGuerra : MonoBehaviour
                         //arquero rojo enemigo
                         if (!cArquero[0].getMuerto())
                             cArquero[0].setVida(rArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         if (!cArquero[1].getMuerto())
                             cArquero[1].setVida(rArquero[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
@@ -2920,11 +3461,15 @@ public class mundoGuerra : MonoBehaviour
                     
                     if (!cExplorador.getMuerto())
                         cExplorador.setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if (!cPatrulla.getMuerto())
                         cPatrulla.setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                    else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -2933,14 +3478,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if (!cPesada[0].getMuerto())
                             cPesada[0].setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                         
                     }else{
                         if (!cPesada[0].getMuerto())
                             cPesada[1].setVida(rArquero[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rArquero[index].setComportamiento(Archer.QUIETO);
                     }
                     break;
                 }
                 default:
+                        rArquero[index].setComportamiento(Archer.QUIETO);
                 break;
             }
             if (!rArquero[index].getMuerto())
@@ -2955,7 +3505,7 @@ public class mundoGuerra : MonoBehaviour
 
         int index = 0;
         int tipo = -1;
-        int enemy = cPesada[index].Atacar(grFinal,teamRed,unidadesRojo,out tipo);
+        int enemy = cPesada[index].Atacar(grFinal,teamRed,unidadesRojo,out tipo,modoDefensivoAzul);
 
         if (enemy != -1)
         {
@@ -2967,22 +3517,31 @@ public class mundoGuerra : MonoBehaviour
                         //arquero azul enemigo
                         if (!rArquero[0].getMuerto())
                             rArquero[0].setVida(cPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
+                        
                         
                     }else{
                         if (!rArquero[1].getMuerto())
                             rArquero[1].setVida(cPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 case ArrayUnidades.EXPLORADORROJO:{
                     if (!rExplorador.getMuerto())
-                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.EXPLORADOR));
+                    else
+                        cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
                     if (!rPatrulla.getMuerto())
-                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PATRULLA));
+                    else
+                        cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -2991,14 +3550,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if (!rPesada[0].getMuerto())
                             rPesada[0].setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                         
                     }else{
                         if (!rPesada[1].getMuerto())
                             rPesada[1].setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 default:
+                    cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                 break;
             }
             if (!cPesada[index].getMuerto())
@@ -3012,7 +3576,7 @@ public class mundoGuerra : MonoBehaviour
 
         int index = 1;
         int tipo = -1;
-        int enemy = cPesada[index].Atacar(grFinal,teamRed,unidadesRojo,out tipo);
+        int enemy = cPesada[index].Atacar(grFinal,teamRed,unidadesRojo,out tipo,modoDefensivoAzul);
 
         if (enemy != -1)
         {
@@ -3024,22 +3588,31 @@ public class mundoGuerra : MonoBehaviour
                         //arquero azul enemigo
                         if (!rArquero[0].getMuerto())
                             rArquero[0].setVida(cPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
+                        
                         
                     }else{
                         if (!rArquero[1].getMuerto())
                             rArquero[1].setVida(cPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 case ArrayUnidades.EXPLORADORROJO:{
                     if (!rExplorador.getMuerto())
-                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rExplorador.setVida(cPesada[index].getDaño(AgentNPC.EXPLORADOR));
+                    else
+                        cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
                     if (!rPatrulla.getMuerto())
-                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        rPatrulla.setVida(cPesada[index].getDaño(AgentNPC.PATRULLA));
+                    else
+                        cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -3048,14 +3621,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if (!rPesada[0].getMuerto())
                             rPesada[0].setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                         
                     }else{
                         if (!rPesada[1].getMuerto())
                             rPesada[1].setVida(cPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 default:
+                    cPesada[index].setComportamiento(UnidadPesada.QUIETO);
                 break;
             }
             if (!cPesada[index].getMuerto())
@@ -3068,7 +3646,7 @@ public class mundoGuerra : MonoBehaviour
 
         int index = 0;
         int tipo = -1;
-        int enemy = rPesada[index].Atacar(grFinal,teamBlue,unidadesAzul,out tipo);
+        int enemy = rPesada[index].Atacar(grFinal,teamBlue,unidadesAzul,out tipo,modoDefensivoRojo);
 
         if (enemy != -1)
         {
@@ -3080,22 +3658,30 @@ public class mundoGuerra : MonoBehaviour
                         //arquero azul enemigo
                         if (!cArquero[0].getMuerto())
                             cArquero[0].setVida(rPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                         
                     }else{
                         if (!cArquero[1].getMuerto())
                             cArquero[1].setVida(rPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 case ArrayUnidades.EXPLORADOAZUL:{
                     if (!cExplorador.getMuerto())
-                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.EXPLORADOR));
+                    else
+                        rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if (!cPatrulla.getMuerto())
-                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PATRULLA));
+                    else
+                        rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -3104,14 +3690,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if (!cPesada[0].getMuerto())
                             cPesada[0].setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                         
                     }else{
                         if (!cPesada[1].getMuerto())
                             cPesada[1].setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 default:
+                    rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                 break;
             }
             if (!rPesada[index].getMuerto())
@@ -3125,7 +3716,7 @@ public class mundoGuerra : MonoBehaviour
 
         int index = 0;
         int tipo = -1;
-        int enemy = rPesada[index].Atacar(grFinal,teamBlue,unidadesAzul,out tipo);
+        int enemy = rPesada[index].Atacar(grFinal,teamBlue,unidadesAzul,out tipo,modoDefensivoRojo);
 
         if (enemy != -1)
         {
@@ -3137,22 +3728,30 @@ public class mundoGuerra : MonoBehaviour
                         //arquero azul enemigo
                         if (!cArquero[0].getMuerto())
                             cArquero[0].setVida(rPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                         
                     }else{
                         if (!cArquero[1].getMuerto())
                             cArquero[1].setVida(rPesada[index].getDaño(AgentNPC.ARQUERO));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 case ArrayUnidades.EXPLORADOAZUL:{
                     if (!cExplorador.getMuerto())
-                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cExplorador.setVida(rPesada[index].getDaño(AgentNPC.EXPLORADOR));
+                    else
+                        rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
                     if (!cPatrulla.getMuerto())
-                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        cPatrulla.setVida(rPesada[index].getDaño(AgentNPC.PATRULLA));
+                    else
+                        rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -3161,14 +3760,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if (!cPesada[0].getMuerto())
                             cPesada[0].setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                         
                     }else{
                         if (!cPesada[1].getMuerto())
                             cPesada[1].setVida(rPesada[index].getDaño(AgentNPC.PESADA));
+                        else
+                            rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                     }
                     break;
                 }
                 default:
+                    rPesada[index].setComportamiento(UnidadPesada.QUIETO);
                 break;
             }
             if (!rPesada[index].getMuerto())
@@ -3181,7 +3785,7 @@ public class mundoGuerra : MonoBehaviour
     private void ataquePatrullaRojo(){
 
         int tipo = -1;
-        int enemy = rPatrulla.Atacar(grFinal,teamBlue,unidadesAzul,out tipo);
+        int enemy = rPatrulla.Atacar(grFinal,teamBlue,unidadesAzul,out tipo,modoDefensivoRojo);
 
         if (enemy != -1)
         {
@@ -3193,22 +3797,31 @@ public class mundoGuerra : MonoBehaviour
                         //arquero azul enemigo
                         if(!cArquero[0].getMuerto())
                             cArquero[0].setVida(rPatrulla.getDaño(AgentNPC.ARQUERO));
+                        else
+                            rPatrulla.setComportamiento(Patrulla.QUIETO);
                         
                     }else{
                         if(!cArquero[1].getMuerto())
                             cArquero[1].setVida(rPatrulla.getDaño(AgentNPC.ARQUERO));
+                        else
+                            rPatrulla.setComportamiento(Patrulla.QUIETO);
                     }
                     break;
                 }
                 case ArrayUnidades.EXPLORADOAZUL:{
                     if(!cExplorador.getMuerto())
-                        cExplorador.setVida(rPatrulla.getDaño(AgentNPC.PESADA));
+                        cExplorador.setVida(rPatrulla.getDaño(AgentNPC.EXPLORADOR));
+                    else
+                        rPatrulla.setComportamiento(Patrulla.QUIETO);
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAAZUL:{
+
                     if(!cPatrulla.getMuerto())
-                        cPatrulla.setVida(rPatrulla.getDaño(AgentNPC.PESADA));
+                        cPatrulla.setVida(rPatrulla.getDaño(AgentNPC.PATRULLA));
+                    else
+                        rPatrulla.setComportamiento(Patrulla.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAAZUL:{
@@ -3217,14 +3830,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if(!cPesada[0].getMuerto())
                             cPesada[0].setVida(rPatrulla.getDaño(AgentNPC.PESADA));
+                        else
+                            rPatrulla.setComportamiento(Patrulla.QUIETO);
                         
                     }else{
                         if(!cPesada[1].getMuerto())
                             cPesada[1].setVida(rPatrulla.getDaño(AgentNPC.PESADA));
+                        else
+                            rPatrulla.setComportamiento(Patrulla.QUIETO);
                     }
                     break;
                 }
                 default:
+                    rPatrulla.setComportamiento(Patrulla.QUIETO);
                 break;
             }
             if (!rPatrulla.getMuerto())
@@ -3238,7 +3856,7 @@ public class mundoGuerra : MonoBehaviour
     private void ataquePatrullaAzul(){
 
         int tipo = -1;
-        int enemy = cPatrulla.Atacar(grFinal,teamRed,unidadesRojo,out tipo);
+        int enemy = cPatrulla.Atacar(grFinal,teamRed,unidadesRojo,out tipo,modoDefensivoAzul);
 
         if (enemy != -1)
         {
@@ -3249,23 +3867,32 @@ public class mundoGuerra : MonoBehaviour
                     {
                         //arquero azul enemigo
                         if(!rArquero[0].getMuerto())
-                        rArquero[0].setVida(cPatrulla.getDaño(AgentNPC.ARQUERO));
+                            rArquero[0].setVida(cPatrulla.getDaño(AgentNPC.ARQUERO));
+                        else
+                            cPatrulla.setComportamiento(Patrulla.QUIETO);
                         
                     }else{
+                        
                         if(!rArquero[1].getMuerto())
-                        rArquero[1].setVida(cPatrulla.getDaño(AgentNPC.ARQUERO));
+                            rArquero[1].setVida(cPatrulla.getDaño(AgentNPC.ARQUERO));
+                        else
+                            cPatrulla.setComportamiento(Patrulla.QUIETO);
                     }
                     break;
                 }
                 case ArrayUnidades.EXPLORADORROJO:{
                     if(!rExplorador.getMuerto())
-                        rExplorador.setVida(cPatrulla.getDaño(AgentNPC.PESADA));
+                        rExplorador.setVida(cPatrulla.getDaño(AgentNPC.EXPLORADOR));
+                    else
+                        cPatrulla.setComportamiento(Patrulla.QUIETO);
                     
                     break;
                 }
                 case ArrayUnidades.PATRULLAROJO:{
                     if(!rPatrulla.getMuerto())
-                        rPatrulla.setVida(cPatrulla.getDaño(AgentNPC.PESADA));
+                        rPatrulla.setVida(cPatrulla.getDaño(AgentNPC.PATRULLA));
+                    else
+                        cPatrulla.setComportamiento(Patrulla.QUIETO);
                     break;
                 }
                 case ArrayUnidades.UNIDADPESADAROJO:{
@@ -3274,14 +3901,19 @@ public class mundoGuerra : MonoBehaviour
                         //Unidad Pesada azul enemiga
                         if(!rPesada[0].getMuerto())
                             rPesada[0].setVida(cPatrulla.getDaño(AgentNPC.PESADA));
+                        else
+                            cPatrulla.setComportamiento(Patrulla.QUIETO);
                         
                     }else{
                         if(!rPesada[1].getMuerto())
                             rPesada[1].setVida(cPatrulla.getDaño(AgentNPC.PESADA));
+                        else
+                            cPatrulla.setComportamiento(Patrulla.QUIETO);
                     }
                     break;
                 }
                 default:
+                    cPatrulla.setComportamiento(Patrulla.QUIETO);
                 break;
             }
             if (!cPatrulla.getMuerto())

@@ -29,6 +29,8 @@ public class Explorador
     private int posJ;
     private int estado;
 
+    //Vida
+    public const int VIDA_MAXIMA = 80;
     //Equipos
     public const string ROJO = "FF0000";
     public const string AZUL = "0000FF"; 
@@ -95,15 +97,18 @@ public class Explorador
     }
     public void setVida(int val){
 
-        vida = vida - val;
-        actualizaBarraDeVida();
-        if (vida == 0)
+        if (!muerto)
         {
-            npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
-            muerto = true;
-            estado = MUERTO;
-            referencia.SetActive(false);
-            com = QUIETO;
+            vida = vida - val;
+            actualizaBarraDeVida();
+            if (vida <= 0)
+            {
+                npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
+                muerto = true;
+                estado = MUERTO;
+                referencia.SetActive(false);
+                com = QUIETO;
+            }
         }
     }
     public int getDelay(){
@@ -123,6 +128,14 @@ public class Explorador
         }
         muerto = false;
         reaparecer();
+    }
+    public void recuperaVida(){
+
+        vida = 80;
+        for (int i = 0; i < barra_vida.Length - santuario; i++)
+        {
+            barra_vida[i].SetActive(true);
+        }
     }
     private void reaparecer(){
 
@@ -190,9 +203,9 @@ public class Explorador
                     
                 }else if(equipo == ROJO && (mundo[i,j] >= ArrayUnidades.ARQUEROAZUL && mundo[i,j] <= ArrayUnidades.PATRULLAAZUL)){
                     
+                    break;
                     enemigos = true;
                     break;
-                    
                 }
             }
         }
