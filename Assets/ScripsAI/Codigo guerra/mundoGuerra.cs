@@ -100,8 +100,6 @@ public class mundoGuerra : MonoBehaviour
     private GameObject minimapa_tactico;
     public Camera camara_minimapa;
     private LayerMask layerOriginal;
-    public float timer = 0f;
-    public float interval = 5.0f;
 
     // informacion
     
@@ -499,7 +497,6 @@ public class mundoGuerra : MonoBehaviour
         Vector3 ajuste = new Vector3(6,0.2f,6);
         int contx=0;
         int conty=0;
-        Debug.Log("Inicio del minimapa tactico");
 
         // Recorremos todas las casillas del grid
         for (int j = 0; j < cols; j+=3){
@@ -519,48 +516,32 @@ public class mundoGuerra : MonoBehaviour
                 // Le asignamos el material correspondiente a su equipo
 
                 if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
-                {
                     plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
-                    Debug.Log("La casilla (" + i + "," + j + ") es baja para el equipo azul");
-                }
+        
                 else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
-                {
                     plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
-                    Debug.Log("La casilla (" + i + "," + j + ") es alta para el equipo azul");
-                }
+
                 else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
-                {
                     plane.GetComponent<Renderer>().material = materialEquipoRojo;
-                    Debug.Log("La casilla (" + i + "," + j + ") es media para el equipo azul");
-                }
-                
+
                 if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
-                {
                     plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
-                    Debug.Log("La casilla (" + i + "," + j + ") es baja para el equipo rojo");
-                }
+
                 else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
-                {
                     plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
-                    Debug.Log("La casilla (" + i + "," + j + ") es alta para el equipo rojo");
-                }
+
                 else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
-                {
                     plane.GetComponent<Renderer>().material = materialEquipoAzul;
-                    Debug.Log("La casilla (" + i + "," + j + ") es media para el equipo rojo");
-                }
+
                 if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
-                {
                     plane.GetComponent<Renderer>().material = materialNeutro;
-                    Debug.Log("La casilla (" + i + "," + j + ") es neutra para ambos");
-                }
+
 
                 contx++;
             }
 
             conty++;
         }
-        Debug.Log("Fin del minimapa tactico");
 
     }
 
@@ -1292,7 +1273,10 @@ public class mundoGuerra : MonoBehaviour
         {
             actualizandoMapaTactico = true;
             Invoke("actualizaMapaTacticoDeEnemigos",0.5f);
+            Invoke("actualizarMinimapaTactico",5.0f);
         }
+
+        
         
     }
 
@@ -1304,7 +1288,6 @@ public class mundoGuerra : MonoBehaviour
             if(modoDebug){
                 camara_minimapa.cullingMask = (1 << 9);
                 actualizarMinimapaTactico();
-                Debug.Log("solo se ejcuta una vez");
                 crearWayPoints();
             } else{
                 camara_minimapa.cullingMask = layerOriginal;
@@ -1312,22 +1295,8 @@ public class mundoGuerra : MonoBehaviour
             }
         }
 
-        
 
         if(modoDebug){
-            
-            timer += Time.deltaTime;
-
-            // Verificar si ha transcurrido el intervalo de tiempo
-            if (timer >= interval)
-            {
-                // Llamar a la función que deseas activar
-                actualizarMinimapaTactico();
-
-                // Reiniciar el temporizador
-                timer = 0f;
-            }
-
 
             if(selectAgent != null){
                 debugNombre.text = "Unidad: " + selectAgent.name;
@@ -1436,7 +1405,7 @@ public class mundoGuerra : MonoBehaviour
                     {
                         buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
                         buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-                        caminosAzul[indice] = buscadoresAzul[indice].A();
+                        caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
                         selectAgent.setLLegada(false);
                         selectAgent.quitarMarcador();
@@ -2020,7 +1989,7 @@ public class mundoGuerra : MonoBehaviour
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
             
@@ -2106,7 +2075,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
@@ -2192,7 +2161,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
 
@@ -2277,7 +2246,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
@@ -2970,7 +2939,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
             
@@ -3036,7 +3005,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
@@ -3107,7 +3076,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A();
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
             pl.setLLegada(false);
 
@@ -3186,7 +3155,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A();
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
 
             pl.setLLegada(false);
             
