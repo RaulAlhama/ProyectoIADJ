@@ -1304,6 +1304,42 @@ public class mundoGuerra : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.R)){
 
+            Debug.Log("Ofensiva Roja");
+            modoOfensivoRojo = true;
+            modoDefensivoRojo = false;
+            modoNeutroRojo = false;
+        }else if(Input.GetKeyDown(KeyCode.B)){
+
+            Debug.Log("Ofensiva Azul");
+            modoOfensivoAzul = true;
+            modoDefensivoAzul = false;
+            modoNeutroAzul = false;
+        }else if(Input.GetKeyDown(KeyCode.T)){
+
+            Debug.Log("Defensiva Roja");
+            modoOfensivoRojo = false;
+            modoDefensivoRojo = true;
+            modoNeutroRojo = false;
+        }else if(Input.GetKeyDown(KeyCode.N)){
+
+            Debug.Log("Defensiva Azul");
+            modoOfensivoAzul = false;
+            modoDefensivoAzul = true;
+            modoNeutroAzul = false;
+        }else if(Input.GetKeyDown(KeyCode.Y)){
+
+            Debug.Log("Neutral Roja");
+            modoOfensivoRojo = false;
+            modoDefensivoRojo = false;
+            modoNeutroRojo = true;
+        }else if(Input.GetKeyDown(KeyCode.M)){
+
+            Debug.Log("Neutral Azul");
+            modoOfensivoAzul = false;
+            modoDefensivoAzul = false;
+            modoNeutroAzul = true;
+        }
+
     }
 
     void OnDrawGizmos()

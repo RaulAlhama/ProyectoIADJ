@@ -480,6 +480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Barra de Escudo
       objectReference: {fileID: 0}
+    - target: {fileID: 3414058813187765325, guid: dc6fb17d7ebc9c1448f04abff65371b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5423067839135359083, guid: dc6fb17d7ebc9c1448f04abff65371b4, type: 3}
       propertyPath: m_RootOrder
       value: 3
