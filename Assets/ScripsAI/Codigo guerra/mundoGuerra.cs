@@ -41,6 +41,9 @@ public class mundoGuerra : MonoBehaviour
     public GameObject[] puenteIzquierdoRojo;
     public GameObject[] santuario;
     public GameObject[] escuderia;
+    public GameObject vicAzul;
+    public GameObject vicRoja;
+
     
 
     //Barras de vida
@@ -139,7 +142,9 @@ public class mundoGuerra : MonoBehaviour
     private bool modoOfensivoRojo = false;
     private bool modoNeutroAzul = true;
     private bool modoNeutroRojo = true;
-
+    private bool victoria = false;
+    private bool victoriaAzul = false;
+    private bool victoriaRoja = false;
 
     private bool actualizandoMapaTactico = false;
 
@@ -456,9 +461,9 @@ public class mundoGuerra : MonoBehaviour
 
     }
 
+    // Función que inicializa el mapa táctico
     private void inicializarMinimapaTactico(){
 
-        //Vector3 ajuste = new Vector3(6,-0.2f,6);
         Vector3 ajuste = new Vector3(6,0.2f,6);
         minimapa_tactico = new GameObject("minimapa_tactico");
         int contx=0;
@@ -482,62 +487,6 @@ public class mundoGuerra : MonoBehaviour
                 // Lo colocamos en la layer de no minimapa para que no se vea
                 plane.layer = 8;
                 plane.GetComponent<Renderer>().enabled = false;
-                // Obtenemos los arrays de enemigos
-                int[,] enemigosAzul = enemigosTeamBlue.getArray();
-                int[,] enemigosRojo = enemigosTeamRed.getArray();
-
-                contx++;
-            }
-
-            conty++;
-        }
-
-    }
-
-    private void actualizarMinimapaTactico(){
-
-        Vector3 ajuste = new Vector3(6,0.2f,6);
-        int contx=0;
-        int conty=0;
-
-        // Recorremos todas las casillas del grid
-        for (int j = 0; j < cols; j+=3){
-
-            contx=0;
-
-            for (int i = 0; i< rows; i+=3){
-
-                // Lo guardamos en el array de casillas
-                GameObject plane = casillas_minimapa_tactico[contx,conty];
-                // Lo colocamos en la layer de no minimapa para que no se vea
-                plane.layer = 9;
-                plane.GetComponent<Renderer>().enabled = true;
-                // Obtenemos los arrays de enemigos
-                int[,] enemigosAzul = enemigosTeamBlue.getArray();
-                int[,] enemigosRojo = enemigosTeamRed.getArray();
-                // Le asignamos el material correspondiente a su equipo
-
-                if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
-                    plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
-        
-                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
-                    plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
-
-                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
-                    plane.GetComponent<Renderer>().material = materialEquipoRojo;
-
-                if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
-                    plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
-
-                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
-                    plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
-
-                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
-                    plane.GetComponent<Renderer>().material = materialEquipoAzul;
-
-                if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
-                    plane.GetComponent<Renderer>().material = materialNeutro;
-
 
                 contx++;
             }
@@ -583,6 +532,59 @@ public class mundoGuerra : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Función que actualiza el mapa táctico
+    private void actualizarMinimapaTactico(){
+
+        int contx=0;
+        int conty=0;
+
+        // Recorremos todas las casillas del grid
+        for (int j = 0; j < cols; j+=3){
+
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
+
+                // Lo guardamos en el array de casillas
+                GameObject plane = casillas_minimapa_tactico[contx,conty];
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 9;
+                plane.GetComponent<Renderer>().enabled = true;
+                // Obtenemos los arrays de enemigos
+                int[,] enemigosAzul = enemigosTeamBlue.getArray();
+                int[,] enemigosRojo = enemigosTeamRed.getArray();
+    
+                // Le asignamos el material correspondiente a su equipo
+                if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
+        
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
+
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                    plane.GetComponent<Renderer>().material = materialEquipoRojo;
+
+                if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
+
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
+
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                    plane.GetComponent<Renderer>().material = materialEquipoAzul;
+
+                if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
+                    plane.GetComponent<Renderer>().material = materialNeutro;
+
+
+                contx++;
+            }
+
+            conty++;
+        }
+
     }
 
     private void setTorreVigia(){
@@ -1335,92 +1337,195 @@ public class mundoGuerra : MonoBehaviour
                         debugVida.text = "Vida: " + cPatrulla.getVida();
                     }
                     debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
+        if(!victoria){
+            
+            if (Input.GetKeyDown(KeyCode.H)){
+                modoDebug = !modoDebug;
+                if(modoDebug){
+                    camara_minimapa.cullingMask = (1 << 9);
+                    actualizarMinimapaTactico();
+                    crearWayPoints();
                 } else{
-                    int indice = System.Array.IndexOf(equipoRojo, selectAgent);
-                     if(indice == INDEXEXPLORADOR){
-                        debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
-                        debugVida.text = "Vida: " + rExplorador.getVida();
-
-                    } 
-                    else if(indice == INDEXARCHER1){
-                        debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
-                        debugVida.text = "Vida: " + rArquero[0].getVida();
-                    }
-                    else if(indice == INDEXARCHER2){
-                        debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
-                        debugVida.text = "Vida: " + rArquero[1].getVida();
-                    }
-
-                    else if(indice == INDEXPESADA1){
-                        debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
-                        debugVida.text = "Vida: " + rPesada[0].getVida();
-                    } 
-                    else if(indice == INDEXPESADA2){
-                        debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
-                        debugVida.text = "Vida: " + cPesada[1].getVida();
-                    }
-
-                    else {
-                        debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
-                        debugVida.text = "Vida: " + cPatrulla.getVida();
-                    }
-                    debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
+                    camara_minimapa.cullingMask = layerOriginal;
+                    eliminarWayPoints();
                 }
-            } else{
-                debugNombre.text = "Unidad: ";
-                debugComportamiento.text = "Comportamiento: ";
-                debugVida.text = "Vida: ";
-                debugOjetivo.text = "Objetivo: ";
             }
-                    
-        }
-                
 
-        moverNPC();
-        if (!verificando)
-        {
-            Invoke("verificacion",1);
-            verificando = true;
-        }
-        
-        if (Input.GetMouseButtonDown(1))
-        {   
-            if (selectAgent != null){
+            if(modoDebug){
 
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
+                if(selectAgent != null){
+                    debugNombre.text = "Unidad: " + selectAgent.name;
                     if(isAzul){
-                        punteroPrefab.transform.position =  hit.point; //Se la asignamos también al puntero
-                        GameObject puntero = Instantiate(punteroPrefab);// creamos el puntero
-                        Destroy(puntero, 0.5f);
+                        int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+                        if(indice == INDEXEXPLORADOR){
+                            debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
+                            debugVida.text = "Vida: " + cExplorador.getVida();
+
+                            } 
+                            else if(indice == INDEXARCHER1){
+                                debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
+                                debugVida.text = "Vida: " + cArquero[0].getVida();
+                            }
+                            else if(indice == INDEXARCHER2){
+                                debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
+                                debugVida.text = "Vida: " + cArquero[1].getVida();
+                            }
+
+                            else if(indice == INDEXPESADA1){
+                                debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
+                                debugVida.text = "Vida: " + cPesada[0].getVida();
+                            } 
+                            else if(indice == INDEXPESADA2){
+                                debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
+                                debugVida.text = "Vida: " + cPesada[1].getVida();
+                            }
+
+                            else {
+                                debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
+                                debugVida.text = "Vida: " + cPatrulla.getVida();
+                            }
+                            debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
+                        } else{
+                            int indice = System.Array.IndexOf(equipoRojo, selectAgent);
+                            if(indice == INDEXEXPLORADOR){
+                                debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
+                                debugVida.text = "Vida: " + rExplorador.getVida();
+
+                            } 
+                            else if(indice == INDEXARCHER1){
+                                debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
+                                debugVida.text = "Vida: " + rArquero[0].getVida();
+                            }
+                            else if(indice == INDEXARCHER2){
+                                debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
+                                debugVida.text = "Vida: " + rArquero[1].getVida();
+                            }
+
+                            else if(indice == INDEXPESADA1){
+                                debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
+                                debugVida.text = "Vida: " + rPesada[0].getVida();
+                            } 
+                            else if(indice == INDEXPESADA2){
+                                debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
+                                debugVida.text = "Vida: " + cPesada[1].getVida();
+                            }
+
+                            else {
+                                debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
+                                debugVida.text = "Vida: " + cPatrulla.getVida();
+                            }
+                            debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
+                        }
+                    } else{
+                        debugNombre.text = "Unidad: ";
+                        debugComportamiento.text = "Comportamiento: ";
+                        debugVida.text = "Vida: ";
+                        debugOjetivo.text = "Objetivo: ";
                     }
-                    
-
-                    GameObject obj = hit.collider.gameObject;
-                    int iObjetivo;
-                    int jObjetivo;
-
-                    grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
-
-                    int indice = System.Array.IndexOf(equipoAzul, selectAgent);
-
-                    if (indice != -1)
-                    {
-                        buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
-                        buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-                        caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
-
-                        selectAgent.setLLegada(false);
-                        selectAgent.quitarMarcador();
-                    }
-                    
+                            
                 }
-            }
-           
-        }
-        if (Input.GetMouseButtonDown(0))
+                        
+
+                moverNPC();
+                if (!verificando)
+                {
+                    Invoke("verificacion",1);
+                    verificando = true;
+                }
+                
+                if (Input.GetMouseButtonDown(1))
+                {   
+                    if (selectAgent != null){
+
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if(isAzul){
+                            punteroPrefab.transform.position =  hit.point; //Se la asignamos también al puntero
+                            GameObject puntero = Instantiate(punteroPrefab);// creamos el puntero
+                            Destroy(puntero, 0.5f);
+                        }
+                        
+
+                        GameObject obj = hit.collider.gameObject;
+                        int iObjetivo;
+                        int jObjetivo;
+
+                        grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
+
+                            int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+
+                        if (indice != -1)
+                        {
+                            buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+                            buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+                            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
+
+                                selectAgent.setLLegada(false);
+                                selectAgent.quitarMarcador();
+                            }
+                            
+                        }
+                    }
+                
+                }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    seleccionarNPC();
+                }
+                if(Input.GetKeyDown(KeyCode.R)){
+
+                    Debug.Log("Ofensiva Roja");
+                    modoOfensivoRojo = true;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = false;
+                }else if(Input.GetKeyDown(KeyCode.B)){
+
+                    Debug.Log("Ofensiva Azul");
+                    modoOfensivoAzul = true;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = false;
+                }else if(Input.GetKeyDown(KeyCode.T)){
+
+                    Debug.Log("Defensiva Roja");
+                    modoOfensivoRojo = false;
+                    modoDefensivoRojo = true;
+                    modoNeutroRojo = false;
+                }else if(Input.GetKeyDown(KeyCode.N)){
+
+                    Debug.Log("Defensiva Azul");
+                    modoOfensivoAzul = false;
+                    modoDefensivoAzul = true;
+                    modoNeutroAzul = false;
+                }else if(Input.GetKeyDown(KeyCode.Y)){
+
+                    Debug.Log("Neutral Roja");
+                    modoOfensivoRojo = false;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = true;
+                }else if(Input.GetKeyDown(KeyCode.M)){
+
+                    Debug.Log("Neutral Azul");
+                    modoOfensivoAzul = false;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = true;
+                }else if(Input.GetKeyDown(KeyCode.G)){
+            
+                    Debug.Log("¡¡¡ Modo Guerra Total !!!");
+                    modoOfensivoAzul = true;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = false;
+                    modoOfensivoRojo = true;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = false;
+                }
+
+        }else if (victoriaAzul){
+
+            vicAzul.SetActive(true);
+            
+        }else if (victoriaRoja)
         {
             seleccionarNPC();
         }
@@ -1482,6 +1587,7 @@ public class mundoGuerra : MonoBehaviour
                 isGuerra = false;
             }
                 
+            vicRoja.SetActive(true);
         }
 
     }
@@ -1580,6 +1686,30 @@ public class mundoGuerra : MonoBehaviour
                     objExplorerRed.Add(objetivosMundo[i]);
                 }
             }
+        }
+    }
+    private void condicionDeVictoria(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        for (int i = 0; i < objetivosMundo.Length; i++)
+        {
+            if (objetivosMundo[i].getPropiedad() == Objetivo.AZUL)
+            {
+                contAzul++;
+            }else if (objetivosMundo[i].getPropiedad() == Objetivo.ROJO)
+            {
+                contRojo++;
+            }
+        }
+        if (contAzul == numObjetives)
+        {
+            victoria = true;
+            victoriaAzul = true;
+        }else if (contRojo == numObjetives)
+        {
+            victoria = true;
+            victoriaRoja = true;
         }
     }
     private void seleccionarNPC(){

@@ -535,27 +535,23 @@ public class Patrulla
         int x = 0;
         int y = 0;
 
-        if (defensivo)
-        {
-            if (vidaBaja())
-            {
+        if (defensivo){
+            
+            if (vidaBaja()){
                 com = UnidadPesada.MOVERSE;
                 tipo = -1;
                 return -1;
             }
         }
-
         if(enemigosEnRango(unidades.getArray(),out x, out y)){
 
             lastCom = com;
             com = Patrulla.ATACAR;
             int indice = -1;
             int aux = -1;
-            for (int i = 0; i < teamEnemy.Length; i++)
-            {
+            for (int i = 0; i < teamEnemy.Length; i++){
                 
-                if (teamEnemy[i].getI() == x && teamEnemy[i].getJ() == y)
-                {
+                if (teamEnemy[i].getI() == x && teamEnemy[i].getJ() == y){
                     aux = unidades.getValorUnidad(x,y);
                     indice = i;
                 }
@@ -564,9 +560,8 @@ public class Patrulla
             return indice;
 
         }else{
-
-            if (!muerto)
-            {
+            if (!muerto){
+                
                 com = QUIETO; 
             }
             

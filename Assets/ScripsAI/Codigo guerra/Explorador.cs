@@ -336,7 +336,6 @@ public class Explorador
             com = Explorador.MOVERSE;
             
         }
-        //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
         
         return target;
     }
