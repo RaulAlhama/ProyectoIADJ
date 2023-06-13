@@ -44,7 +44,6 @@ public class mundoGuerra : MonoBehaviour
     public GameObject vicAzul;
     public GameObject vicRoja;
 
-    
 
     //Barras de vida
     private GameObject[] vidaExploradorAzul;
@@ -145,6 +144,7 @@ public class mundoGuerra : MonoBehaviour
     private bool victoria = false;
     private bool victoriaAzul = false;
     private bool victoriaRoja = false;
+
 
     private bool actualizandoMapaTactico = false;
 
@@ -461,9 +461,9 @@ public class mundoGuerra : MonoBehaviour
 
     }
 
-    // Función que inicializa el mapa táctico
     private void inicializarMinimapaTactico(){
 
+        //Vector3 ajuste = new Vector3(6,-0.2f,6);
         Vector3 ajuste = new Vector3(6,0.2f,6);
         minimapa_tactico = new GameObject("minimapa_tactico");
         int contx=0;
@@ -496,7 +496,7 @@ public class mundoGuerra : MonoBehaviour
 
     }
 
-    // Función que actualiza las casillas de los objetivos del minimapa
+     // Función que actualiza las casillas de los objetivos del minimapa
     private void actualizarMinimapa(){
 
         // Recorremos los objetivos del mapa
@@ -534,7 +534,6 @@ public class mundoGuerra : MonoBehaviour
         }
     }
 
-    // Función que actualiza el mapa táctico
     private void actualizarMinimapaTactico(){
 
         int contx=0;
@@ -555,8 +554,8 @@ public class mundoGuerra : MonoBehaviour
                 // Obtenemos los arrays de enemigos
                 int[,] enemigosAzul = enemigosTeamBlue.getArray();
                 int[,] enemigosRojo = enemigosTeamRed.getArray();
-    
                 // Le asignamos el material correspondiente a su equipo
+
                 if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
                     plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
         
@@ -586,6 +585,8 @@ public class mundoGuerra : MonoBehaviour
         }
 
     }
+
+   
 
     private void setTorreVigia(){
         // Vigia 
@@ -1286,59 +1287,7 @@ public class mundoGuerra : MonoBehaviour
 
     private bool isAzul = false;
     void Update(){
-
-        if (Input.GetKeyDown(KeyCode.H)){
-            modoDebug = !modoDebug;
-            if(modoDebug){
-                camara_minimapa.cullingMask = (1 << 9);
-                actualizarMinimapaTactico();
-                crearWayPoints();
-            } else{
-                camara_minimapa.cullingMask = layerOriginal;
-                eliminarWayPoints();
-                foreach (GameObject objective in listaObjetivos){
-                    Destroy(objective);
-                }
-            }
-        }
-
-
-        if(modoDebug){
-
-            if(selectAgent != null){
-                debugNombre.text = "Unidad: " + selectAgent.name;
-                if(isAzul){
-                    int indice = System.Array.IndexOf(equipoAzul, selectAgent);
-                    if(indice == INDEXEXPLORADOR){
-                        debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
-                        debugVida.text = "Vida: " + cExplorador.getVida();
-
-                    } 
-                    else if(indice == INDEXARCHER1){
-                        debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
-                        debugVida.text = "Vida: " + cArquero[0].getVida();
-                    }
-                    else if(indice == INDEXARCHER2){
-                        debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
-                        debugVida.text = "Vida: " + cArquero[1].getVida();
-                    }
-
-                    else if(indice == INDEXPESADA1){
-                        debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
-                        debugVida.text = "Vida: " + cPesada[0].getVida();
-                    } 
-                    else if(indice == INDEXPESADA2){
-                        debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
-                        debugVida.text = "Vida: " + cPesada[1].getVida();
-                    }
-
-                    else {
-                        debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
-                        debugVida.text = "Vida: " + cPatrulla.getVida();
-                    }
-                    debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
         if(!victoria){
-            
             if (Input.GetKeyDown(KeyCode.H)){
                 modoDebug = !modoDebug;
                 if(modoDebug){
@@ -1348,8 +1297,12 @@ public class mundoGuerra : MonoBehaviour
                 } else{
                     camara_minimapa.cullingMask = layerOriginal;
                     eliminarWayPoints();
+                    foreach (GameObject objective in listaObjetivos){
+                        Destroy(objective);
+                    }
                 }
             }
+
 
             if(modoDebug){
 
@@ -1361,81 +1314,81 @@ public class mundoGuerra : MonoBehaviour
                             debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
                             debugVida.text = "Vida: " + cExplorador.getVida();
 
-                            } 
-                            else if(indice == INDEXARCHER1){
-                                debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
-                                debugVida.text = "Vida: " + cArquero[0].getVida();
-                            }
-                            else if(indice == INDEXARCHER2){
-                                debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
-                                debugVida.text = "Vida: " + cArquero[1].getVida();
-                            }
-
-                            else if(indice == INDEXPESADA1){
-                                debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
-                                debugVida.text = "Vida: " + cPesada[0].getVida();
-                            } 
-                            else if(indice == INDEXPESADA2){
-                                debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
-                                debugVida.text = "Vida: " + cPesada[1].getVida();
-                            }
-
-                            else {
-                                debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
-                                debugVida.text = "Vida: " + cPatrulla.getVida();
-                            }
-                            debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
-                        } else{
-                            int indice = System.Array.IndexOf(equipoRojo, selectAgent);
-                            if(indice == INDEXEXPLORADOR){
-                                debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
-                                debugVida.text = "Vida: " + rExplorador.getVida();
-
-                            } 
-                            else if(indice == INDEXARCHER1){
-                                debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
-                                debugVida.text = "Vida: " + rArquero[0].getVida();
-                            }
-                            else if(indice == INDEXARCHER2){
-                                debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
-                                debugVida.text = "Vida: " + rArquero[1].getVida();
-                            }
-
-                            else if(indice == INDEXPESADA1){
-                                debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
-                                debugVida.text = "Vida: " + rPesada[0].getVida();
-                            } 
-                            else if(indice == INDEXPESADA2){
-                                debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
-                                debugVida.text = "Vida: " + cPesada[1].getVida();
-                            }
-
-                            else {
-                                debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
-                                debugVida.text = "Vida: " + cPatrulla.getVida();
-                            }
-                            debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
+                        } 
+                        else if(indice == INDEXARCHER1){
+                            debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
+                            debugVida.text = "Vida: " + cArquero[0].getVida();
                         }
+                        else if(indice == INDEXARCHER2){
+                            debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
+                            debugVida.text = "Vida: " + cArquero[1].getVida();
+                        }
+
+                        else if(indice == INDEXPESADA1){
+                            debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
+                            debugVida.text = "Vida: " + cPesada[0].getVida();
+                        } 
+                        else if(indice == INDEXPESADA2){
+                            debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
+                            debugVida.text = "Vida: " + cPesada[1].getVida();
+                        }
+
+                        else {
+                            debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
+                            debugVida.text = "Vida: " + cPatrulla.getVida();
+                        }
+                        debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
                     } else{
-                        debugNombre.text = "Unidad: ";
-                        debugComportamiento.text = "Comportamiento: ";
-                        debugVida.text = "Vida: ";
-                        debugOjetivo.text = "Objetivo: ";
+                        int indice = System.Array.IndexOf(equipoRojo, selectAgent);
+                        if(indice == INDEXEXPLORADOR){
+                            debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
+                            debugVida.text = "Vida: " + rExplorador.getVida();
+
+                        } 
+                        else if(indice == INDEXARCHER1){
+                            debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
+                            debugVida.text = "Vida: " + rArquero[0].getVida();
+                        }
+                        else if(indice == INDEXARCHER2){
+                            debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
+                            debugVida.text = "Vida: " + rArquero[1].getVida();
+                        }
+
+                        else if(indice == INDEXPESADA1){
+                            debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
+                            debugVida.text = "Vida: " + rPesada[0].getVida();
+                        } 
+                        else if(indice == INDEXPESADA2){
+                            debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
+                            debugVida.text = "Vida: " + cPesada[1].getVida();
+                        }
+
+                        else {
+                            debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
+                            debugVida.text = "Vida: " + cPatrulla.getVida();
+                        }
+                        debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
                     }
-                            
+                } else{
+                    debugNombre.text = "Unidad: ";
+                    debugComportamiento.text = "Comportamiento: ";
+                    debugVida.text = "Vida: ";
+                    debugOjetivo.text = "Objetivo: ";
                 }
                         
+            }
+                    
 
-                moverNPC();
-                if (!verificando)
-                {
-                    Invoke("verificacion",1);
-                    verificando = true;
-                }
-                
-                if (Input.GetMouseButtonDown(1))
-                {   
-                    if (selectAgent != null){
+            moverNPC();
+            if (!verificando)
+            {
+                Invoke("verificacion",1);
+                verificando = true;
+            }
+            
+            if (Input.GetMouseButtonDown(1))
+            {   
+                if (selectAgent != null){
 
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit hit;
@@ -1454,7 +1407,7 @@ public class mundoGuerra : MonoBehaviour
 
                         grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
 
-                            int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+                        int indice = System.Array.IndexOf(equipoAzul, selectAgent);
 
                         if (indice != -1)
                         {
@@ -1462,56 +1415,57 @@ public class mundoGuerra : MonoBehaviour
                             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
                             caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
 
-                                selectAgent.setLLegada(false);
-                                selectAgent.quitarMarcador();
-                            }
-                            
+                            selectAgent.setLLegada(false);
+                            selectAgent.quitarMarcador();
                         }
+                        
                     }
-                
                 }
-                if (Input.GetMouseButtonDown(0))
-                {
-                    seleccionarNPC();
-                }
-                if(Input.GetKeyDown(KeyCode.R)){
-
-                    Debug.Log("Ofensiva Roja");
-                    modoOfensivoRojo = true;
-                    modoDefensivoRojo = false;
-                    modoNeutroRojo = false;
-                }else if(Input.GetKeyDown(KeyCode.B)){
-
-                    Debug.Log("Ofensiva Azul");
-                    modoOfensivoAzul = true;
-                    modoDefensivoAzul = false;
-                    modoNeutroAzul = false;
-                }else if(Input.GetKeyDown(KeyCode.T)){
-
-                    Debug.Log("Defensiva Roja");
-                    modoOfensivoRojo = false;
-                    modoDefensivoRojo = true;
-                    modoNeutroRojo = false;
-                }else if(Input.GetKeyDown(KeyCode.N)){
-
-                    Debug.Log("Defensiva Azul");
-                    modoOfensivoAzul = false;
-                    modoDefensivoAzul = true;
-                    modoNeutroAzul = false;
-                }else if(Input.GetKeyDown(KeyCode.Y)){
-
-                    Debug.Log("Neutral Roja");
-                    modoOfensivoRojo = false;
-                    modoDefensivoRojo = false;
-                    modoNeutroRojo = true;
-                }else if(Input.GetKeyDown(KeyCode.M)){
-
-                    Debug.Log("Neutral Azul");
-                    modoOfensivoAzul = false;
-                    modoDefensivoAzul = false;
-                    modoNeutroAzul = true;
-                }else if(Input.GetKeyDown(KeyCode.G)){
             
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                seleccionarNPC();
+            }
+            if(Input.GetKeyDown(KeyCode.R)){
+
+                Debug.Log("Ofensiva Roja");
+                modoOfensivoRojo = true;
+                modoDefensivoRojo = false;
+                modoNeutroRojo = false;
+            }else if(Input.GetKeyDown(KeyCode.B)){
+
+                Debug.Log("Ofensiva Azul");
+                modoOfensivoAzul = true;
+                modoDefensivoAzul = false;
+                modoNeutroAzul = false;
+            }else if(Input.GetKeyDown(KeyCode.T)){
+
+                Debug.Log("Defensiva Roja");
+                modoOfensivoRojo = false;
+                modoDefensivoRojo = true;
+                modoNeutroRojo = false;
+            }else if(Input.GetKeyDown(KeyCode.N)){
+
+                Debug.Log("Defensiva Azul");
+                modoOfensivoAzul = false;
+                modoDefensivoAzul = true;
+                modoNeutroAzul = false;
+            }else if(Input.GetKeyDown(KeyCode.Y)){
+
+                Debug.Log("Neutral Roja");
+                modoOfensivoRojo = false;
+                modoDefensivoRojo = false;
+                modoNeutroRojo = true;
+            }else if(Input.GetKeyDown(KeyCode.M)){
+
+                Debug.Log("Neutral Azul");
+                modoOfensivoAzul = false;
+                modoDefensivoAzul = false;
+                modoNeutroAzul = true;
+            }
+            else if(Input.GetKeyDown(KeyCode.G)){
+                if(!isGuerra){
                     Debug.Log("¡¡¡ Modo Guerra Total !!!");
                     modoOfensivoAzul = true;
                     modoDefensivoAzul = false;
@@ -1519,76 +1473,28 @@ public class mundoGuerra : MonoBehaviour
                     modoOfensivoRojo = true;
                     modoDefensivoRojo = false;
                     modoNeutroRojo = false;
+                    isGuerra = true;
+                } else{
+                    Debug.Log("  Guerra Total DESACTIVADO ");
+                    modoOfensivoAzul = false;
+                    modoDefensivoAzul = false;
+                    modoNeutroAzul = true;
+                    modoOfensivoRojo = false;
+                    modoDefensivoRojo = false;
+                    modoNeutroRojo = true;
+                    isGuerra = false;
                 }
-
-        }else if (victoriaAzul){
+                    
+            }
+        } else if (victoriaAzul){
 
             vicAzul.SetActive(true);
             
         }else if (victoriaRoja)
         {
-            seleccionarNPC();
-        }
-        if(Input.GetKeyDown(KeyCode.R)){
-
-            Debug.Log("Ofensiva Roja");
-            modoOfensivoRojo = true;
-            modoDefensivoRojo = false;
-            modoNeutroRojo = false;
-        }else if(Input.GetKeyDown(KeyCode.B)){
-
-            Debug.Log("Ofensiva Azul");
-            modoOfensivoAzul = true;
-            modoDefensivoAzul = false;
-            modoNeutroAzul = false;
-        }else if(Input.GetKeyDown(KeyCode.T)){
-
-            Debug.Log("Defensiva Roja");
-            modoOfensivoRojo = false;
-            modoDefensivoRojo = true;
-            modoNeutroRojo = false;
-        }else if(Input.GetKeyDown(KeyCode.N)){
-
-            Debug.Log("Defensiva Azul");
-            modoOfensivoAzul = false;
-            modoDefensivoAzul = true;
-            modoNeutroAzul = false;
-        }else if(Input.GetKeyDown(KeyCode.Y)){
-
-            Debug.Log("Neutral Roja");
-            modoOfensivoRojo = false;
-            modoDefensivoRojo = false;
-            modoNeutroRojo = true;
-        }else if(Input.GetKeyDown(KeyCode.M)){
-
-            Debug.Log("Neutral Azul");
-            modoOfensivoAzul = false;
-            modoDefensivoAzul = false;
-            modoNeutroAzul = true;
-        }
-        else if(Input.GetKeyDown(KeyCode.G)){
-            if(!isGuerra){
-                Debug.Log("¡¡¡ Modo Guerra Total !!!");
-                modoOfensivoAzul = true;
-                modoDefensivoAzul = false;
-                modoNeutroAzul = false;
-                modoOfensivoRojo = true;
-                modoDefensivoRojo = false;
-                modoNeutroRojo = false;
-                isGuerra = true;
-            } else{
-                Debug.Log("  Guerra Total DESACTIVADO ");
-                modoOfensivoAzul = false;
-                modoDefensivoAzul = false;
-                modoNeutroAzul = true;
-                modoOfensivoRojo = false;
-                modoDefensivoRojo = false;
-                modoNeutroRojo = true;
-                isGuerra = false;
-            }
-                
             vicRoja.SetActive(true);
         }
+        
 
     }
 
@@ -1686,30 +1592,6 @@ public class mundoGuerra : MonoBehaviour
                     objExplorerRed.Add(objetivosMundo[i]);
                 }
             }
-        }
-    }
-    private void condicionDeVictoria(){
-
-        int contAzul = 0;
-        int contRojo = 0;
-        for (int i = 0; i < objetivosMundo.Length; i++)
-        {
-            if (objetivosMundo[i].getPropiedad() == Objetivo.AZUL)
-            {
-                contAzul++;
-            }else if (objetivosMundo[i].getPropiedad() == Objetivo.ROJO)
-            {
-                contRojo++;
-            }
-        }
-        if (contAzul == numObjetives)
-        {
-            victoria = true;
-            victoriaAzul = true;
-        }else if (contRojo == numObjetives)
-        {
-            victoria = true;
-            victoriaRoja = true;
         }
     }
     private void seleccionarNPC(){
