@@ -8,11 +8,14 @@ public class Leyenda : MonoBehaviour
 
     [SerializeField]
     private GameObject debugInfo;
+    [SerializeField]
+    private GameObject guerraTotal;
 
 
     private Vector2 selectionOrigin;
 
     protected bool modoDebug = false;
+    protected bool isGuerra = false;
 
 
     void Update(){
@@ -20,6 +23,11 @@ public class Leyenda : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H)){
             modoDebug = !modoDebug;
             debugInfo.SetActive(modoDebug);
+        }
+
+        if (Input.GetKeyDown(KeyCode.G)){
+            isGuerra = !isGuerra;
+            guerraTotal.SetActive(isGuerra);
         }
             
     }

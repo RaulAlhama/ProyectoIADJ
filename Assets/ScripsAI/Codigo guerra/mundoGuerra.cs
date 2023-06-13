@@ -142,6 +142,8 @@ public class mundoGuerra : MonoBehaviour
 
 
     private bool actualizandoMapaTactico = false;
+
+    private bool isGuerra = false;
     // Arrays de caminos
     private List<Vector3>[] caminosAzul = new List<Vector3>[numNPC];
     private List<Vector3>[] caminosRojo = new List<Vector3>[numNPC];
@@ -1292,6 +1294,9 @@ public class mundoGuerra : MonoBehaviour
             } else{
                 camara_minimapa.cullingMask = layerOriginal;
                 eliminarWayPoints();
+                foreach (GameObject objective in listaObjetivos){
+                    Destroy(objective);
+                }
             }
         }
 
@@ -1457,14 +1462,26 @@ public class mundoGuerra : MonoBehaviour
             modoNeutroAzul = true;
         }
         else if(Input.GetKeyDown(KeyCode.G)){
-
-            Debug.Log("¡¡¡ Modo Guerra Total !!!");
-            modoOfensivoAzul = true;
-            modoDefensivoAzul = false;
-            modoNeutroAzul = false;
-            modoOfensivoRojo = true;
-            modoDefensivoRojo = false;
-            modoNeutroRojo = false;
+            if(!isGuerra){
+                Debug.Log("¡¡¡ Modo Guerra Total !!!");
+                modoOfensivoAzul = true;
+                modoDefensivoAzul = false;
+                modoNeutroAzul = false;
+                modoOfensivoRojo = true;
+                modoDefensivoRojo = false;
+                modoNeutroRojo = false;
+                isGuerra = true;
+            } else{
+                Debug.Log("  Guerra Total DESACTIVADO ");
+                modoOfensivoAzul = false;
+                modoDefensivoAzul = false;
+                modoNeutroAzul = true;
+                modoOfensivoRojo = false;
+                modoDefensivoRojo = false;
+                modoNeutroRojo = true;
+                isGuerra = false;
+            }
+                
         }
 
     }

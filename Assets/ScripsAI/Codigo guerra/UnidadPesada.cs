@@ -27,7 +27,7 @@ public class UnidadPesada
     private int[] limVision;
     private const int MAXVALOR = 99;
     private const int MINVALOR = 0;
-    private int vida = 120;
+    private int vida = 80;
     private GameObject[] barra_vida;
 
     private int com;
