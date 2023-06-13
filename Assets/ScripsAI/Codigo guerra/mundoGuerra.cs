@@ -1456,6 +1456,16 @@ public class mundoGuerra : MonoBehaviour
             modoDefensivoAzul = false;
             modoNeutroAzul = true;
         }
+        else if(Input.GetKeyDown(KeyCode.G)){
+
+            Debug.Log("¡¡¡ Modo Guerra Total !!!");
+            modoOfensivoAzul = true;
+            modoDefensivoAzul = false;
+            modoNeutroAzul = false;
+            modoOfensivoRojo = true;
+            modoDefensivoRojo = false;
+            modoNeutroRojo = false;
+        }
 
     }
 
