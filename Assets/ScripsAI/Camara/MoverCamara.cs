@@ -44,7 +44,7 @@ public class MoverCamara : MonoBehaviour
             UPinput = -1;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         Vector3 move = Vector3.zero;
         if (LFinput < 0 && transform.position.z - Time.fixedDeltaTime * speedCamera >= limitesInferiores.z)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class mundoGuerra : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class mundoGuerra : MonoBehaviour
     public GameObject[] puenteIzquierdoRojo;
     public GameObject[] santuario;
     public GameObject[] escuderia;
+    
 
     //Barras de vida
     private GameObject[] vidaExploradorAzul;
@@ -138,6 +140,17 @@ public class mundoGuerra : MonoBehaviour
     private List<Vector3>[] caminosRojo = new List<Vector3>[numNPC];
 
     private TextMesh[,] grid;
+
+    // Selección de personajes
+    AgentNPC selectAgent;
+
+    //Modo Debug
+
+    protected bool modoDebug = false;
+    private List<GameObject> listaWayPoints = new List<GameObject>();
+    public GameObject prefabWayPoint;
+    [SerializeField]
+    private Text debugNombre, debugComportamiento, debugOjetivo, debugVida;
 
     void Start()
     {
@@ -391,29 +404,37 @@ public class mundoGuerra : MonoBehaviour
         rutaAzul = new Ruta(puntosAzul,puntosAzul2,puntosRojo,puntosRojo2,true);
         rutaAzulPesada = new Ruta(puntosAzul,puntosAzul2,puntosRojo2,puntosRojo,true);
     }
+    
     // Función que inicializa todas las casillas del minimapa a neutro, 
     // recorriendo cada una de las casillas del grid y creando un plano del tamaño de una casilla
     private void inicializarMinimapa(){
 
-        Vector3 ajuste = new Vector3(6,-0.2f,6);
+        //Vector3 ajuste = new Vector3(6,-0.2f,6);
+        Vector3 ajuste = new Vector3(6,1f,6);
         minimapa = new GameObject("minimapa");
         int contx=0;
         int conty=0;
 
+        // Recorremos todas las casillas del grid
         for (int j = 0; j < cols; j+=3){
 
             contx=0;
 
             for (int i = 0; i< rows; i+=3){
 
+                // Creamos un objeto plano 
                 GameObject plane = Instantiate(prefabPlano, minimapa.transform);
                 plane.name = "minimap_" + contx + "_" + conty;
+                // Lo guardamos en el array de casillas
                 casillas_minimapa[contx,conty] = plane;
+                // Establecemos su tamaño y posición
                 plane.transform.localScale = new Vector3(cellSize/3.33f, 1f, cellSize/3.33f);
                 plane.transform.position = grFinal.getPosicionReal(i,j) + ajuste;
-                //Debug.Log("(" + i + "," + j + ") = " + grFinal.getPosicionReal(i,j));
-                plane.layer = 7;
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 8;
+                // Le asignamos el material de casilla neutra
                 plane.GetComponent<Renderer>().material = materialNeutro;
+                plane.GetComponent<Renderer>().enabled = false;
 
                 contx++;
             }
@@ -423,10 +444,13 @@ public class mundoGuerra : MonoBehaviour
 
     }
 
+    // Función que actualiza las casillas de los objetivos del minimapa
     private void actualizarMinimapa(){
 
+        // Recorremos los objetivos del mapa
         for (int z=0;z<objetivosMundo.Length;z++){
 
+            // En caso de que un objetivo no sea neutral, coloreamos sus casillas del color del equipo
             if (objetivosMundo[z].getPropiedad() != Objetivo.NEUTRAL){
 
                 int xinicial = objetivosMundo[z].getXInicial();
@@ -438,15 +462,19 @@ public class mundoGuerra : MonoBehaviour
                             
                     for (int i=xinicial-2;i<=xfinal+2;i++){
 
-                        // Actualizamos las casillas del minimapa
-                        //GameObject casilla = GameObject.Find("minimap_" + i + "_" + j);
-                        //GameObject casilla = casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)];
-
+                        // Actualizamos las casillas del minimapa con el color de su equipo y la colocamos en la layer del minimapa
                         if (objetivosMundo[z].getPropiedad() == Objetivo.AZUL)
+                        {
                             casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().material = materialEquipoAzul;
-
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().enabled = true;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].layer = 7;
+                        }
                         else
+                        {
                             casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().material = materialEquipoRojo;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].GetComponent<Renderer>().enabled = true;
+                            casillas_minimapa[Mathf.FloorToInt(i/3), Mathf.FloorToInt(j/3)].layer = 7;
+                        }
                     }
 
                 }
@@ -915,6 +943,7 @@ public class mundoGuerra : MonoBehaviour
         equipoAzul[INDEXEXPLORADOR].MaxSpeed = 20;
         equipoAzul[INDEXEXPLORADOR].MaxAngularAcc = 90;
         equipoAzul[INDEXEXPLORADOR].MaxAcceleration = 20;
+        //equipoAzul[INDEXEXPLORADOR].setColor();
         
         cExplorador = new Explorador(INDEXEXPLORADOR,vidaExploradorAzul,equipoAzul[INDEXEXPLORADOR],spawnAzul[INDEXEXPLORADOR],Explorador.AZUL);
 
@@ -1100,6 +1129,43 @@ public class mundoGuerra : MonoBehaviour
             }
         }
     }
+
+    private void crearWayPoints(){
+        
+        for(int i = 0; i< puntosAzul.Length;  i++){
+            GameObject wp = Instantiate(prefabWayPoint);
+            wp.transform.position = new Vector3((puntosAzul[i].getX()*cellSize) + cellSize/2, 0, (puntosAzul[i].getY()*cellSize) + cellSize/2);
+            listaWayPoints.Add(wp);
+        }
+
+        for(int i = 0; i < puntosAzul2.Length; i++){
+            GameObject wp = Instantiate(prefabWayPoint);
+            wp.transform.position = new Vector3((puntosAzul2[i].getX()*cellSize) + cellSize/2, 0, (puntosAzul2[i].getY()*cellSize) + cellSize/2);
+            listaWayPoints.Add(wp);
+        }
+
+        for(int i = 0; i < puntosRojo.Length; i++){
+            GameObject wp = Instantiate(prefabWayPoint);
+            wp.transform.position = new Vector3((puntosRojo[i].getX()*cellSize) + cellSize/2, 0, (puntosRojo[i].getY()*cellSize) + cellSize/2);
+            listaWayPoints.Add(wp);
+        }
+
+        for(int i = 0; i < puntosRojo2.Length; i++){
+            GameObject wp = Instantiate(prefabWayPoint);
+            wp.transform.position = new Vector3((puntosRojo2[i].getX()*cellSize) + cellSize/2, 0, (puntosRojo2[i].getY()*cellSize) + cellSize/2);
+            listaWayPoints.Add(wp);
+        }
+            
+    }
+
+    private void eliminarWayPoints(){
+        
+        foreach (GameObject wp in listaWayPoints)
+        {
+            Destroy(wp);
+        }
+            
+    }
     void FixedUpdate(){
 
         if (!actualizandoMapaTactico)
@@ -1109,10 +1175,93 @@ public class mundoGuerra : MonoBehaviour
         }
         
     }
+
+    private bool isAzul = false;
     void Update(){
 
-        //moverNPC();
-        //actualizarMinimapa();
+        if (Input.GetKeyDown(KeyCode.H)){
+            modoDebug = !modoDebug;
+            if(modoDebug){
+                crearWayPoints();
+            } else{
+                eliminarWayPoints();
+            }
+        }
+
+        if(modoDebug){
+            if(selectAgent != null){
+                debugNombre.text = "Unidad: " + selectAgent.name;
+                if(isAzul){
+                    int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+                    if(indice == INDEXEXPLORADOR){
+                        debugComportamiento.text = "Comportamiento: " + cExplorador.getComportamientoString();
+                        debugVida.text = "Vida: " + cExplorador.getVida();
+
+                    } 
+                    else if(indice == INDEXARCHER1){
+                        debugComportamiento.text = "Comportamiento: " + cArquero[0].getComportamientoString();
+                        debugVida.text = "Vida: " + cArquero[0].getVida();
+                    }
+                    else if(indice == INDEXARCHER2){
+                        debugComportamiento.text = "Comportamiento: " + cArquero[1].getComportamientoString();
+                        debugVida.text = "Vida: " + cArquero[1].getVida();
+                    }
+
+                    else if(indice == INDEXPESADA1){
+                        debugComportamiento.text = "Comportamiento: " + cPesada[0].getComportamientoString();
+                        debugVida.text = "Vida: " + cPesada[0].getVida();
+                    } 
+                    else if(indice == INDEXPESADA2){
+                        debugComportamiento.text = "Comportamiento: " + cPesada[1].getComportamientoString();
+                        debugVida.text = "Vida: " + cPesada[1].getVida();
+                    }
+
+                    else {
+                        debugComportamiento.text = "Comportamiento: " + cPatrulla.getComportamientoString();
+                        debugVida.text = "Vida: " + cPatrulla.getVida();
+                    }
+                    debugOjetivo.text = "Objetivo: " + npcVirtualAzul[indice].Position;
+                } else{
+                    int indice = System.Array.IndexOf(equipoRojo, selectAgent);
+                     if(indice == INDEXEXPLORADOR){
+                        debugComportamiento.text = "Comportamiento: " + rExplorador.getComportamientoString();
+                        debugVida.text = "Vida: " + rExplorador.getVida();
+
+                    } 
+                    else if(indice == INDEXARCHER1){
+                        debugComportamiento.text = "Comportamiento: " + rArquero[0].getComportamientoString();
+                        debugVida.text = "Vida: " + rArquero[0].getVida();
+                    }
+                    else if(indice == INDEXARCHER2){
+                        debugComportamiento.text = "Comportamiento: " + rArquero[1].getComportamientoString();
+                        debugVida.text = "Vida: " + rArquero[1].getVida();
+                    }
+
+                    else if(indice == INDEXPESADA1){
+                        debugComportamiento.text = "Comportamiento: " + rPesada[0].getComportamientoString();
+                        debugVida.text = "Vida: " + rPesada[0].getVida();
+                    } 
+                    else if(indice == INDEXPESADA2){
+                        debugComportamiento.text = "Comportamiento: " + rPesada[1].getComportamientoString();
+                        debugVida.text = "Vida: " + cPesada[1].getVida();
+                    }
+
+                    else {
+                        debugComportamiento.text = "Comportamiento: " + rPatrulla.getComportamientoString();
+                        debugVida.text = "Vida: " + cPatrulla.getVida();
+                    }
+                    debugOjetivo.text = "Objetivo: " + npcVirtualRojo[indice].Position;
+                }
+            } else{
+                debugNombre.text = "Unidad: ";
+                debugComportamiento.text = "Comportamiento: ";
+                debugVida.text = "Vida: ";
+                debugOjetivo.text = "Objetivo: ";
+            }
+                    
+        }
+                
+
         moverNPC();
         if (!verificando)
         {
@@ -1122,8 +1271,32 @@ public class mundoGuerra : MonoBehaviour
         
         if (Input.GetMouseButtonDown(1))
         {   
-           
+            if (selectAgent != null){
 
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    GameObject obj = hit.collider.gameObject;
+                    int iObjetivo;
+                    int jObjetivo;
+                    grFinal.getCoordenadas(obj.transform.position,out iObjetivo,out jObjetivo);
+
+                    int indice = System.Array.IndexOf(equipoAzul, selectAgent);
+
+                    if (indice != -1)
+                    {
+                        buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
+                        buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
+                        caminosAzul[indice] = buscadoresAzul[indice].A();
+
+                        selectAgent.setLLegada(false);
+                        selectAgent.quitarMarcador();
+                    }
+                    
+                }
+            }
+           
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -1131,43 +1304,63 @@ public class mundoGuerra : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.R)){
 
-            Debug.Log("Ofensiva Roja");
-            modoOfensivoRojo = true;
-            modoDefensivoRojo = false;
-            modoNeutroRojo = false;
-        }else if(Input.GetKeyDown(KeyCode.B)){
+    }
 
-            Debug.Log("Ofensiva Azul");
-            modoOfensivoAzul = true;
-            modoDefensivoAzul = false;
-            modoNeutroAzul = false;
-        }else if(Input.GetKeyDown(KeyCode.T)){
+    void OnDrawGizmos()
+    {            
+        if (modoDebug){
 
-            Debug.Log("Defensiva Roja");
-            modoOfensivoRojo = false;
-            modoDefensivoRojo = true;
-            modoNeutroRojo = false;
-        }else if(Input.GetKeyDown(KeyCode.N)){
+            AgentNPC[] agentes = FindObjectsOfType<AgentNPC>();
 
-            Debug.Log("Defensiva Azul");
-            modoOfensivoAzul = false;
-            modoDefensivoAzul = true;
-            modoNeutroAzul = false;
-        }else if(Input.GetKeyDown(KeyCode.Y)){
+            foreach (AgentNPC agente in agentes)
+            {
 
-            Debug.Log("Neutral Roja");
-            modoOfensivoRojo = false;
-            modoDefensivoRojo = false;
-            modoNeutroRojo = true;
-        }else if(Input.GetKeyDown(KeyCode.M)){
+                Vector3 from = agente.Position; // Origen de la línea
+                Vector3 elevation = new Vector3(0, 1, 0); // Elevación para no tocar el suelo
 
-            Debug.Log("Neutral Azul");
-            modoOfensivoAzul = false;
-            modoDefensivoAzul = false;
-            modoNeutroAzul = true;
+                from = from + elevation;
+
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawRay(from, agente.Velocity);
+
+                float distanciaBigotesExteriores = agente.AnguloExterior/agente.getNumBigotes();
+                float distanciaBigotesInteriores = agente.AnguloInterior/agente.getNumBigotes(); 
+                
+                for (int i=0;i<agente.getNumBigotes();i++){
+
+                    // Mirando en la dirección de la orientación.
+                    Vector3 direction = transform.TransformDirection(Vector3.forward) * 5;
+
+                    Gizmos.color = Color.red;
+                    Vector3 vectorInterior1 = Bodi.VectorRotate(direction, agente.AnguloInterior-distanciaBigotesInteriores*i);
+                    Vector3 vectorInterior2 = Bodi.VectorRotate(direction, -agente.AnguloInterior+distanciaBigotesInteriores*i);  
+                    
+                    Gizmos.DrawRay(from, vectorInterior1);
+                    Gizmos.DrawRay(from, vectorInterior2);
+
+                    // Dibujamos el angulo exterior
+                    Vector3 vectorExterior3 = Bodi.VectorRotate(direction, agente.AnguloExterior-distanciaBigotesExteriores*i);
+                    Vector3 vectorExterior4 = Bodi.VectorRotate(direction, -agente.AnguloExterior+distanciaBigotesExteriores*i); 
+                    
+                    Gizmos.color = Color.blue; 
+                    Gizmos.DrawRay(from, vectorExterior3);
+                    Gizmos.DrawRay(from, vectorExterior4);
+
+                }
+
+                // Dibujamos el circulo interior
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(agente.Position, agente.RadioInterior);
+
+                // Dibujamos el circulo exterior
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(agente.Position, agente.RadioExterior);
+
+            }
         }
 
     }
+
     private void verificacion(){
 
         verificaTorreVigia();
@@ -1217,18 +1410,35 @@ public class mundoGuerra : MonoBehaviour
         {
             GameObject npcObject = hit.collider.gameObject;
             if (npcObject.CompareTag("NPC"))
-            {
-                AgentNPC selectAgent = npcObject.GetComponent<AgentNPC>();
+            {        
+                selectAgent = npcObject.GetComponent<AgentNPC>();
+                isAzul = false;
                 foreach(AgentNPC pl in equipoAzul)
                 {
                     if(!pl.Equals(selectAgent))
                     {
                         pl.quitarMarcador();
+                        //debugNombre.text = "Unidad: ";
+                        
                     }else{
                         pl.activarMarcador();
+                        
                     }
                 }
-            } 
+                foreach(AgentNPC pl in equipoAzul){
+                if(pl.Equals(selectAgent))
+                    isAzul = true;
+                }
+
+                
+
+            }
+            else{
+                if (selectAgent != null){
+                    selectAgent.quitarMarcador();
+                    //selectAgent = null;
+                }
+            }
         }
     }
 
@@ -1646,8 +1856,11 @@ public class mundoGuerra : MonoBehaviour
                   // Actualizamos las casillas por las que se trasladan los personajes
             int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
+            
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
-            casilla.GetComponent<Renderer>().material = materialEquipoAzul;  
+            casilla.GetComponent<Renderer>().material = materialEquipoAzul;
+            casilla.GetComponent<Renderer>().enabled = true;
+            casilla.layer = 7; 
         }  
     }
     private void movArcher2(AgentNPC pl, int index){
@@ -1715,6 +1928,8 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoRojo;  
+            casilla.GetComponent<Renderer>().enabled = true;
+            casilla.layer = 7;
         }  
     }
     private void movPesada(AgentNPC pl, int index){
@@ -1783,6 +1998,8 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoAzul; 
+            casilla.GetComponent<Renderer>().enabled = true;
+            casilla.layer = 7;
         } 
     }
     private void movPesada2(AgentNPC pl, int index){
@@ -1849,6 +2066,8 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoRojo; 
+            casilla.GetComponent<Renderer>().enabled = true;
+            casilla.layer = 7;
         }  
     }
     private void verificaTorreVigia(){
@@ -2493,7 +2712,6 @@ public class mundoGuerra : MonoBehaviour
             pl.setLLegada(false);
             
         }else if(!pl.getLLegada()){    
-
             buscadoresAzul[indice].comprobarCamino(caminosAzul[indice]);
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
@@ -2518,7 +2736,9 @@ public class mundoGuerra : MonoBehaviour
             int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
-            casilla.GetComponent<Renderer>().material = materialEquipoAzul;  
+            casilla.GetComponent<Renderer>().material = materialEquipoAzul; 
+            casilla.GetComponent<Renderer>().enabled = true;
+            casilla.layer = 7; 
         }  
     }
     private void movExplorer2(AgentNPC pl,List<Objetivo> objs){
@@ -2546,8 +2766,9 @@ public class mundoGuerra : MonoBehaviour
             pl.setLLegada(false);
             
         }else if(!pl.getLLegada()){
-                            
+            
             buscadoresRojo[indice].comprobarCamino(caminosRojo[indice]);
+            
         }
         grFinal.getCoordenadas(pl.Position,out xDespues,out yDespues);
 
@@ -2572,6 +2793,8 @@ public class mundoGuerra : MonoBehaviour
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             GameObject casilla = casillas_minimapa[xcasilla,ycasilla];
             casilla.GetComponent<Renderer>().material = materialEquipoRojo;  
+            casilla.GetComponent<Renderer>().enabled = true;
+            casilla.layer = 7;
         }  
     }
     private void movPatrulla(AgentNPC pl){
@@ -2635,6 +2858,8 @@ public class mundoGuerra : MonoBehaviour
             int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
             casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().material = materialEquipoAzul;  
+            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().enabled = true;
+            casillas_minimapa[xcasilla,ycasilla].layer = 7;
         }  
     }
 
@@ -2697,7 +2922,9 @@ public class mundoGuerra : MonoBehaviour
                   // Actualizamos las casillas por las que se trasladan los personajes
             int xcasilla = Mathf.FloorToInt(pl.Position.x / 12);
             int ycasilla = Mathf.FloorToInt(pl.Position.z / 12);
-            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().material = materialEquipoRojo;  
+            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().material = materialEquipoRojo; 
+            casillas_minimapa[xcasilla,ycasilla].GetComponent<Renderer>().enabled = true;
+            casillas_minimapa[xcasilla,ycasilla].layer = 7; 
         }  
     }
 

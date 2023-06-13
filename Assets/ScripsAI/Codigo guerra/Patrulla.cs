@@ -583,6 +583,20 @@ public class Patrulla
 
         return com;
     }
+
+    public string getComportamientoString(){
+
+        if(com == MOVERSE)
+            return "MOVERSE";
+        else if(com == ATACAR)
+            return "ATACAR";
+        else if(com == SEGUIR)
+            return "SEGUIR";
+        else if(com == QUIETO)
+            return "QUIETO";
+        else return "RELOAD";
+    }
+
     public bool cambioCom(){
 
         if(lastCom == com){

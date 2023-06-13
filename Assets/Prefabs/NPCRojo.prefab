@@ -323,6 +323,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7690387910214310597}
     m_Modifications:
+    - target: {fileID: 104525784663663788, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
+    - target: {fileID: 140712642963091489, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
+    - target: {fileID: 1979207020164776968, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
     - target: {fileID: 3301825703251810147, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
       propertyPath: m_Name
       value: Barra de Vida
@@ -371,6 +383,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7546619076542540114, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
+    - target: {fileID: 8441392254222194394, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a5d3fac7e1d11439c9ba44c1deb1a6f0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0cdb2e8a6979354280862971d5ce94d, type: 3}
 --- !u!4 &9143482360209855112 stripped
