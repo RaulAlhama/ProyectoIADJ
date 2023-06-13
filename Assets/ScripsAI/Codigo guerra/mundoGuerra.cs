@@ -141,9 +141,9 @@ public class mundoGuerra : MonoBehaviour
     private bool modoOfensivoRojo = false;
     private bool modoNeutroAzul = true;
     private bool modoNeutroRojo = true;
-    private bool victoria = false;
-    private bool victoriaAzul = false;
-    private bool victoriaRoja = false;
+    public bool victoria = false;
+    public bool victoriaAzul = false;
+    public bool victoriaRoja = false;
 
 
     private bool actualizandoMapaTactico = false;
@@ -1288,6 +1288,8 @@ public class mundoGuerra : MonoBehaviour
 
     private bool isAzul = false;
     void Update(){
+
+        condicionDeVictoria();
         if(!victoria){
             if (Input.GetKeyDown(KeyCode.H)){
                 modoDebug = !modoDebug;
@@ -1509,6 +1511,31 @@ public class mundoGuerra : MonoBehaviour
         }
         
 
+    }
+
+    private void condicionDeVictoria(){
+
+        int contAzul = 0;
+        int contRojo = 0;
+        for (int i = 0; i < objetivosMundo.Length; i++)
+        {
+            if (objetivosMundo[i].getPropiedad() == Objetivo.AZUL)
+            {
+                contAzul++;
+            }else if (objetivosMundo[i].getPropiedad() == Objetivo.ROJO)
+            {
+                contRojo++;
+            }
+        }
+        if (contAzul == numObjetives)
+        {
+            victoria = true;
+            victoriaAzul = true;
+        }else if (contRojo == numObjetives)
+        {
+            victoria = true;
+            victoriaRoja = true;
+        }
     }
 
     void OnDrawGizmos()

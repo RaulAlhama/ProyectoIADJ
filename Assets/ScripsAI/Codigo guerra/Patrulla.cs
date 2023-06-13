@@ -289,7 +289,6 @@ public class Patrulla
     }
     private bool vidaBaja(){
 
-        Debug.Log(vida);
         if (vida < 40)
         {
             return true;
