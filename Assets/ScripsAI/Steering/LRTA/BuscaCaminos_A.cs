@@ -31,9 +31,9 @@ public class BuscaCaminos_A
     }
 
     // Función que calcula el camino óptimo a su objetivo
-    public List<Vector3> A(int[,] peligro){
+    public List<Vector3> A(int[,] peligro, bool path){
 
-        return buscador.aestrella(peligro);
+        return buscador.aestrella(peligro, path);
     }
 
     // Función que comprueba el estado del camino óptimo a su objetivo

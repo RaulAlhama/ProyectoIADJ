@@ -73,7 +73,7 @@ public class AEstrella
     }
 
     // Función que calcula el camino
-    public List<Vector3> aestrella(int[,] peligro){
+    public List<Vector3> aestrella(int[,] peligro, bool path){
 
         // Lista de nodos vecinos
         List<Node_A> abierta = new List<Node_A>();
@@ -158,7 +158,14 @@ public class AEstrella
                 // Calculamos los pesos del nodo vecino
                 nodo.g = nodoActual.g + Math.Sqrt(Math.Pow(nodo.corde.x-nodoActual.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoActual.corde.y,2));
                 nodo.h = Math.Sqrt(Math.Pow(nodo.corde.x-nodoObjetivo.corde.x,2)+Mathf.Pow(nodo.corde.y-nodoObjetivo.corde.y,2));
-                nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y) + peligro[nodo.corde.x,nodo.corde.y];
+                if (path)
+                {
+                    nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y) + (peligro[nodo.corde.x,nodo.corde.y] * 5);
+                }
+                else
+                {
+                    nodo.f = nodo.g + nodo.h + ApplyTerreno(nodo.corde.x, nodo.corde.y);
+                }
 
                 // Si el peso del nodo vecino es mayor que su contraparte de la lista abierta, pasamos a la siguiente iteración
                 if (mayorG(nodo, abierta)){
@@ -385,11 +392,9 @@ public class AEstrella
             switch(hit.collider.gameObject.tag) 
             {
                 case "Cesped":
-                    return 1000.0f;
-                case "Camino":
-                    return -1.0f;
+                    return 25.0f;
                 case "Tierra":
-                    return 1000.0f;
+                    return 50.0f;
                 default:
                     return 0.0f;
             }

@@ -149,10 +149,11 @@ public class mundoGuerra : MonoBehaviour
     private bool actualizandoMapaTactico = false;
 
     private bool isGuerra = false;
+
     // Arrays de caminos
     private List<Vector3>[] caminosAzul = new List<Vector3>[numNPC];
     private List<Vector3>[] caminosRojo = new List<Vector3>[numNPC];
-
+    private bool pathTactico=true;
     private TextMesh[,] grid;
 
     // Selección de personajes
@@ -1396,7 +1397,7 @@ public class mundoGuerra : MonoBehaviour
                     {
                         if(isAzul){
                             punteroPrefab.transform.position =  hit.point; //Se la asignamos también al puntero
-                            GameObject puntero = Instantiate(punteroPrefab);// creamos el puntero
+                            GameObject puntero = Instantiate(punteroPrefab);  // creamos el puntero
                             Destroy(puntero, 0.5f);
                         }
                         
@@ -1413,7 +1414,7 @@ public class mundoGuerra : MonoBehaviour
                         {
                             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
                             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-                            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
+                            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray(), pathTactico);
 
                             selectAgent.setLLegada(false);
                             selectAgent.quitarMarcador();
@@ -1463,6 +1464,18 @@ public class mundoGuerra : MonoBehaviour
                 modoOfensivoAzul = false;
                 modoDefensivoAzul = false;
                 modoNeutroAzul = true;
+            }
+            else if(Input.GetKeyDown(KeyCode.P)){
+                if (pathTactico)
+                {
+                    Debug.Log("Pathfinding Táctico Desactivado");
+                    pathTactico = false;
+                }
+                else
+                {
+                    Debug.Log("Pathfinding Táctico Activado");
+                    pathTactico = true;
+                }
             }
             else if(Input.GetKeyDown(KeyCode.G)){
                 if(!isGuerra){
@@ -2028,7 +2041,7 @@ public class mundoGuerra : MonoBehaviour
             grFinal.getCoordenadas(npcVirtualAzul[indice].Position,out iObjetivo,out jObjetivo);
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray(), pathTactico);
 
             pl.setLLegada(false);
             
@@ -2114,7 +2127,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray(), pathTactico);
 
             pl.setLLegada(false);
             
@@ -2200,7 +2213,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray(), pathTactico);
 
             pl.setLLegada(false);
 
@@ -2285,7 +2298,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray(), pathTactico);
 
             pl.setLLegada(false);
             
@@ -2978,7 +2991,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray(), pathTactico);
 
             pl.setLLegada(false);
             
@@ -3044,7 +3057,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray(), pathTactico);
 
             pl.setLLegada(false);
             
@@ -3115,7 +3128,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresAzul[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualAzul[indice]);
             buscadoresAzul[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray());
+            caminosAzul[indice] = buscadoresAzul[indice].A(enemigosTeamBlue.getArray(), pathTactico);
 
             pl.setLLegada(false);
 
@@ -3194,7 +3207,7 @@ public class mundoGuerra : MonoBehaviour
                     
             buscadoresRojo[indice].setObjetivos(iObjetivo,jObjetivo, npcVirtualRojo[indice]);
             buscadoresRojo[indice].setGrafoMovimiento(grFinal.getGrafo(iObjetivo,jObjetivo));
-            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray());
+            caminosRojo[indice] = buscadoresRojo[indice].A(enemigosTeamRed.getArray(), pathTactico);
 
             pl.setLLegada(false);
             
