@@ -6,10 +6,10 @@ using System;
 public class ArrayEnemigos
 {
     private int[,] array;
-    private const int A_SALVO = 0;
-    private const int PELIGRO_ALTO = 3;
-    private const int  PELIGRO_MEDIO = 2;
-    private const int  PELIGRO_BAJO = 1;
+    public const int A_SALVO = 0;
+    public const int PELIGRO_ALTO = 3;
+    public const int  PELIGRO_MEDIO = 2;
+    public const int  PELIGRO_BAJO = 1;
     private const int RANGO_INTERNO = 2;
     private const int RANGO_MEDIO = 4;
     private const int RANGO_EXTERNO = 5;
@@ -107,7 +107,7 @@ public class ArrayEnemigos
         }
         return limites;
     }
-    public int getValorTerreno(int i,int j){
+    public int getValor(int i,int j){
 
         return array[i,j];
     }

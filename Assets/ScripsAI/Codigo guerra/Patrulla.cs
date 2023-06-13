@@ -36,6 +36,8 @@ public class Patrulla
     private int posJ;
     private int estado;
 
+    //Vida
+    public const int VIDA_MAXIMA = 80;
     //Equipos
     public const string ROJO = "FF0000";
     public const string AZUL = "0000FF"; 
@@ -134,15 +136,18 @@ public class Patrulla
     }
     public void setVida(int val){
 
-        vida = vida - val;
-        actualizaBarraDeVida();
-        if (vida == 0)
+        if (!muerto)
         {
-            npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
-            muerto = true;
-            estado = MUERTO;
-            referencia.SetActive(false);
-            com = QUIETO;
+            vida = vida - val;
+            actualizaBarraDeVida();
+            if (vida <= 0)
+            {
+                npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
+                muerto = true;
+                estado = MUERTO;
+                referencia.SetActive(false);
+                com = QUIETO;
+            }
         }
     }
     public int getDelay(){
@@ -162,6 +167,14 @@ public class Patrulla
         }
         muerto = false;
         reaparecer();
+    }
+    public void recuperaVida(){
+
+        vida = 80;
+        for (int i = 0; i < barra_vida.Length - santuario; i++)
+        {
+            barra_vida[i].SetActive(true);
+        }
     }
     private void reaparecer(){
 
@@ -274,6 +287,39 @@ public class Patrulla
         y = y1;
         return enemigos;
     }
+    private bool vidaBaja(){
+
+        Debug.Log(vida);
+        if (vida < 40)
+        {
+            return true;
+        }else{
+
+            return false;
+        }
+    }
+    private bool buscaEnemigos(int[,] PosMundo,int[,] enemys,out int x, out int y){
+
+        int mayor = 0;
+        bool enemigos = false;
+        x = 0;
+        y = 0;
+        
+        for (int i = limVision[0]; i < limVision[1]; i++){
+            for (int j = limVision[2]; j < limVision[3]; j++){
+                
+                if (enemys[i,j] > mayor && PosMundo[i,j] == GridFinal.LIBRE)
+                {
+                    enemigos = true;
+                    mayor = enemys[i,j];
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        
+        return enemigos;
+    }
     private bool enemigosEnVision(GridFinal valmundo,int[,] mundo, out int x, out int y){
 
         bool enemigos = false;
@@ -366,7 +412,6 @@ public class Patrulla
         while(!objetivo){
 
             WayPoint aux = ruta.getSiguiente();
-
             if (aux.getDisponible())
             {
                 objetivo = true;
@@ -379,13 +424,11 @@ public class Patrulla
         return objetivo;
     }
     // Update is called once per frame
-    public Vector3 getDecision(GridFinal mundo,Ruta ruta,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){
+    public Vector3 getDecision(GridFinal mundo,Ruta ruta,ArrayEnemigos arrayEnemigos, int[,] azules,int[,] rojos, int i, int j,bool neutro,bool ofensivo,bool defensivo){
 
-        int x = i;
-        int y = j;
         int[,] enemigos;
         int[,] aliados;
-        Vector3 target = mundo.getPosicionReal(x,y);
+
         if (equipo == AZUL)
         {
             aliados = azules;
@@ -396,7 +439,54 @@ public class Patrulla
             enemigos = azules;
         }
         
+        if (ofensivo)
+        {
+            return modoOfensivo(ruta,mundo,enemigos,arrayEnemigos,i,j);
+        }else if(defensivo){
+
+            return modoDefensivo(ruta,mundo,enemigos,i,j);
+        }else{
+
+            return modoNeutro(mundo,ruta,enemigos,i,j);
+        }
+    }
+    
+    private Vector3 modoNeutro(GridFinal mundo,Ruta ruta, int[,] enemigos, int i, int j){
+
+        int x = i;
+        int y = j;
+
+        Vector3 target = mundo.getPosicionReal(x,y);
+
         if(enemigosEnVision(mundo,enemigos,out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Patrulla.ATACAR;
+
+        }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
+            
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Patrulla.MOVERSE;
+        }
+        //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
+        
+        return target;
+    }
+    private Vector3 modoDefensivo(Ruta ruta, GridFinal mundo,int[,] enemigos,int i, int j){
+
+        int x = i;
+        int y = j;
+
+        Vector3 target = mundo.getPosicionReal(x,y);
+        if (vidaBaja())
+        {
+            target = new Vector3(spawn.getX(),0,spawn.getY());
+            lastCom = com;
+            com = UnidadPesada.MOVERSE;
+
+        }else if(enemigosEnVision(mundo,enemigos,out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
@@ -411,12 +501,49 @@ public class Patrulla
         //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
         
         return target;
+
     }
-    
-    public int Atacar(GridFinal mundo,Posicion[] teamEnemy,ArrayUnidades unidades, out int tipo){
+    private Vector3 modoOfensivo(Ruta ruta, GridFinal mundo,int[,] enemigos,ArrayEnemigos arrayEnemigos,int i, int j){
+
+        int x = i;
+        int y = j;
+
+        Vector3 target = mundo.getPosicionReal(x,y);
+
+        if(enemigosEnVision(mundo,enemigos,out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Patrulla.ATACAR;
+
+        }else if(buscaEnemigos(mundo.getArray(), arrayEnemigos.getArray(),out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
+
+        }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Patrulla.MOVERSE;
+        }
+        return target;
+    }
+    public int Atacar(GridFinal mundo,Posicion[] teamEnemy,ArrayUnidades unidades, out int tipo,bool defensivo){
 
         int x = 0;
         int y = 0;
+
+        if (defensivo)
+        {
+            if (vidaBaja())
+            {
+                com = UnidadPesada.MOVERSE;
+                tipo = -1;
+                return -1;
+            }
+        }
 
         if(enemigosEnRango(unidades.getArray(),out x, out y)){
 

@@ -151,6 +151,7 @@ public class Ruta
                         int anterior = actual-1; 
                         actual = 0;
                         cambio = true;
+
                         if(caminoDerEnemigo[actual].getDisponible() && caminoIzq[anterior].getDisponible()){
 
                             caminoEnemigo = true;
@@ -254,23 +255,29 @@ public class Ruta
         {
             case IZQUIERDA:{
 
-                if (caminoEnemigo)
+                if (buscaDisponibilidad(caminoDerEnemigo,obj))
                 {
-                    return buscaDisponibilidad(caminoDerEnemigo,obj);
+                    return true;
+                }else if(buscaDisponibilidad(caminoIzq,obj)){
+
+                    return true;
                 }else{
 
-                    return buscaDisponibilidad(caminoIzq,obj);
+                    return false;
                 }
             }
             
             case DERECHA:{
 
-                if (caminoEnemigo)
+                if (buscaDisponibilidad(caminoIzqEnemigo,obj))
                 {
-                    return buscaDisponibilidad(caminoIzqEnemigo,obj);
+                    return true;
+                }else if(buscaDisponibilidad(caminoDer,obj)){
+
+                    return true;
                 }else{
 
-                    return buscaDisponibilidad(caminoDer,obj);
+                    return false;
                 }
             }
             
@@ -280,11 +287,11 @@ public class Ruta
     }
     private void setDisponibilidad(WayPoint[] camino,string objetivo,bool valor){
 
-        foreach (WayPoint item in camino)
+        for (int i=0; i< camino.Length; i++)
         {
-            if (item.getNombre() == objetivo)
+            if (camino[i].getNombre() == objetivo)
             {
-                item.setDisponible(valor);
+                camino[i].setDisponible(valor);
             }
         }
     }

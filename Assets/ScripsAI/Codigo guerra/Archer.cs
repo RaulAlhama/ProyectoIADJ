@@ -40,6 +40,9 @@ public class Archer
     public const string ROJO = "FF0000";
     public const string AZUL = "0000FF"; 
 
+    //Vida
+    public const int VIDA_MAXIMA = 80;
+
     //Comportamiento
     public const int MOVERSE = 20;
     public const int ATACAR = 21;
@@ -137,16 +140,20 @@ public class Archer
     }
     public void setVida(int val){
 
-        vida = vida - val;
-        actualizaBarraDeVida();
-        if (vida == 0)
+        if (!muerto)
         {
-            npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
-            muerto = true;
-            estado = MUERTO;
-            referencia.SetActive(false);
-            com = QUIETO;
+            vida = vida - val;
+            actualizaBarraDeVida();
+            if (vida <= 0)
+            {
+                npc.Position = new Vector3(spawn.getX(),0,spawn.getY());
+                muerto = true;
+                estado = MUERTO;
+                referencia.SetActive(false);
+                com = QUIETO;
+            }
         }
+        
     }
     public int getDelay(){
 
@@ -165,6 +172,14 @@ public class Archer
         }
         muerto = false;
         reaparecer();
+    }
+    public void recuperaVida(){
+
+        vida = 80;
+        for (int i = 0; i < barra_vida.Length - santuario; i++)
+        {
+            barra_vida[i].SetActive(true);
+        }
     }
     private void reaparecer(){
 
@@ -532,7 +547,7 @@ public class Archer
         return objetivo;
     }
     // Update is called once per frame
-    public bool posicionRuta(Ruta ruta, int[,] PosMundo,int i,int j,out int x, out int y){
+    private bool posicionRuta(Ruta ruta, int[,] PosMundo,int i,int j,out int x, out int y){
         
         bool objetivo = true;
 
@@ -542,13 +557,86 @@ public class Archer
         y = aux.getY();
         return objetivo;
     }
-    public Vector3 getDecision(Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){
+    private bool buscaEnemigos(int[,] PosMundo,int[,] enemys,out int x, out int y){
 
-        int x = i;
-        int y = j;
+        int mayor = 0;
+        bool enemigos = false;
+        x = 0;
+        y = 0;
+        
+        for (int i = limVision[0]; i <= limVision[1]; i++){
+            for (int j = limVision[2]; j <= limVision[3]; j++){
+                
+                if (enemys[i,j] > mayor && PosMundo[i,j] == GridFinal.LIBRE)
+                {
+                    enemigos = true;
+                    mayor = enemys[i,j];
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        
+        return enemigos;
+    }
+    private bool evitaEnemigos(int[,] PosMundo,int[,] enemys,out int x, out int y){
+
+        int mayor = 0;
+        bool enemigos = false;
+        x = 0;
+        y = 0;
+        int x1 = 0;
+        int y1 = 0;
+        List<Posicion> aSalvo = new List<Posicion>();
+        
+        for (int i = limVision[0]; i <= limVision[1]; i++){
+            for (int j = limVision[2]; j <= limVision[3]; j++){
+                
+                if (enemys[i,j] > mayor)
+                {
+                    enemigos = true;
+                    mayor = enemys[i,j];
+                    x = i;
+                    y = j;
+                }
+                if (enemys[i,j] == ArrayEnemigos.A_SALVO)
+                {
+                    Posicion n = new Posicion(i,j);
+                    aSalvo.Add(n);
+                }
+            }
+        }
+        if (enemigos && aSalvo.Count > 0)
+        {
+            double distancia = 0;
+            foreach (Posicion pos in aSalvo)
+            {
+                if(PosMundo[pos.getI(),pos.getJ()] == GridFinal.LIBRE){
+
+                    double disAux = Mathf.Max(Mathf.Abs(x-pos.getI()),Mathf.Abs(y-pos.getJ()));
+                    if (disAux > distancia)
+                    {
+                        distancia = disAux;
+                        x1 = pos.getI();
+                        y1 = pos.getJ();
+                    }
+                }
+            }
+        }else if(enemigos && aSalvo.Count == 0){
+
+            enemigos = false;
+
+        }
+        x = x1;
+        y = y1;
+        return enemigos;
+    }
+    public Vector3 getDecision(ArrayEnemigos arrayEnemigos, Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j,bool neutro,bool ofensivo,bool defensivo){
+
+
         int[,] enemigos;
         int[,] aliados;
-        Vector3 target = mundo.getPosicionReal(x,y);
+        
         if (equipo == AZUL)
         {
             aliados = azules;
@@ -560,13 +648,73 @@ public class Archer
             enemigos = azules;
             
         }
-        
-        
+        if (neutro)
+        {
+            return modoNeutro(ruta,mundo,listaObjetivos,enemigos,aliados,i,j);
+            
+        }else if (ofensivo)
+        {
+            return modoOfensivo(arrayEnemigos,ruta,mundo,listaObjetivos,enemigos,aliados,i,j);
+
+        }else{
+
+            return modoDefensivo(arrayEnemigos,ruta,mundo,listaObjetivos,enemigos,aliados,i,j);
+
+        }
+    }
+    private Vector3 modoNeutro(Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos,int[,] enemigos,int[,] aliados,int i,int j){
+
+        int x = i;
+        int y = j;
+
+        Vector3 target = mundo.getPosicionReal(i,j);
+
+        if(enemigosEnVision(mundo,enemigos,out x, out y)){
+
+            
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.ATACAR;
+
+        }else if(unidadPesadaEnVision(mundo, aliados,out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.SEGUIR;
+
+        }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
+
+            
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
+        }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
+
+            
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
+        }
+        return target;
+    }
+    private Vector3 modoOfensivo(ArrayEnemigos arrayEnemigos,Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos,int[,] enemigos,int[,] aliados,int i,int j){
+
+        int x = i;
+        int y = j;
+
+        Vector3 target = mundo.getPosicionReal(i,j);
+
         if(enemigosEnVision(mundo,enemigos,out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
             com = Archer.ATACAR;
+
+        }else if(buscaEnemigos(mundo.getArray(), arrayEnemigos.getArray(),out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
 
         }else if(unidadPesadaEnVision(mundo, aliados,out x, out y)){
 
@@ -580,13 +728,61 @@ public class Archer
             lastCom = com;
             com = Archer.MOVERSE;
         }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
+            
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
+        }
+        return target;
+    }
+    private Vector3 modoDefensivo(ArrayEnemigos arrayEnemigos,Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos,int[,] enemigos,int[,] aliados,int i,int j){
+
+        int x = i;
+        int y = j;
+
+        Vector3 target = mundo.getPosicionReal(i,j);
+        
+        if(unidadPesadaEnVision(mundo, aliados,out x, out y)){
+
+            int x1;
+            int y1;
+            if(enemigosEnVision(mundo,enemigos,out x1, out y1)){
+
+                target = mundo.getPosicionReal(x1,y1);
+                lastCom = com;
+                com = Archer.ATACAR;
+
+            }else{
+
+                target = mundo.getPosicionReal(x,y);
+                lastCom = com;
+                com = Archer.SEGUIR;
+            }
+
+        }else if(evitaEnemigos(mundo.getArray(), arrayEnemigos.getArray(),out x, out y)){
 
             target = mundo.getPosicionReal(x,y);
             lastCom = com;
-            com = UnidadPesada.MOVERSE;
+            com = Archer.MOVERSE;
+
+        }else if(enemigosEnVision(mundo,enemigos,out x, out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.ATACAR;
+
+        }else if(posicionObjetivo(listaObjetivos,mundo.getArray(),i,j,out x,out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
+
+        }else if(posicionRuta(ruta,mundo.getArray(),i,j,out x,out y)){
+
+            target = mundo.getPosicionReal(x,y);
+            lastCom = com;
+            com = Archer.MOVERSE;
         }
-        //buscar objetivo que no esta en propiedad y con menor prioridad (siginifa que es el mas cercano a la base) 
-        
         return target;
     }
     public int Atacar(GridFinal mundo,Posicion[] teamEnemy,ArrayUnidades unidades, out int tipo){
