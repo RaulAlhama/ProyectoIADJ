@@ -162,7 +162,7 @@ public class AEstrella
 
                 // Si el peso del nodo vecino es mayor que su contraparte de la lista abierta, pasamos a la siguiente iteración
                 if (mayorG(nodo, abierta)){
-                        continue;
+                    continue;
                 }
 
                 // Establecemos como padre del nodo vecino el nodo actual
