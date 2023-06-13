@@ -355,6 +355,6 @@ public class Explorador
             return "MOVERSE";
         } else if(com == QUIETO)
             return "QUIETO";
-        else return "UIR";
+        else return "HUIR";
     }
 }
