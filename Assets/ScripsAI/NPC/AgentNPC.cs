@@ -41,7 +41,7 @@ public class AgentNPC : Agent
             this.GetComponentInChildren<Renderer>().material.color = Color.green;
         }
         else if (tipo == PESADA){
-            this.GetComponentInChildren<Renderer>().material.color = Color.cyan;
+            this.GetComponentInChildren<Renderer>().material.color = Color.black;
         }
         else if (tipo == EXPLORADOR){
             this.GetComponentInChildren<Renderer>().material.color = Color.magenta;
