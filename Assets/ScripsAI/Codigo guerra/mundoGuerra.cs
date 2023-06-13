@@ -454,9 +454,9 @@ public class mundoGuerra : MonoBehaviour
 
     }
 
+    // Función que inicializa el mapa táctico
     private void inicializarMinimapaTactico(){
 
-        //Vector3 ajuste = new Vector3(6,-0.2f,6);
         Vector3 ajuste = new Vector3(6,0.2f,6);
         minimapa_tactico = new GameObject("minimapa_tactico");
         int contx=0;
@@ -480,62 +480,6 @@ public class mundoGuerra : MonoBehaviour
                 // Lo colocamos en la layer de no minimapa para que no se vea
                 plane.layer = 8;
                 plane.GetComponent<Renderer>().enabled = false;
-                // Obtenemos los arrays de enemigos
-                int[,] enemigosAzul = enemigosTeamBlue.getArray();
-                int[,] enemigosRojo = enemigosTeamRed.getArray();
-
-                contx++;
-            }
-
-            conty++;
-        }
-
-    }
-
-    private void actualizarMinimapaTactico(){
-
-        Vector3 ajuste = new Vector3(6,0.2f,6);
-        int contx=0;
-        int conty=0;
-
-        // Recorremos todas las casillas del grid
-        for (int j = 0; j < cols; j+=3){
-
-            contx=0;
-
-            for (int i = 0; i< rows; i+=3){
-
-                // Lo guardamos en el array de casillas
-                GameObject plane = casillas_minimapa_tactico[contx,conty];
-                // Lo colocamos en la layer de no minimapa para que no se vea
-                plane.layer = 9;
-                plane.GetComponent<Renderer>().enabled = true;
-                // Obtenemos los arrays de enemigos
-                int[,] enemigosAzul = enemigosTeamBlue.getArray();
-                int[,] enemigosRojo = enemigosTeamRed.getArray();
-                // Le asignamos el material correspondiente a su equipo
-
-                if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
-                    plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
-        
-                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
-                    plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
-
-                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
-                    plane.GetComponent<Renderer>().material = materialEquipoRojo;
-
-                if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
-                    plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
-
-                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
-                    plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
-
-                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
-                    plane.GetComponent<Renderer>().material = materialEquipoAzul;
-
-                if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
-                    plane.GetComponent<Renderer>().material = materialNeutro;
-
 
                 contx++;
             }
@@ -581,6 +525,59 @@ public class mundoGuerra : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Función que actualiza el mapa táctico
+    private void actualizarMinimapaTactico(){
+
+        int contx=0;
+        int conty=0;
+
+        // Recorremos todas las casillas del grid
+        for (int j = 0; j < cols; j+=3){
+
+            contx=0;
+
+            for (int i = 0; i< rows; i+=3){
+
+                // Lo guardamos en el array de casillas
+                GameObject plane = casillas_minimapa_tactico[contx,conty];
+                // Lo colocamos en la layer de no minimapa para que no se vea
+                plane.layer = 9;
+                plane.GetComponent<Renderer>().enabled = true;
+                // Obtenemos los arrays de enemigos
+                int[,] enemigosAzul = enemigosTeamBlue.getArray();
+                int[,] enemigosRojo = enemigosTeamRed.getArray();
+    
+                // Le asignamos el material correspondiente a su equipo
+                if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoRojo;
+        
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoRojo;
+
+                else if (enemigosAzul[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                    plane.GetComponent<Renderer>().material = materialEquipoRojo;
+
+                if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_BAJO)
+                    plane.GetComponent<Renderer>().material = materialPeligroBajoAzul;
+
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_ALTO)
+                    plane.GetComponent<Renderer>().material = materialPeligroAltoAzul;
+
+                else if (enemigosRojo[i,j] == ArrayEnemigos.PELIGRO_MEDIO)
+                    plane.GetComponent<Renderer>().material = materialEquipoAzul;
+
+                if (enemigosAzul[i,j] == ArrayEnemigos.A_SALVO && enemigosRojo[i,j] == ArrayEnemigos.A_SALVO)
+                    plane.GetComponent<Renderer>().material = materialNeutro;
+
+
+                contx++;
+            }
+
+            conty++;
+        }
+
     }
 
     private void setTorreVigia(){
