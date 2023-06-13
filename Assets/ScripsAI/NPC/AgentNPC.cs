@@ -16,7 +16,7 @@ public class AgentNPC : Agent
     private BlendedSteering arbitro;
     public bool liderFollowing = true;
     public GameObject indicadorPrefab = null;
-    private GameObject indicador = null;
+    //private GameObject indicador = null;
     public Agent virtualTarget;
     private GameObject objVirtual;
     private bool firstTime;
@@ -145,11 +145,9 @@ public class AgentNPC : Agent
             switch(hit.collider.gameObject.tag) 
             {
                 case "Cesped":
-                    return 1f;
-                case "Hielo":
-                    return 2f;
+                    return 1.5f;
                 case "Tierra":
-                    return 0.5f;
+                    return 0.75f;
                 default:
                     return 1f;
             }

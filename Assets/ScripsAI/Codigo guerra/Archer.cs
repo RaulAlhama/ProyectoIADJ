@@ -540,7 +540,6 @@ public class Archer
 
         x = aux.getX();
         y = aux.getY();
-        return false;
         return objetivo;
     }
     public Vector3 getDecision(Ruta ruta,GridFinal mundo,List<Objetivo> listaObjetivos, int[,] azules,int[,] rojos, int i, int j){

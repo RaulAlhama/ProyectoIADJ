@@ -397,11 +397,11 @@ public class AEstrella
             switch(hit.collider.gameObject.tag) 
             {
                 case "Cesped":
-                    return 0.0f;
+                    return 1000.0f;
                 case "Camino":
                     return -1.0f;
                 case "Tierra":
-                    return 1.0f;
+                    return 1000.0f;
                 default:
                     return 0.0f;
             }

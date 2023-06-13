@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -214,7 +214,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2260138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40, y: -0.05, z: 218}
+  m_LocalPosition: {x: 40, y: 0, z: 218}
   m_LocalScale: {x: 2.4, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -239,6 +239,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -364,6 +366,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &11663119 stripped
@@ -389,6 +395,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -510,6 +518,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &30586260 stripped
@@ -597,6 +609,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -782,6 +796,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -909,6 +925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloCesped (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
+      objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -1003,6 +1023,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -1560,6 +1584,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -1785,6 +1811,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -1974,6 +2002,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -2011,6 +2041,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -2132,6 +2164,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &325435680 stripped
@@ -2149,6 +2185,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -2216,6 +2256,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -2516,6 +2560,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -2699,6 +2745,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -3261,6 +3309,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -3847,6 +3899,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &538538165 stripped
@@ -3980,7 +4036,6 @@ Transform:
   m_GameObject: {fileID: 567878503}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 40, y: 0.01, z: 218}
-  m_LocalPosition: {x: 40, y: 0.05, z: 218}
   m_LocalScale: {x: 2.4, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4069,6 +4124,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -4136,6 +4193,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -4419,6 +4480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloCesped (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
+      objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -4480,6 +4545,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -4949,6 +5018,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -5016,6 +5087,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -5407,6 +5482,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloCesped (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
+      objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
       value: 16
@@ -5485,7 +5564,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 790389449}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5623,6 +5702,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -5808,6 +5891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &854188901 stripped
@@ -5879,6 +5966,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -5953,6 +6044,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -6015,6 +6108,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -6085,6 +6182,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -6288,6 +6387,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -6307,6 +6408,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -6547,6 +6652,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -6614,6 +6721,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -6728,6 +6839,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -6889,6 +7002,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -7057,6 +7174,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -7238,6 +7359,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -7257,6 +7380,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -7381,6 +7508,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -7546,6 +7677,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -7812,6 +7947,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &1123308561 stripped
@@ -7972,6 +8111,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &1135196699 stripped
@@ -7989,6 +8132,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -8052,6 +8199,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloCesped (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
+      objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -8113,6 +8264,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -8523,6 +8678,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -8542,6 +8699,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -8604,6 +8765,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -8826,6 +8991,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -9208,6 +9377,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -9377,6 +9548,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -9516,6 +9689,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -9718,6 +9893,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloCesped
       objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
+      objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -9828,6 +10007,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &1353921785 stripped
@@ -9897,6 +10080,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -9929,6 +10114,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -10052,6 +10239,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -10153,7 +10342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 475780, guid: b16d31c474ad0184690aae14bfab60b2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 475780, guid: b16d31c474ad0184690aae14bfab60b2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10212,6 +10401,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -10340,6 +10531,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -10609,6 +10802,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -10890,6 +11085,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -11013,6 +11210,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -11040,6 +11239,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -11115,6 +11316,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -11190,6 +11393,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -11326,6 +11531,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -11455,7 +11662,6 @@ MonoBehaviour:
   materialEquipoAzul: {fileID: 2100000, guid: 2053efcfaa636054ea5466e84d613598, type: 2}
   materialNeutro: {fileID: 2100000, guid: de88ca48ec64d0c4e864cec778650a3b, type: 2}
   materialPeleado: {fileID: 2100000, guid: b154b8a01509d2e488595245e4da5ef0, type: 2}
-  terreno: {fileID: 0}
 --- !u!4 &1592357733
 Transform:
   m_ObjectHideFlags: 0
@@ -12014,6 +12220,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloCesped (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
+      objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -12529,6 +12739,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -12695,6 +12907,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -15809,6 +16025,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -15876,6 +16094,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -15947,6 +16167,10 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_Name
       value: SueloTierra (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
@@ -16173,6 +16397,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &1835232627 stripped
@@ -16394,6 +16622,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -16511,6 +16741,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -16749,6 +16983,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &1993278104 stripped
@@ -16766,6 +17004,10 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_Name
       value: SueloCesped (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
+      propertyPath: m_TagString
+      value: Cesped
       objectReference: {fileID: 0}
     - target: {fileID: 4315126263067688559, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_RootOrder
@@ -17090,6 +17332,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -17211,6 +17455,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloTierra (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
+      propertyPath: m_TagString
+      value: Tierra
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
 --- !u!4 &2039030270 stripped
@@ -17236,6 +17484,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -20003,6 +20253,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}
@@ -20233,6 +20485,8 @@ PrefabInstance:
     - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2713547959329586825, guid: 0d1494647719ff646aab43b2dd6177e5, type: 3}
       propertyPath: m_TagString
       value: Tierra
       objectReference: {fileID: 0}
@@ -20270,6 +20524,8 @@ PrefabInstance:
     - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4315126263067688558, guid: ef1338f89e8bd334aa5cebb23c71fd92, type: 3}
       propertyPath: m_TagString
       value: Cesped
       objectReference: {fileID: 0}

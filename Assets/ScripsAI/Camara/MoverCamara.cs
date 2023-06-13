@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoverCamara : MonoBehaviour
 {
 
-    private Vector3 limitesInferiores = new Vector3(42,40,0);
+    private Vector3 limitesInferiores = new Vector3(35,30,0);
     private Vector3 limitesSuperiores = new Vector3(415,100,365);
     private Vector3 inicio = new Vector3(250,62,11);
 
@@ -56,7 +56,6 @@ public class MoverCamara : MonoBehaviour
         }
         if (FBinput < 0 && transform.position.x - Time.fixedDeltaTime * speedCamera <= limitesSuperiores.x)
         {
-            Debug.Log(transform.position.x - Time.fixedDeltaTime * speedCamera);
             move += Vector3.right;
         }
         else if (FBinput > 0 && transform.position.x + Time.fixedDeltaTime * speedCamera >= limitesInferiores.x)

@@ -20,6 +20,7 @@ public class mundoGuerra : MonoBehaviour
     private const int INDEX_PUENTE_IZQUIERDO_ROJO = 6;
     private const int INDEX_PUENTE_DERECHO_ROJO = 7;
     
+    //Comentario
 
     private bool verificando = false;
     public Material azul;
@@ -95,7 +96,6 @@ public class mundoGuerra : MonoBehaviour
     
     private ArrayUnidades unidadesAzul;
     private ArrayUnidades unidadesRojo;
-    private ArrayTerreno terreno;
     private ArrayEnemigos enemigosTeamBlue;
     private ArrayEnemigos enemigosTeamRed;
 
@@ -139,7 +139,6 @@ public class mundoGuerra : MonoBehaviour
         rPesada = new UnidadPesada[2];
         unidadesAzul = new ArrayUnidades(rows,cols);
         unidadesRojo = new ArrayUnidades(rows,cols);
-        terreno = new ArrayTerreno(rows,cols);
         enemigosTeamBlue = new ArrayEnemigos(rows,cols);
         enemigosTeamRed = new ArrayEnemigos(rows,cols);
         objetivosMundo = new Objetivo[numObjetives];
@@ -218,247 +217,13 @@ public class mundoGuerra : MonoBehaviour
         setPuenteIzqRojo();
         setSantuario();
         setEscuderia();
-        setTerreno();
-        //creaTexto();
+        creaTexto();
         inicializarMinimapa();
         
      
     }
 
-    private void setTerreno(){
-
-        // cesped
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 47; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 10; i < 40; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 30; i < 41; i++)
-        {
-            for (int j = 10; j < 12; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 43; i < 57; i++)
-        {
-            for (int j = 12; j < 14; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 31; i < 70; i++)
-        {
-            for (int j = 14; j < 20; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 59; i < 69; i++)
-        {
-            for (int j = 10; j < 12; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 60; i < 69; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 69; i < 100; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 85; i < 100; i++)
-        {
-            for (int j = 8; j < 10; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 90; i < 100; i++)
-        {
-            for (int j = 10; j < 38; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 30; i < 38; i++)
-        {
-
-            terreno.setTerreno(89,i,ArrayTerreno.CESPED);
-        }
-        for (int i = 91; i < 100; i++)
-        {
-            for (int j = 38; j < 43; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 93; i < 100; i++)
-        {
-            for (int j = 43; j < 47; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 45; i < 47; i++)
-        {
-            for (int j = 43; j < 47; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 47; i < 86; i++)
-        {
-            for (int j = 43; j < 47; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 68; i < 87; i++)
-        {
-            for (int j = 30; j < 44; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 87; i < 89; i++)
-        {
-            for (int j = 40; j < 43; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-        for (int i = 65; i < 80; i++)
-        {
-            for (int j = 47; j < 52; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.CESPED);
-            }
-        }
-
-        //tierra
-
-        for (int i = 10; i < 29; i++)
-        {
-            for (int j = 10; j < 34; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 34; i < 44; i++)
-        {
-
-            terreno.setTerreno(10,i,ArrayTerreno.TIERRA);
- 
-        }
-        terreno.setTerreno(29,10,ArrayTerreno.TIERRA);
-        terreno.setTerreno(29,11,ArrayTerreno.TIERRA);
-        terreno.setTerreno(45,42,ArrayTerreno.TIERRA);
-        terreno.setTerreno(46,42,ArrayTerreno.TIERRA);
-        terreno.setTerreno(89,28,ArrayTerreno.TIERRA);
-        terreno.setTerreno(89,29,ArrayTerreno.TIERRA);
-        for (int i = 29; i < 31; i++)
-        {
-            for (int j = 24; j < 34; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 13; i < 20; i++)
-        {
-            for (int j = 36; j < 44; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 14; i < 20; i++)
-        {
-            for (int j = 44; j < 47; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 20; i < 47; i++)
-        {
-            for (int j = 36; j < 42; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 33; i < 47; i++)
-        {
-            for (int j = 22; j < 36; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 31; i < 47; i++)
-        {
-            for (int j = 20; j < 32; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 47; i < 85; i++)
-        {
-            for (int j = 20; j < 23; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 70; i < 83; i++)
-        {
-            for (int j = 14; j < 20; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 71; i < 83; i++)
-        {
-            for (int j = 10; j < 14; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 68; i < 85; i++)
-        {
-            for (int j = 23; j < 30; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 85; i < 90; i++)
-        {
-            for (int j = 10; j < 18; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-        for (int i = 87; i < 90; i++)
-        {
-            for (int j = 18; j < 28; j++)
-            {
-                terreno.setTerreno(i,j,ArrayTerreno.TIERRA);
-            }
-        }
-    }
+   
     private void setWaypointsBlue(){
         
         // way points lado azul izquierdo
@@ -498,11 +263,11 @@ public class mundoGuerra : MonoBehaviour
         Posicion p11 = new Posicion(48,22);  // armeria
         puntosAzul2[0] = new WayPoint(false,p11,WayPoint.ARMERIA);
 
-        Posicion p13 = new Posicion(53,13);  
-        puntosAzul2[1] = new WayPoint(true,p13);
+        Posicion p13 = new Posicion(57,11);  // deshabilitar si armeria habilitado
+        puntosAzul2[1] = new WayPoint(true,p13,WayPoint.CON_ARMERIA);
 
-        Posicion p12 = new Posicion(58,11);  // deshabilitar si armeria habilitado
-        puntosAzul2[2] = new WayPoint(true,p12,WayPoint.CON_ARMERIA);
+        Posicion p12 = new Posicion(57,13);  
+        puntosAzul2[2] = new WayPoint(true,p12);
 
         Posicion p14 = new Posicion(70,13); 
         puntosAzul2[3] = new WayPoint(true,p14); 

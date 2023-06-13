@@ -39,7 +39,7 @@ public class MovimientoMouse : MonoBehaviour
     public Agent npcVirtual;
     public AgentNPC player;
 
-    private int playersInWorld = 6;
+    //private int playersInWorld = 6;
     struct Coordenadas{
         public int x;
         public int y;
@@ -226,7 +226,7 @@ public class MovimientoMouse : MonoBehaviour
         if (Input.GetMouseButtonDown(1) && selectedNPCs > 0)
         {   
             
-            bool romperFormacion = false;
+            //bool romperFormacion = false;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))

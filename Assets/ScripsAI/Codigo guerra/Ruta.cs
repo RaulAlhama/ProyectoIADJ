@@ -77,7 +77,7 @@ public class Ruta
 
                         return caminoIzqEnemigo[actual];
                     }
-                    break;
+                    
                 }
                 case IZQUIERDA:{
                     
@@ -106,7 +106,6 @@ public class Ruta
 
                         return caminoDerEnemigo[actual];
                     }
-                    break;
                 }
                 default:
                     return null;
@@ -144,7 +143,6 @@ public class Ruta
 
                         return caminoDer[actual];
                     }
-                    break;
                 }
                 case IZQUIERDA:{
                     
@@ -174,7 +172,6 @@ public class Ruta
 
                         return caminoIzq[actual];
                     }
-                    break;
                 
                 }
                 default:
@@ -193,7 +190,6 @@ public class Ruta
                 return i;
             }
         } 
-        return 0;
     }
     public WayPoint getAleatoreo(){
 
@@ -265,8 +261,6 @@ public class Ruta
 
                     return buscaDisponibilidad(caminoIzq,obj);
                 }
-
-                break;
             }
             
             case DERECHA:{
@@ -278,8 +272,6 @@ public class Ruta
 
                     return buscaDisponibilidad(caminoDer,obj);
                 }
-
-                break;
             }
             
             default:
